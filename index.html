@@ -815,15 +815,48 @@
   function toggleMenu() {
     document.getElementById('mobileMenu').classList.toggle('open');
   }
-  function handleSubmit() {
+  async function handleSubmit() {
     const nome = document.getElementById('nome').value.trim();
     const email = document.getElementById('email').value.trim();
     const messaggio = document.getElementById('messaggio').value.trim();
+    const msg = document.getElementById('form-msg');
     if (!nome || !email || !messaggio) {
-      alert('Compila almeno nome, email e descrizione.');
+      msg.style.display = 'block';
+      msg.style.color = '#F5C518';
+      msg.textContent = 'Compila almeno nome, email e descrizione.';
       return;
     }
-    alert('Grazie ' + nome + '! Ti contatteremo a breve.');
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Invio in corso…';
+    btn.disabled = true;
+    try {
+      const data = new FormData();
+      data.append('nome', nome);
+      data.append('email', email);
+      data.append('telefono', document.getElementById('telefono').value.trim());
+      data.append('servizio', document.getElementById('servizio').value);
+      data.append('messaggio', messaggio);
+      const res = await fetch('https://formspree.io/f/xykqezyl', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+      if (res.ok) {
+        msg.style.display = 'block';
+        msg.style.color = '#F5C518';
+        msg.textContent = 'Messaggio inviato! Ti risponderemo entro 24 ore.';
+        btn.textContent = 'Inviato ✓';
+        document.getElementById('nome').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('telefono').value = '';
+        document.getElementById('servizio').value = '';
+        document.getElementById('messaggio').value = '';
+      } else {
+        throw new Error();
+      }
+    } catch(e) {
+      msg.style.display = 'block';
+      msg.style.color = '#ff6b6b';
+      msg.textContent = 'Errore nell\'invio. Riprova o contattaci direttamente.';
+      btn.textContent = 'Invia richiesta →';
+      btn.disabled = false;
+    }
   }
 </script>
 </body>
