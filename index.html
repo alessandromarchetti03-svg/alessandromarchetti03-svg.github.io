@@ -393,6 +393,88 @@
       text-align: center;
     }
 
+    /* ── SERVICE IMAGES ──────────────────────────────────────── */
+    .service-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      margin-bottom: 1.5rem;
+      filter: brightness(0.85);
+      transition: filter 0.3s;
+    }
+    .service-card:hover .service-img { filter: brightness(1); }
+
+    /* ── GALLERY ─────────────────────────────────────────────── */
+    .gallery { background: var(--navy); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(245,197,24,0.1);
+      border: 1px solid rgba(245,197,24,0.1);
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      cursor: pointer;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s, filter 0.4s;
+      filter: brightness(0.8);
+    }
+    .gallery-item:hover img {
+      transform: scale(1.04);
+      filter: brightness(1);
+    }
+    .gallery-item-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(13,27,46,0.9));
+      padding: 1.5rem 1.2rem 1rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
     /* ── CONTACT ──────────────────────────────────────────────── */
     .contact { background: var(--navy); }
     .contact-inner {
@@ -537,6 +619,7 @@
       <ul class="nav-links">
         <li><a href="#servizi">Servizi</a></li>
         <li><a href="#perche">Chi siamo</a></li>
+        <li><a href="#lavori">Lavori</a></li>
         <li><a href="#area">Area</a></li>
         <li><a href="#contatti" class="nav-cta">Contattaci</a></li>
       </ul>
@@ -548,6 +631,7 @@
       <div class="container">
         <a href="#servizi" onclick="toggleMenu()">Servizi</a>
         <a href="#perche" onclick="toggleMenu()">Chi siamo</a>
+        <a href="#lavori" onclick="toggleMenu()">Lavori</a>
         <a href="#area" onclick="toggleMenu()">Area</a>
         <a href="#contatti" onclick="toggleMenu()">Contattaci</a>
       </div>
@@ -626,6 +710,7 @@
     </div>
     <div class="services-grid">
       <div class="service-card">
+        <img src="servizio-elettrico.jpg" alt="Impianto elettrico" class="service-img" />
         <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M13 2L4.5 13.5H12L11 22l8.5-11.5H12L13 2z"/>
         </svg>
@@ -633,6 +718,7 @@
         <p>Realizzazione e rifacimento di impianti civili e industriali. Quadri elettrici, messa a norma, cablaggi strutturati. Tutto a regola d'arte secondo le normative vigenti.</p>
       </div>
       <div class="service-card">
+        <img src="servizio-allarme.jpg" alt="Sistema d'allarme" class="service-img" />
         <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
           <polyline points="9 12 11 14 15 10"/>
@@ -641,6 +727,7 @@
         <p>Installazione e configurazione di centrali antifurto, sensori perimetrali, contatti magnetici e sirene. Sistemi collegabili a istituti di vigilanza.</p>
       </div>
       <div class="service-card">
+        <img src="servizio-videosorveglianza.jpg" alt="Videosorveglianza" class="service-img" />
         <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M23 7l-7 5 7 5V7z"/>
           <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
@@ -649,6 +736,7 @@
         <p>Impianti TVCC con telecamere IP e analogiche, registratori DVR/NVR e accesso remoto da smartphone. Residenziale e commerciale.</p>
       </div>
       <div class="service-card">
+        <img src="servizio-cancelli.jpg" alt="Cancelli automatici" class="service-img" />
         <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="3" width="8" height="18" rx="1"/>
           <rect x="14" y="3" width="8" height="18" rx="1"/>
@@ -734,6 +822,64 @@
   </div>
 </section>
 
+<!-- GALLERY -->
+<section class="gallery" id="lavori">
+  <div class="container">
+    <div class="section-header">
+      <p class="eyebrow">Portfolio</p>
+      <h2 class="display">Lavori eseguiti</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item" onclick="openLightbox('lavoro1.jpg')">
+        <img src="lavoro1.jpg" alt="Lavoro 1" loading="lazy" />
+        <div class="gallery-item-label">Impianto elettrico</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro2.jpg')">
+        <img src="lavoro2.jpg" alt="Lavoro 2" loading="lazy" />
+        <div class="gallery-item-label">Impianto elettrico</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro3.jpg')">
+        <img src="lavoro3.jpg" alt="Lavoro 3" loading="lazy" />
+        <div class="gallery-item-label">Impianto elettrico</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro4.jpg')">
+        <img src="lavoro4.jpg" alt="Lavoro 4" loading="lazy" />
+        <div class="gallery-item-label">Impianto elettrico</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro5.jpg')">
+        <img src="lavoro5.jpg" alt="Lavoro 5" loading="lazy" />
+        <div class="gallery-item-label">Sistema d'allarme</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro6.jpg')">
+        <img src="lavoro6.jpg" alt="Lavoro 6" loading="lazy" />
+        <div class="gallery-item-label">Sistema d'allarme</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro7.jpg')">
+        <img src="lavoro7.jpg" alt="Lavoro 7" loading="lazy" />
+        <div class="gallery-item-label">Videosorveglianza</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro8.jpg')">
+        <img src="lavoro8.jpg" alt="Lavoro 8" loading="lazy" />
+        <div class="gallery-item-label">Videosorveglianza</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro9.jpg')">
+        <img src="lavoro9.jpg" alt="Lavoro 9" loading="lazy" />
+        <div class="gallery-item-label">Cancello automatico</div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro10.jpg')">
+        <img src="lavoro10.jpg" alt="Lavoro 10" loading="lazy" />
+        <div class="gallery-item-label">Cancello automatico</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt="Foto lavoro" />
+</div>
+
 <!-- CONTACT -->
 <section class="contact" id="contatti">
   <div class="container contact-inner">
@@ -815,6 +961,16 @@
   function toggleMenu() {
     document.getElementById('mobileMenu').classList.toggle('open');
   }
+  function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
   async function handleSubmit() {
     const nome = document.getElementById('nome').value.trim();
     const email = document.getElementById('email').value.trim();
@@ -830,14 +986,21 @@
     btn.textContent = 'Invio in corso…';
     btn.disabled = true;
     try {
-      const data = new FormData();
-      data.append('nome', nome);
-      data.append('email', email);
-      data.append('telefono', document.getElementById('telefono').value.trim());
-      data.append('servizio', document.getElementById('servizio').value);
-      data.append('messaggio', messaggio);
-      const res = await fetch('https://formspree.io/f/xykqezyl', { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
-      if (res.ok) {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          access_key: '02c2a9d0-4f62-4210-9b98-6e413d3b762c',
+          name: nome,
+          email: email,
+          phone: document.getElementById('telefono').value.trim(),
+          service: document.getElementById('servizio').value,
+          message: messaggio,
+          subject: 'Nuova richiesta da ' + nome + ' — Emme 2000'
+        })
+      });
+      const json = await res.json();
+      if (json.success) {
         msg.style.display = 'block';
         msg.style.color = '#F5C518';
         msg.textContent = 'Messaggio inviato! Ti risponderemo entro 24 ore.';
