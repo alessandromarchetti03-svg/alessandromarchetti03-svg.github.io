@@ -232,11 +232,11 @@
     .hero-visual { display: flex; justify-content: center; align-items: center; }
     .hero-icon-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 1px;
       background: rgba(245,197,24,0.15);
       border: 1px solid rgba(245,197,24,0.15);
-      width: 320px;
+      width: 420px;
       max-width: 100%;
     }
     .hero-icon-cell {
@@ -291,10 +291,16 @@
 
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 1px;
       background: rgba(245,197,24,0.1);
       border: 1px solid rgba(245,197,24,0.1);
+    }
+    @media (max-width: 900px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .services-grid { grid-template-columns: 1fr; }
     }
     .service-card {
       background: var(--navy-mid);
