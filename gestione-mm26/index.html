@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Preventivi — Emme 2000</title>
+<meta name="theme-color" content="#0c1f3f" />
+<meta name="robots" content="noindex, nofollow, noarchive" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Preventivi" />
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  html,body{margin:0;padding:0;background:#f7f5f0;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-type="module">
+const { useState, useEffect } = React;
+
+const NAVY = "#0c1f3f";
+const NAVY_DARK = "#081527";
+const GOLD = "#c9a227";
+const GOLD_LIGHT = "#e0c366";
+const PAPER = "#f7f5f0";
+const STEEL = "#6b7684";
+
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+const emptyForm = () => ({
+  cliente: "",
+  telefono: "",
+  indirizzo: "",
+  lavoro: "",
+  ore: "",
+  tariffaOraria: "35",
+  materiali: [{ id: uid(), desc: "", costo: "" }],
+  scontoTipo: "percentuale",
+  scontoValore: "",
+  note: "",
+});
+
+const defaultCompany = {
+  ragioneSociale: "Emme 2000",
+  sottotitolo: "Impianti elettrici · Antifurto · Automazioni · Videosorveglianza",
+  piva: "",
+  indirizzo: "Provincia di Bergamo e Brescia",
+  telefono: "",
+  email: "",
+};
+
+// --- storage locale del dispositivo (persiste tra sessioni) ---
+const storage = {
+  get(key) {
+    try {
+      const v = localStorage.getItem(key);
+      return v === null ? null : JSON.parse(v);
+    } catch (e) { return null; }
+  },
+  set(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (e) { return false; }
+  },
+};
+
+function fmt(n) {
+  const v = Number(n) || 0;
+  return v.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
+}
+
+function todayStr() {
+  return new Date().toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
+function App() {
+  const [view, setView] = useState("form");
+  const [form, setForm] = useState(emptyForm());
+  const [company, setCompany] = useState(defaultCompany);
+  const [companyDraft, setCompanyDraft] = useState(defaultCompany);
+  const [store, setStoreState] = useState({ counter: 0, list: [] });
+  const [current, setCurrent] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const c = storage.get("company-info");
+    if (c) setCompany({ ...defaultCompany, ...c });
+    const d = storage.get("preventivi-data");
+    if (d) setStoreState(d);
+  }, []);
+
+  useEffect(() => { setCompanyDraft(company); }, [company]);
+
+  function saveCompany() {
+    setCompany(companyDraft);
+    storage.set("company-info", companyDraft);
+  }
+
+  function persistStore(next) {
+    setStoreState(next);
+    storage.set("preventivi-data", next);
+  }
+
+  function updateForm(field, value) { setForm((f) => ({ ...f, [field]: value })); }
+
+  function updateMateriale(id, field, value) {
+    setForm((f) => ({ ...f, materiali: f.materiali.map((m) => m.id === id ? { ...m, [field]: value } : m) }));
+  }
+  function addMateriale() {
+    setForm((f) => ({ ...f, materiali: [...f.materiali, { id: uid(), desc: "", costo: "" }] }));
+  }
+  function removeMateriale(id) {
+    setForm((f) => ({ ...f, materiali: f.materiali.filter((m) => m.id !== id) }));
+  }
+
+  const subtotaleManodopera = (Number(form.ore) || 0) * (Number(form.tariffaOraria) || 0);
+  const subtotaleMateriali = form.materiali.reduce((sum, m) => sum + (Number(m.costo) || 0), 0);
+  const totaleLordo = subtotaleManodopera + subtotaleMateriali;
+  const scontoValoreCalc = form.scontoTipo === "percentuale"
+    ? (totaleLordo * (Number(form.scontoValore) || 0)) / 100
+    : Number(form.scontoValore) || 0;
+  const totaleNetto = Math.max(totaleLordo - scontoValoreCalc, 0);
+
+  function validaForm() {
+    if (!form.cliente.trim()) return "Inserisci il nome del cliente.";
+    if (!form.lavoro.trim()) return "Descrivi il lavoro svolto.";
+    return "";
+  }
+
+  function vaiAdAnteprima() {
+    const err = validaForm();
+    if (err) { setError(err); return; }
+    setError("");
+    setView("anteprima");
+  }
+
+  function confermaEGenera() {
+    const numero = store.counter + 1;
+    const anno = new Date().getFullYear();
+    const doc = {
+      id: uid(),
+      numero: `${anno}-${String(numero).padStart(3, "0")}`,
+      data: todayStr(),
+      cliente: form.cliente,
+      telefono: form.telefono,
+      indirizzo: form.indirizzo,
+      lavoro: form.lavoro,
+      ore: Number(form.ore) || 0,
+      tariffaOraria: Number(form.tariffaOraria) || 0,
+      materiali: form.materiali.filter((m) => m.desc.trim() || m.costo),
+      scontoTipo: form.scontoTipo,
+      scontoValore: Number(form.scontoValore) || 0,
+      note: form.note,
+      subtotaleManodopera, subtotaleMateriali, totaleLordo, scontoValoreCalc, totaleNetto,
+    };
+    persistStore({ counter: numero, list: [doc, ...store.list] });
+    setCurrent(doc);
+    setView("documento");
+  }
+
+  function nuovoPreventivo() {
+    setForm(emptyForm());
+    setCurrent(null);
+    setError("");
+    setView("form");
+  }
+  function apriDaStorico(doc) { setCurrent(doc); setView("documento"); }
+  function eliminaDaStorico(id) { persistStore({ ...store, list: store.list.filter((d) => d.id !== id) }); }
+  function stampa() { window.print(); }
+
+  return (
+    <div style={{ fontFamily: "'Segoe UI', system-ui, sans-serif", minHeight: "100vh", background: PAPER }}>
+      <style>{`
+        * { box-sizing: border-box; }
+        input, textarea, select {
+          font-family: inherit; font-size: 15px; padding: 9px 11px;
+          border: 1px solid #d6d2c4; border-radius: 6px; width: 100%;
+          background: #fff; color: ${NAVY_DARK};
+        }
+        input:focus, textarea:focus, select:focus {
+          outline: none; border-color: ${GOLD}; box-shadow: 0 0 0 3px rgba(201,162,39,0.15);
+        }
+        label { display: block; font-size: 13px; font-weight: 600; color: ${STEEL}; margin-bottom: 5px; letter-spacing: 0.02em; }
+        .field { margin-bottom: 16px; }
+        .btn { border: none; border-radius: 7px; padding: 12px 20px; font-weight: 700; font-size: 15px; cursor: pointer; transition: opacity .15s; }
+        .btn:hover { opacity: .88; }
+        .btn-primary { background: ${GOLD}; color: ${NAVY_DARK}; }
+        .btn-secondary { background: transparent; color: ${NAVY}; border: 1.5px solid ${NAVY}; }
+        .btn-danger { background: transparent; color: #a33; border: 1.5px solid #a33; }
+        .card { background: #fff; border-radius: 10px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        @media print {
+          .no-print { display: none !important; }
+          body { background: #fff !important; }
+          .print-page { box-shadow: none !important; margin: 0 !important; padding: 0 !important; }
+        }
+      `}</style>
+
+      <div className="no-print" style={{ background: NAVY, color: "#fff", padding: "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <img src="icons/logo.png" alt="Emme 2000" style={{ width: 32, height: 32, objectFit: "contain" }} />
+          <div style={{ fontWeight: 800, fontSize: 16, letterSpacing: 0.3 }}>{company.ragioneSociale}</div>
+        </div>
+        <div style={{ display: "flex", gap: 14, fontSize: 14 }}>
+          <button onClick={() => setView("storico")} style={{ background: "none", border: "none", color: view === "storico" ? GOLD : "#fff", cursor: "pointer", fontWeight: 600 }}>Storico</button>
+          <button onClick={() => setView("impostazioni")} style={{ background: "none", border: "none", color: view === "impostazioni" ? GOLD : "#fff", cursor: "pointer", fontWeight: 600 }}>Dati azienda</button>
+        </div>
+      </div>
+
+      <div style={{ maxWidth: 640, margin: "0 auto", padding: "24px 16px 60px" }}>
+
+        {view === "form" && (
+          <div className="card no-print">
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 18 }}>
+              <h2 style={{ margin: 0, color: NAVY_DARK, fontSize: 20 }}>Nuovo preventivo</h2>
+              <div style={{ color: STEEL, fontSize: 14, alignSelf: "center" }}>{todayStr()}</div>
+            </div>
+            {error && <div style={{ background: "#fdeaea", color: "#a33", padding: "10px 12px", borderRadius: 6, marginBottom: 14, fontSize: 14 }}>{error}</div>}
+
+            <div className="field">
+              <label>Cliente</label>
+              <input value={form.cliente} onChange={(e) => updateForm("cliente", e.target.value)} placeholder="Nome e cognome / ragione sociale" />
+            </div>
+            <div className="field">
+              <label>Telefono</label>
+              <input value={form.telefono} onChange={(e) => updateForm("telefono", e.target.value)} placeholder="333 1234567" />
+            </div>
+            <div className="field">
+              <label>Indirizzo</label>
+              <input value={form.indirizzo} onChange={(e) => updateForm("indirizzo", e.target.value)} placeholder="Via, numero, comune" />
+            </div>
+            <div className="field">
+              <label>Lavoro svolto / da svolgere</label>
+              <textarea rows="4" value={form.lavoro} onChange={(e) => updateForm("lavoro", e.target.value)} placeholder="Descrizione dell'intervento..." />
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="field">
+              <div>
+                <label>Ore previste</label>
+                <input type="number" min="0" step="0.5" value={form.ore} onChange={(e) => updateForm("ore", e.target.value)} placeholder="0" />
+              </div>
+              <div>
+                <label>Tariffa oraria (€)</label>
+                <input type="number" min="0" step="1" value={form.tariffaOraria} onChange={(e) => updateForm("tariffaOraria", e.target.value)} placeholder="35" />
+              </div>
+            </div>
+            <div style={{ fontSize: 13, color: STEEL, marginTop: -8, marginBottom: 16 }}>
+              Manodopera: <strong style={{ color: NAVY_DARK }}>{fmt(subtotaleManodopera)}</strong>
+            </div>
+
+            <label>Materiali</label>
+            {form.materiali.map((m) => (
+              <div key={m.id} style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+                <input placeholder="Descrizione materiale" value={m.desc} onChange={(e) => updateMateriale(m.id, "desc", e.target.value)} style={{ flex: 2 }} />
+                <input placeholder="€" type="number" min="0" step="1" value={m.costo} onChange={(e) => updateMateriale(m.id, "costo", e.target.value)} style={{ flex: 1 }} />
+                <button className="btn-danger btn" onClick={() => removeMateriale(m.id)} style={{ padding: "9px 12px" }}>✕</button>
+              </div>
+            ))}
+            <button onClick={addMateriale} className="btn btn-secondary" style={{ fontSize: 13, padding: "8px 14px", marginBottom: 10 }}>+ Aggiungi materiale</button>
+            <div style={{ fontSize: 13, color: STEEL, marginBottom: 20 }}>
+              Materiali: <strong style={{ color: NAVY_DARK }}>{fmt(subtotaleMateriali)}</strong>
+            </div>
+
+            <button onClick={vaiAdAnteprima} className="btn btn-primary" style={{ width: "100%" }}>Genera anteprima preventivo →</button>
+          </div>
+        )}
+
+        {view === "anteprima" && (
+          <div className="card no-print">
+            <h2 style={{ margin: "0 0 4px", color: NAVY_DARK, fontSize: 20 }}>Anteprima preventivo</h2>
+            <div style={{ color: STEEL, fontSize: 14, marginBottom: 18 }}>{form.cliente} · {todayStr()}</div>
+
+            <div style={{ background: PAPER, borderRadius: 8, padding: 16, marginBottom: 18 }}>
+              <Riga label="Manodopera" value={fmt(subtotaleManodopera)} sub={`${form.ore || 0} h × ${fmt(form.tariffaOraria)}`} />
+              <Riga label="Materiali" value={fmt(subtotaleMateriali)} />
+              <hr style={{ border: "none", borderTop: "1px solid #d6d2c4", margin: "10px 0" }} />
+              <Riga label="Totale lordo" value={fmt(totaleLordo)} bold />
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 12, alignItems: "end", marginBottom: 16 }}>
+              <div>
+                <label>Sconto</label>
+                <select value={form.scontoTipo} onChange={(e) => updateForm("scontoTipo", e.target.value)}>
+                  <option value="percentuale">%</option>
+                  <option value="fisso">€</option>
+                </select>
+              </div>
+              <div>
+                <label>Valore sconto</label>
+                <input type="number" min="0" step="1" value={form.scontoValore} onChange={(e) => updateForm("scontoValore", e.target.value)} placeholder="0" />
+              </div>
+            </div>
+
+            <div className="field">
+              <label>Note</label>
+              <textarea rows="3" value={form.note} onChange={(e) => updateForm("note", e.target.value)} placeholder="Validità offerta, tempistiche, esclusioni..." />
+            </div>
+
+            <div style={{ background: NAVY, color: "#fff", borderRadius: 8, padding: "14px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+              <span style={{ fontWeight: 700 }}>Totale preventivo</span>
+              <span style={{ fontWeight: 800, fontSize: 22, color: GOLD_LIGHT }}>{fmt(totaleNetto)}</span>
+            </div>
+
+            <div style={{ display: "flex", gap: 10 }}>
+              <button onClick={() => setView("form")} className="btn btn-secondary" style={{ flex: 1 }}>← Modifica</button>
+              <button onClick={confermaEGenera} className="btn btn-primary" style={{ flex: 2 }}>Confermo, genera documento</button>
+            </div>
+          </div>
+        )}
+
+        {view === "documento" && current && (
+          <React.Fragment>
+            <div className="no-print" style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+              <button onClick={stampa} className="btn btn-primary" style={{ flex: 1 }}>🖨️ Stampa / Salva PDF</button>
+              <button onClick={nuovoPreventivo} className="btn btn-secondary" style={{ flex: 1 }}>+ Nuovo preventivo</button>
+            </div>
+            <DocumentoPreventivo doc={current} company={company} />
+          </React.Fragment>
+        )}
+
+        {view === "storico" && (
+          <div className="card no-print">
+            <h2 style={{ margin: "0 0 16px", color: NAVY_DARK, fontSize: 20 }}>Storico preventivi</h2>
+            {store.list.length === 0 && (<div style={{ color: STEEL, fontSize: 14 }}>Nessun preventivo salvato finora.</div>)}
+            {store.list.map((d) => (
+              <div key={d.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" }}>
+                <div>
+                  <div style={{ fontWeight: 700, color: NAVY_DARK }}>{d.cliente}</div>
+                  <div style={{ fontSize: 13, color: STEEL }}>N° {d.numero} · {d.data} · {fmt(d.totaleNetto)}</div>
+                </div>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button onClick={() => apriDaStorico(d)} className="btn btn-secondary" style={{ padding: "7px 12px", fontSize: 13 }}>Apri</button>
+                  <button onClick={() => eliminaDaStorico(d.id)} className="btn btn-danger" style={{ padding: "7px 12px", fontSize: 13 }}>Elimina</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {view === "impostazioni" && (
+          <div className="card no-print">
+            <h2 style={{ margin: "0 0 16px", color: NAVY_DARK, fontSize: 20 }}>Dati azienda</h2>
+            <div style={{ fontSize: 13, color: STEEL, marginBottom: 16 }}>Questi dati compaiono nell'intestazione dei documenti generati.</div>
+            <div className="field"><label>Ragione sociale</label><input value={companyDraft.ragioneSociale} onChange={(e) => setCompanyDraft((c) => ({ ...c, ragioneSociale: e.target.value }))} /></div>
+            <div className="field"><label>Sottotitolo / attività</label><input value={companyDraft.sottotitolo} onChange={(e) => setCompanyDraft((c) => ({ ...c, sottotitolo: e.target.value }))} /></div>
+            <div className="field"><label>Partita IVA</label><input value={companyDraft.piva} onChange={(e) => setCompanyDraft((c) => ({ ...c, piva: e.target.value }))} placeholder="Lascia vuoto se non ancora attiva" /></div>
+            <div className="field"><label>Indirizzo / zona operativa</label><input value={companyDraft.indirizzo} onChange={(e) => setCompanyDraft((c) => ({ ...c, indirizzo: e.target.value }))} /></div>
+            <div className="field"><label>Telefono</label><input value={companyDraft.telefono} onChange={(e) => setCompanyDraft((c) => ({ ...c, telefono: e.target.value }))} /></div>
+            <div className="field"><label>Email</label><input value={companyDraft.email} onChange={(e) => setCompanyDraft((c) => ({ ...c, email: e.target.value }))} /></div>
+            <button onClick={saveCompany} className="btn btn-primary" style={{ width: "100%" }}>Salva dati azienda</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Riga({ label, value, sub, bold }) {
+  return (
+    <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}>
+      <div>
+        <span style={{ fontWeight: bold ? 700 : 500, color: NAVY_DARK }}>{label}</span>
+        {sub && <div style={{ fontSize: 12, color: STEEL }}>{sub}</div>}
+      </div>
+      <span style={{ fontWeight: bold ? 800 : 600, color: NAVY_DARK }}>{value}</span>
+    </div>
+  );
+}
+
+function DocumentoPreventivo({ doc, company }) {
+  return (
+    <div className="print-page" style={{ background: "#fff", padding: 36, borderRadius: 8, boxShadow: "0 1px 3px rgba(0,0,0,0.08)", maxWidth: 640, margin: "0 auto" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: `3px solid ${GOLD}`, paddingBottom: 16, marginBottom: 20 }}>
+        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          <img src="icons/logo.png" alt="Emme 2000" style={{ width: 48, height: 48, objectFit: "contain" }} />
+          <div>
+            <div style={{ fontWeight: 800, fontSize: 19, color: NAVY_DARK }}>{company.ragioneSociale}</div>
+            <div style={{ fontSize: 12, color: STEEL }}>{company.sottotitolo}</div>
+          </div>
+        </div>
+        <div style={{ textAlign: "right", fontSize: 12, color: STEEL, lineHeight: 1.5 }}>
+          {company.indirizzo && <div>{company.indirizzo}</div>}
+          {company.telefono && <div>Tel. {company.telefono}</div>}
+          {company.email && <div>{company.email}</div>}
+          {company.piva && <div>P.IVA {company.piva}</div>}
+        </div>
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 22 }}>
+        <div>
+          <div style={{ fontSize: 22, fontWeight: 800, color: NAVY_DARK }}>PREVENTIVO</div>
+          <div style={{ fontSize: 13, color: STEEL }}>N° {doc.numero} · {doc.data}</div>
+        </div>
+        <div style={{ textAlign: "right", fontSize: 13, color: NAVY_DARK }}>
+          <div style={{ fontWeight: 700 }}>{doc.cliente}</div>
+          {doc.telefono && <div>{doc.telefono}</div>}
+          {doc.indirizzo && <div>{doc.indirizzo}</div>}
+        </div>
+      </div>
+
+      <SectionTitle>Lavoro svolto</SectionTitle>
+      <div style={{ fontSize: 14, color: NAVY_DARK, whiteSpace: "pre-wrap", marginBottom: 20 }}>{doc.lavoro}</div>
+
+      <SectionTitle>Dettaglio costi</SectionTitle>
+      <table style={{ width: "100%", fontSize: 14, borderCollapse: "collapse", marginBottom: 6 }}>
+        <tbody>
+          <tr>
+            <td style={{ padding: "7px 0", color: NAVY_DARK }}>Manodopera ({doc.ore} h × {fmt(doc.tariffaOraria)})</td>
+            <td style={{ padding: "7px 0", textAlign: "right", color: NAVY_DARK }}>{fmt(doc.subtotaleManodopera)}</td>
+          </tr>
+          {doc.materiali.map((m) => (
+            <tr key={m.id}>
+              <td style={{ padding: "5px 0", color: STEEL }}>Materiale — {m.desc || "—"}</td>
+              <td style={{ padding: "5px 0", textAlign: "right", color: STEEL }}>{fmt(m.costo)}</td>
+            </tr>
+          ))}
+          <tr>
+            <td style={{ padding: "9px 0", borderTop: "1px solid #e2ded0", fontWeight: 700, color: NAVY_DARK }}>Totale lordo</td>
+            <td style={{ padding: "9px 0", borderTop: "1px solid #e2ded0", textAlign: "right", fontWeight: 700, color: NAVY_DARK }}>{fmt(doc.totaleLordo)}</td>
+          </tr>
+          {doc.scontoValoreCalc > 0 && (
+            <tr>
+              <td style={{ padding: "5px 0", color: "#a33" }}>Sconto {doc.scontoTipo === "percentuale" ? `(${doc.scontoValore}%)` : ""}</td>
+              <td style={{ padding: "5px 0", textAlign: "right", color: "#a33" }}>− {fmt(doc.scontoValoreCalc)}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+
+      <div style={{ background: NAVY, color: "#fff", borderRadius: 8, padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", margin: "14px 0 22px" }}>
+        <span style={{ fontWeight: 700, fontSize: 14 }}>TOTALE PREVENTIVO</span>
+        <span style={{ fontWeight: 800, fontSize: 22, color: GOLD_LIGHT }}>{fmt(doc.totaleNetto)}</span>
+      </div>
+
+      {doc.note && (
+        <React.Fragment>
+          <SectionTitle>Note</SectionTitle>
+          <div style={{ fontSize: 13, color: STEEL, whiteSpace: "pre-wrap", marginBottom: 22 }}>{doc.note}</div>
+        </React.Fragment>
+      )}
+
+      <div style={{ fontSize: 11, color: STEEL, marginBottom: 30 }}>
+        Il presente preventivo ha validità 30 giorni dalla data di emissione, salvo diverso accordo scritto tra le parti.
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "space-between", gap: 30, marginTop: 40 }}>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <div style={{ borderTop: `1px solid ${NAVY_DARK}`, marginBottom: 6 }}></div>
+          <div style={{ fontSize: 12, color: STEEL }}>Firma azienda</div>
+        </div>
+        <div style={{ flex: 1, textAlign: "center" }}>
+          <div style={{ borderTop: `1px solid ${NAVY_DARK}`, marginBottom: 6 }}></div>
+          <div style={{ fontSize: 12, color: STEEL }}>Firma cliente per accettazione</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SectionTitle({ children }) {
+  return (
+    <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.08em", color: GOLD, textTransform: "uppercase", marginBottom: 8, borderBottom: "1px solid #eee", paddingBottom: 4 }}>
+      {children}
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js").catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
