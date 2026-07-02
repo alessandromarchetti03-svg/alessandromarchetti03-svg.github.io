@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galleria Lavori | Emme 2000 Impianti Elettrici</title>
+  <meta name="description" content="Galleria dei lavori eseguiti da Emme 2000 Impianti Elettrici nelle province di Bergamo e Brescia." />
+  <meta name="robots" content="index, follow" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-61H4CBKLR9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-61H4CBKLR9');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--navy:#0D1B2E;--navy-mid:#132238;--gold:#F5C518;--white:#FFFFFF;--grey:rgba(255,255,255,0.55);--gap:clamp(3rem,6vw,6rem);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;background:#0D1B2E !important;}
+    body{font-family:'Inter',sans-serif;background:#0D1B2E !important;color:#FFFFFF !important;line-height:1.6;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
+    .display{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;line-height:1.05;}
+    .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:#F5C518;}
+    .container{width:min(1200px,92vw);margin-inline:auto;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:#0D1B2E;border-bottom:2px solid #F5C518;}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 0;width:min(1100px,92vw);margin-inline:auto;}
+    .nav-logo img{height:38px;width:auto;}
+    .nav-back{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.65);transition:color 0.2s;}
+    .nav-back:hover{color:#F5C518;}
+    .nav-cta{background:#F5C518;color:#0D1B2E;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:0.45rem 1.1rem;}
+
+    /* HEADER */
+    .page-header{padding-top:calc(3rem + 4rem);padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,0.08);}
+    .page-header .eyebrow{margin-bottom:0.6rem;}
+    .page-header h1{font-size:clamp(2rem,5vw,3.5rem);color:#FFFFFF;}
+    .page-header p{color:rgba(255,255,255,0.55);font-size:0.95rem;margin-top:0.75rem;font-family:'IBM Plex Mono',monospace;letter-spacing:0.06em;}
+
+    /* GALLERY */
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:1px;
+      background:rgba(245,197,24,0.1);
+      border:1px solid rgba(245,197,24,0.1);
+      margin-top:3rem;
+    }
+    .gallery-item{position:relative;overflow:hidden;aspect-ratio:4/3;cursor:pointer;}
+    .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s,filter 0.4s;filter:brightness(0.85);}
+    .gallery-item:hover img{transform:scale(1.04);filter:brightness(1);}
+
+    /* LIGHTBOX */
+    .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:200;align-items:center;justify-content:center;}
+    .lightbox.open{display:flex;}
+    .lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;}
+    .lightbox-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:#FFFFFF;font-size:2.5rem;cursor:pointer;line-height:1;}
+    .lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.1);border:none;color:#FFFFFF;font-size:2rem;cursor:pointer;padding:1rem;line-height:1;transition:background 0.2s;}
+    .lightbox-nav:hover{background:rgba(255,255,255,0.2);}
+    .lightbox-prev{left:1rem;}
+    .lightbox-next{right:1rem;}
+
+    /* CTA */
+    .page-cta{text-align:center;padding-block:3rem;border-top:1px solid rgba(255,255,255,0.08);margin-top:3rem;}
+    .btn-primary{display:inline-block;background:#F5C518;color:#0D1B2E;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:0.9rem 1.8rem;transition:background 0.2s;}
+    .btn-primary:hover{background:#D4A800;}
+
+    /* FOOTER */
+    footer{background:#080F1A;border-top:2px solid #F5C518;padding-block:2rem;margin-top:0;}
+    .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;width:min(1100px,92vw);margin-inline:auto;}
+    .footer-logo img{height:28px;width:auto;}
+    .footer-copy{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.08em;color:rgba(255,255,255,0.25);text-align:right;line-height:1.8;}
+
+    /* WHATSAPP */
+    .whatsapp-btn{position:fixed;bottom:1.5rem;right:1.5rem;z-index:99;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,211,102,0.4);transition:transform 0.2s;}
+    .whatsapp-btn:hover{transform:scale(1.1);}
+    .whatsapp-btn svg{width:30px;height:30px;}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){.gallery-grid{grid-template-columns:repeat(3,1fr);}}
+    @media(max-width:600px){.gallery-grid{grid-template-columns:repeat(2,1fr);}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="logo.png" alt="Emme 2000" /></a>
+    <a href="index.html#lavori" class="nav-back">← Torna al sito</a>
+    <a href="index.html#contatti" class="nav-cta">Preventivo gratuito</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <p class="eyebrow">Portfolio</p>
+    <h1 class="display">Galleria lavori</h1>
+    <p>Impianti elettrici, allarmi, videosorveglianza, cancelli automatici, videocitofoni e illuminazione nelle province di Bergamo e Brescia.</p>
+  </div>
+
+  <div class="gallery-grid">
+      <div class="gallery-item" onclick="openLightbox('lavoro1.jpg')">
+        <img src="lavoro1.jpg" alt="Lavoro 1" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro2.jpg')">
+        <img src="lavoro2.jpg" alt="Lavoro 2" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro3.jpg')">
+        <img src="lavoro3.jpg" alt="Lavoro 3" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro4.jpg')">
+        <img src="lavoro4.jpg" alt="Lavoro 4" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro5.jpg')">
+        <img src="lavoro5.jpg" alt="Lavoro 5" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro6.jpg')">
+        <img src="lavoro6.jpg" alt="Lavoro 6" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro7.jpg')">
+        <img src="lavoro7.jpg" alt="Lavoro 7" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro8.jpg')">
+        <img src="lavoro8.jpg" alt="Lavoro 8" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro9.jpg')">
+        <img src="lavoro9.jpg" alt="Lavoro 9" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro10.jpg')">
+        <img src="lavoro10.jpg" alt="Lavoro 10" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro11.jpg')">
+        <img src="lavoro11.jpg" alt="Lavoro 11" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro12.jpg')">
+        <img src="lavoro12.jpg" alt="Lavoro 12" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro13.jpg')">
+        <img src="lavoro13.jpg" alt="Lavoro 13" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro14.jpg')">
+        <img src="lavoro14.jpg" alt="Lavoro 14" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro15.jpg')">
+        <img src="lavoro15.jpg" alt="Lavoro 15" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro16.jpg')">
+        <img src="lavoro16.jpg" alt="Lavoro 16" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro17.jpg')">
+        <img src="lavoro17.jpg" alt="Lavoro 17" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro18.jpg')">
+        <img src="lavoro18.jpg" alt="Lavoro 18" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro19.jpg')">
+        <img src="lavoro19.jpg" alt="Lavoro 19" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro20.jpg')">
+        <img src="lavoro20.jpg" alt="Lavoro 20" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro21.jpg')">
+        <img src="lavoro21.jpg" alt="Lavoro 21" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro22.jpg')">
+        <img src="lavoro22.jpg" alt="Lavoro 22" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro23.jpg')">
+        <img src="lavoro23.jpg" alt="Lavoro 23" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro24.jpg')">
+        <img src="lavoro24.jpg" alt="Lavoro 24" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro25.jpg')">
+        <img src="lavoro25.jpg" alt="Lavoro 25" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro26.jpg')">
+        <img src="lavoro26.jpg" alt="Lavoro 26" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro27.jpg')">
+        <img src="lavoro27.jpg" alt="Lavoro 27" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro28.jpg')">
+        <img src="lavoro28.jpg" alt="Lavoro 28" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro29.jpg')">
+        <img src="lavoro29.jpg" alt="Lavoro 29" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro30.jpg')">
+        <img src="lavoro30.jpg" alt="Lavoro 30" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro31.jpg')">
+        <img src="lavoro31.jpg" alt="Lavoro 31" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro32.jpg')">
+        <img src="lavoro32.jpg" alt="Lavoro 32" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro33.jpg')">
+        <img src="lavoro33.jpg" alt="Lavoro 33" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro34.jpg')">
+        <img src="lavoro34.jpg" alt="Lavoro 34" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro35.jpg')">
+        <img src="lavoro35.jpg" alt="Lavoro 35" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro36.jpg')">
+        <img src="lavoro36.jpg" alt="Lavoro 36" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro37.jpg')">
+        <img src="lavoro37.jpg" alt="Lavoro 37" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro38.jpg')">
+        <img src="lavoro38.jpg" alt="Lavoro 38" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro39.jpg')">
+        <img src="lavoro39.jpg" alt="Lavoro 39" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro40.jpg')">
+        <img src="lavoro40.jpg" alt="Lavoro 40" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro41.jpg')">
+        <img src="lavoro41.jpg" alt="Lavoro 41" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro42.jpg')">
+        <img src="lavoro42.jpg" alt="Lavoro 42" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro43.jpg')">
+        <img src="lavoro43.jpg" alt="Lavoro 43" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro44.jpg')">
+        <img src="lavoro44.jpg" alt="Lavoro 44" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro45.jpg')">
+        <img src="lavoro45.jpg" alt="Lavoro 45" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro46.jpg')">
+        <img src="lavoro46.jpg" alt="Lavoro 46" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro47.jpg')">
+        <img src="lavoro47.jpg" alt="Lavoro 47" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro48.jpg')">
+        <img src="lavoro48.jpg" alt="Lavoro 48" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro49.jpg')">
+        <img src="lavoro49.jpg" alt="Lavoro 49" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro50.jpg')">
+        <img src="lavoro50.jpg" alt="Lavoro 50" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro51.jpg')">
+        <img src="lavoro51.jpg" alt="Lavoro 51" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro52.jpg')">
+        <img src="lavoro52.jpg" alt="Lavoro 52" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro53.jpg')">
+        <img src="lavoro53.jpg" alt="Lavoro 53" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro54.jpg')">
+        <img src="lavoro54.jpg" alt="Lavoro 54" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro55.jpg')">
+        <img src="lavoro55.jpg" alt="Lavoro 55" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro56.jpg')">
+        <img src="lavoro56.jpg" alt="Lavoro 56" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro57.jpg')">
+        <img src="lavoro57.jpg" alt="Lavoro 57" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro58.jpg')">
+        <img src="lavoro58.jpg" alt="Lavoro 58" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro59.jpg')">
+        <img src="lavoro59.jpg" alt="Lavoro 59" loading="lazy" />
+      </div>
+      <div class="gallery-item" onclick="openLightbox('lavoro60.jpg')">
+        <img src="lavoro60.jpg" alt="Lavoro 60" loading="lazy" />
+      </div>
+  </div>
+
+  <div class="page-cta">
+    <p style="color:rgba(255,255,255,0.55);font-size:0.9rem;margin-bottom:1.5rem;">Vuoi un preventivo gratuito per il tuo impianto?</p>
+    <a href="index.html#contatti" class="btn-primary">Contattaci →</a>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <button class="lightbox-nav lightbox-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lightbox-img" src="" alt="Foto lavoro" />
+  <button class="lightbox-nav lightbox-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<a href="https://wa.me/393520334436?text=Salve%2C%20vorrei%20richiedere%20un%20preventivo." target="_blank" class="whatsapp-btn" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<footer>
+  <div class="footer-inner">
+    <img src="logo.png" alt="Emme 2000" style="height:28px;width:auto;" />
+    <div class="footer-copy">
+      <div>P.IVA: da inserire</div>
+      <div>© 2026 Emme 2000 · Tutti i diritti riservati</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  let currentIndex = 0;
+  const totalPhotos = 60;
+
+  function openLightbox(src) {
+    const num = parseInt(src.replace('lavoro','').replace('.jpg',''));
+    currentIndex = num;
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function changePhoto(dir) {
+    currentIndex += dir;
+    if (currentIndex < 1) currentIndex = totalPhotos;
+    if (currentIndex > totalPhotos) currentIndex = 1;
+    document.getElementById('lightbox-img').src = 'lavoro' + currentIndex + '.jpg';
+  }
+
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') changePhoto(1);
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+  });
+</script>
+</body>
+</html>
