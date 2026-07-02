@@ -1189,6 +1189,85 @@
   </div>
 </section>
 
+<!-- FAQ PREVIEW -->
+<section style="background: var(--navy); padding-block: var(--gap);">
+  <div class="container">
+    <div class="section-header">
+      <p class="eyebrow">Domande frequenti</p>
+      <h2 class="display">FAQ</h2>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:0;">
+
+      <div class="faq-item-home">
+        <button class="faq-q-home" onclick="toggleHome(this)">
+          <span>Effettuate sopralluoghi e preventivi gratuiti?</span>
+          <span class="faq-ico-home">+</span>
+        </button>
+        <div class="faq-a-home">
+          <div class="faq-a-inner-home">Sì. Offriamo sopralluoghi e preventivi gratuiti per valutare le esigenze del cliente e proporre la soluzione più adatta senza alcun impegno.</div>
+        </div>
+      </div>
+
+      <div class="faq-item-home">
+        <button class="faq-q-home" onclick="toggleHome(this)">
+          <span>È possibile controllare l'allarme dal telefono?</span>
+          <span class="faq-ico-home">+</span>
+        </button>
+        <div class="faq-a-home">
+          <div class="faq-a-inner-home">Sì. I moderni impianti permettono di inserire, disinserire e monitorare l'allarme tramite smartphone, ricevendo notifiche in tempo reale.</div>
+        </div>
+      </div>
+
+      <div class="faq-item-home">
+        <button class="faq-q-home" onclick="toggleHome(this)">
+          <span>Le telecamere funzionano anche di notte?</span>
+          <span class="faq-ico-home">+</span>
+        </button>
+        <div class="faq-a-home">
+          <div class="faq-a-inner-home">Sì. Le telecamere moderne sono dotate di visione notturna a infrarossi o tecnologia a colori in condizioni di scarsa illuminazione, garantendo immagini nitide anche al buio.</div>
+        </div>
+      </div>
+
+      <div class="faq-item-home">
+        <button class="faq-q-home" onclick="toggleHome(this)">
+          <span>Quando è necessario rifare un impianto elettrico?</span>
+          <span class="faq-ico-home">+</span>
+        </button>
+        <div class="faq-a-home">
+          <div class="faq-a-inner-home">Se l'impianto è molto datato, non è conforme alle normative, presenta guasti frequenti o non supporta i consumi moderni, è consigliabile sostituirlo.</div>
+        </div>
+      </div>
+
+      <div class="faq-item-home">
+        <button class="faq-q-home" onclick="toggleHome(this)">
+          <span>Perché il cancello automatico si apre lentamente?</span>
+          <span class="faq-ico-home">+</span>
+        </button>
+        <div class="faq-a-home">
+          <div class="faq-a-inner-home">Le cause possono essere diverse: usura del motore, scarsa manutenzione, problemi meccanici, finecorsa da regolare o alimentazione elettrica non corretta.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="faq.html" class="btn-primary">Tutte le FAQ →</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-item-home{border-bottom:1px solid rgba(255,255,255,0.07);}
+  .faq-q-home{width:100%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.2rem 0;text-align:left;color:#FFFFFF;}
+  .faq-q-home span:first-child{font-family:'Inter',sans-serif;font-size:0.97rem;font-weight:500;line-height:1.5;flex:1;}
+  .faq-ico-home{flex-shrink:0;width:26px;height:26px;border:1px solid rgba(245,197,24,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#F5C518;line-height:1;transition:background 0.2s,transform 0.3s;}
+  .faq-item-home.open .faq-ico-home{background:#F5C518;color:#0D1B2E;transform:rotate(45deg);}
+  .faq-a-home{max-height:0;overflow:hidden;transition:max-height 0.35s ease;}
+  .faq-a-inner-home{padding:0 0 1.2rem;font-size:0.92rem;color:rgba(255,255,255,0.65);line-height:1.8;}
+  .faq-item-home.open .faq-a-home{max-height:200px;}
+</style>
+
 <!-- SOCIAL -->
 <section style="background: var(--navy-mid); padding-block: 3rem;">
   <div class="container" style="text-align: center;">
@@ -1242,6 +1321,12 @@
 <script>
   function toggleMenu() {
     document.getElementById('mobileMenu').classList.toggle('open');
+  }
+  function toggleHome(btn) {
+    const item = btn.closest('.faq-item-home');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item-home.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
   }
   function openLightbox(src) {
     document.getElementById('lightbox-img').src = src;
