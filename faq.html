@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ — Domande frequenti | Emme 2000 Impianti Elettrici Bergamo Brescia</title>
+  <meta name="description" content="Risposte alle domande più frequenti su impianti elettrici, allarmi, videosorveglianza, cancelli automatici e videocitofoni. Emme 2000, Bergamo e Brescia." />
+  <meta name="robots" content="index, follow" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-61H4CBKLR9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-61H4CBKLR9');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--navy:#0D1B2E;--navy-mid:#132238;--gold:#F5C518;--white:#FFFFFF;--grey:rgba(255,255,255,0.55);--gap:clamp(3rem,6vw,6rem);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;background:#0D1B2E !important;}
+    body{font-family:'Inter',sans-serif;background:#0D1B2E !important;color:#FFFFFF !important;line-height:1.6;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
+    .display{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;line-height:1.05;}
+    .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:#F5C518;}
+    .container{width:min(860px,92vw);margin-inline:auto;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:#0D1B2E;border-bottom:2px solid #F5C518;}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 0;width:min(1100px,92vw);margin-inline:auto;}
+    .nav-logo{display:flex;flex-direction:column;line-height:1.1;}
+    .nav-logo .t1{font-family:'Oswald',sans-serif;font-weight:700;font-size:1.4rem;letter-spacing:0.06em;text-transform:uppercase;color:#FFFFFF;}
+    .nav-logo .t1 span{color:#F5C518;}
+    .nav-logo .t2{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);}
+    .nav-back{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.65);transition:color 0.2s;}
+    .nav-back:hover{color:#F5C518;}
+    .nav-cta{background:#F5C518;color:#0D1B2E;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:0.45rem 1.1rem;}
+
+    /* HEADER */
+    .page-header{padding-top:calc(3rem + 4rem);padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:var(--gap);}
+    .page-header .eyebrow{margin-bottom:0.6rem;}
+    .page-header h1{font-size:clamp(2rem,5vw,3.5rem);color:#FFFFFF !important;}
+    .page-header p{color:rgba(255,255,255,0.5);font-size:0.95rem;margin-top:0.75rem;max-width:600px;line-height:1.7;}
+
+    /* CATEGORIES */
+    .faq-category{margin-bottom:3rem;}
+    .faq-category-title{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#F5C518;font-family:'IBM Plex Mono',monospace;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(245,197,24,0.2);}
+
+    /* FAQ ACCORDION */
+    .faq-item{border-bottom:1px solid rgba(255,255,255,0.07);}
+    .faq-question{width:100%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.2rem 0;text-align:left;}
+    .faq-question-text{font-family:'Inter',sans-serif;font-size:0.97rem;font-weight:500;color:#FFFFFF !important;line-height:1.5;flex:1;}
+    .faq-icon{flex-shrink:0;width:22px;height:22px;border:1px solid rgba(245,197,24,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background 0.2s,border-color 0.2s;}
+    .faq-icon svg{width:10px;height:10px;color:#F5C518;transition:transform 0.3s;}
+    .faq-item.open .faq-icon{background:#F5C518;border-color:#F5C518;}
+    .faq-item.open .faq-icon svg{color:#0D1B2E;transform:rotate(45deg);}
+    .faq-answer{max-height:0;overflow:hidden;transition:max-height 0.35s ease;}
+    .faq-answer-inner{padding:0 0 1.2rem;font-size:0.92rem;color:#CCCCCC !important;line-height:1.8;}
+    .faq-item.open .faq-answer{max-height:300px;}
+
+    /* CTA */
+    .faq-cta{background:#132238;border:1px solid rgba(245,197,24,0.2);padding:2.5rem;text-align:center;margin:var(--gap) 0;}
+    .faq-cta h2{font-family:'Oswald',sans-serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;text-transform:uppercase;letter-spacing:0.02em;color:#FFFFFF;margin-bottom:0.75rem;}
+    .faq-cta p{color:rgba(255,255,255,0.55);font-size:0.9rem;margin-bottom:1.5rem;}
+    .btn-primary{display:inline-block;background:#F5C518;color:#0D1B2E;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:0.9rem 2rem;transition:background 0.2s;}
+    .btn-primary:hover{background:#D4A800;}
+
+    /* FOOTER */
+    footer{background:#080F1A;border-top:2px solid #F5C518;padding-block:2rem;}
+    .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;width:min(1100px,92vw);margin-inline:auto;}
+    .footer-copy{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.08em;color:rgba(255,255,255,0.25);text-align:right;line-height:1.8;}
+
+    /* WHATSAPP */
+    .whatsapp-btn{position:fixed;bottom:1.5rem;right:1.5rem;z-index:99;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,211,102,0.4);transition:transform 0.2s;}
+    .whatsapp-btn:hover{transform:scale(1.1);}
+    .whatsapp-btn svg{width:30px;height:30px;}
+
+    @media(max-width:768px){
+      .footer-inner{flex-direction:column;text-align:center;}
+      .footer-copy{text-align:center;}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="t1">Emme<span>2000</span></span>
+      <span class="t2">Impianti Elettrici</span>
+    </a>
+    <a href="index.html" class="nav-back">← Torna al sito</a>
+    <a href="contatti.html" class="nav-cta">Preventivo gratuito</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <p class="eyebrow">Domande frequenti</p>
+    <h1 class="display">FAQ</h1>
+    <p>Risposte alle domande più comuni su impianti elettrici, sistemi d'allarme, videosorveglianza, cancelli automatici e videocitofoni nelle province di Bergamo e Brescia.</p>
+  </div>
+
+  <!-- SISTEMI D'ALLARME -->
+  <div class="faq-category">
+    <p class="faq-category-title">Sistemi d'allarme</p>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Quanto costa installare un impianto d'allarme?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Il costo dipende dalle dimensioni dell'immobile, dal numero di sensori e dalle funzionalità richieste. Dopo un sopralluogo è possibile ricevere un preventivo personalizzato senza impegno.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Qual è la differenza tra sensori volumetrici e perimetrali?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">I sensori volumetrici rilevano il movimento all'interno degli ambienti, mentre quelli perimetrali proteggono porte, finestre e accessi prima che l'intruso entri nell'abitazione.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">È possibile controllare l'allarme dal telefono?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Sì. I moderni impianti permettono di inserire, disinserire e monitorare l'allarme tramite smartphone, ricevendo notifiche in tempo reale.</div></div>
+    </div>
+  </div>
+
+  <!-- VIDEOSORVEGLIANZA -->
+  <div class="faq-category">
+    <p class="faq-category-title">Videosorveglianza</p>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Le telecamere di videosorveglianza funzionano anche di notte?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Sì. Le telecamere moderne sono dotate di visione notturna a infrarossi o tecnologia a colori in condizioni di scarsa illuminazione, garantendo immagini nitide anche al buio.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Quanto tempo vengono conservate le registrazioni delle telecamere?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Dipende dalla capacità dell'hard disk, dal numero di telecamere e dalla qualità di registrazione. Generalmente le immagini vengono conservate da una a quattro settimane.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Posso vedere le telecamere quando sono fuori casa?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Sì. Collegando il sistema a Internet è possibile visualizzare le immagini in diretta e le registrazioni tramite smartphone, tablet o computer.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Serve Internet per far funzionare un impianto di videosorveglianza?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">No. Le telecamere registrano anche senza connessione Internet. La connessione è necessaria solo per l'accesso remoto tramite app.</div></div>
+    </div>
+  </div>
+
+  <!-- IMPIANTI ELETTRICI -->
+  <div class="faq-category">
+    <p class="faq-category-title">Impianti elettrici</p>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Quando è necessario rifare un impianto elettrico?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Se l'impianto è molto datato, non è conforme alle normative, presenta guasti frequenti o non supporta i consumi moderni, è consigliabile sostituirlo.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Quanto dura un impianto elettrico?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Un impianto ben realizzato può durare molti anni, ma è consigliabile effettuare controlli periodici per verificare sicurezza ed efficienza.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Installate anche prese e punti luce aggiuntivi?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Sì. È possibile aggiungere nuove prese elettriche, punti luce, linee dedicate e modificare impianti esistenti durante ristrutturazioni o ampliamenti.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Installate impianti elettrici anche per aziende e negozi?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Sì. Realizziamo impianti elettrici civili e commerciali, occupandoci anche di illuminazione, quadri elettrici, videosorveglianza e sistemi di sicurezza.</div></div>
+    </div>
+  </div>
+
+  <!-- DOMOTICA E ILLUMINAZIONE -->
+  <div class="faq-category">
+    <p class="faq-category-title">Domotica e illuminazione</p>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">È possibile installare un impianto domotico in una casa già esistente?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Sì. In molti casi è possibile integrare funzioni domotiche anche senza rifare completamente l'impianto elettrico.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Qual è l'illuminazione migliore per un'abitazione?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Dipende dagli ambienti e dall'utilizzo. Le moderne lampade LED offrono bassi consumi, lunga durata e un'illuminazione personalizzabile.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Conviene sostituire tutte le lampadine con il LED?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Sì. Le lampade LED consumano fino all'80% in meno rispetto alle lampadine tradizionali e hanno una durata molto superiore.</div></div>
+    </div>
+  </div>
+
+  <!-- VIDEOCITOFONI -->
+  <div class="faq-category">
+    <p class="faq-category-title">Videocitofoni</p>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Posso sostituire un vecchio citofono con un videocitofono?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Sì. Nella maggior parte dei casi è possibile aggiornare il vecchio impianto installando un moderno videocitofono con telecamera e funzioni smart.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">È possibile rispondere al videocitofono dallo smartphone?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Sì. Alcuni modelli consentono di vedere chi suona, parlare con il visitatore e aprire il cancello anche quando non si è in casa.</div></div>
+    </div>
+  </div>
+
+  <!-- CANCELLI AUTOMATICI -->
+  <div class="faq-category">
+    <p class="faq-category-title">Cancelli automatici</p>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Perché il cancello automatico si apre lentamente?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Le cause possono essere diverse: usura del motore, scarsa manutenzione, problemi meccanici, finecorsa da regolare o alimentazione elettrica non corretta.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Ogni quanto bisogna fare manutenzione al cancello automatico?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">È consigliabile effettuare controlli periodici almeno una volta all'anno per verificare sicurezza, lubrificazione e corretto funzionamento.</div></div>
+    </div>
+  </div>
+
+  <!-- GENERALE -->
+  <div class="faq-category">
+    <p class="faq-category-title">Generale</p>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Quanto tempo richiede l'installazione di un impianto?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Dipende dalla tipologia dell'intervento. Piccoli lavori possono essere completati in poche ore, mentre un impianto completo richiede generalmente alcuni giorni.</div></div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggle(this)">
+        <span class="faq-question-text">Effettuate sopralluoghi e preventivi gratuiti?</span>
+        <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></span>
+      </button>
+      <div class="faq-answer"><div class="faq-answer-inner">Sì. Offriamo sopralluoghi e preventivi gratuiti per valutare le esigenze del cliente e proporre la soluzione più adatta senza alcun impegno.</div></div>
+    </div>
+  </div>
+
+  <div class="faq-cta">
+    <h2>Non hai trovato la risposta che cercavi?</h2>
+    <p>Contattaci direttamente — rispondiamo entro 24 ore e offriamo consulenze gratuite e senza impegno nelle province di Bergamo e Brescia.</p>
+    <a href="contatti.html" class="btn-primary">Contattaci →</a>
+  </div>
+</div>
+
+<a href="https://wa.me/393520334436?text=Salve%2C%20vorrei%20richiedere%20un%20preventivo." target="_blank" class="whatsapp-btn" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" style="display:flex;flex-direction:column;line-height:1.1;">
+      <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.06em;text-transform:uppercase;color:#FFFFFF;">Emme<span style="color:#F5C518;">2000</span></span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);">Impianti Elettrici</span>
+    </a>
+    <div class="footer-copy">
+      <div>P.IVA: da inserire</div>
+      <div>© 2026 Emme 2000 · Tutti i diritti riservati</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function toggle(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+</script>
+</body>
+</html>
