@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Articoli | Emme 2000 Impianti Elettrici</title>
+  <meta name="description" content="Articoli e approfondimenti su impianti elettrici, sistemi d'allarme, videosorveglianza, cancelli automatici e videocitofoni. Emme 2000, Bergamo e Brescia." />
+  <meta name="robots" content="index, follow" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-61H4CBKLR9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-61H4CBKLR9');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--navy:#0D1B2E;--navy-mid:#132238;--gold:#F5C518;--white:#FFFFFF;--grey:rgba(255,255,255,0.55);--gap:clamp(3rem,6vw,6rem);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;background:#0D1B2E !important;}
+    body{font-family:'Inter',sans-serif;background:#0D1B2E !important;color:#FFFFFF !important;line-height:1.6;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
+    .display{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;line-height:1.05;}
+    .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:#F5C518;}
+    .container{width:min(1200px,92vw);margin-inline:auto;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:#0D1B2E;border-bottom:2px solid #F5C518;}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 0;width:min(1100px,92vw);margin-inline:auto;}
+    .nav-logo img{height:38px;width:auto;}
+    .nav-back{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.65);transition:color 0.2s;}
+    .nav-back:hover{color:#F5C518;}
+    .nav-cta{background:#F5C518;color:#0D1B2E;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:0.45rem 1.1rem;}
+
+    /* HEADER */
+    .page-header{padding-top:calc(3rem + 4rem);padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:3rem;}
+    .page-header .eyebrow{margin-bottom:0.6rem;}
+    .page-header h1{font-size:clamp(2rem,5vw,3.5rem);color:#FFFFFF !important;}
+    .page-header p{color:rgba(255,255,255,0.5);font-size:0.9rem;margin-top:0.75rem;max-width:600px;}
+
+    /* ARTICLES GRID */
+    .articles-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:1px;
+      background:rgba(245,197,24,0.1);
+      border:1px solid rgba(245,197,24,0.1);
+      margin-bottom:3rem;
+    }
+    .article-card{background:#132238;padding:0;display:flex;flex-direction:column;transition:background 0.2s;}
+    .article-card:hover{background:#1C2F47;}
+    .article-card img{width:100%;height:160px;object-fit:cover;display:block;filter:brightness(0.85);transition:filter 0.3s;}
+    .article-card:hover img{filter:brightness(1);}
+    .article-card-body{padding:1.5rem;display:flex;flex-direction:column;flex:1;gap:0.6rem;}
+    .article-card-cat{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:#F5C518;}
+    .article-card-title{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;color:#FFFFFF !important;line-height:1.3;}
+    .article-card-excerpt{font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.65;flex:1;}
+    .article-card-link{display:inline-block;margin-top:0.75rem;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:#F5C518;border-bottom:1px solid rgba(245,197,24,0.3);padding-bottom:0.2rem;width:fit-content;}
+
+    /* PLACEHOLDER */
+    .article-placeholder{background:#0D1B2E;border:1px dashed rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;min-height:280px;}
+    .article-placeholder span{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.15);}
+
+    /* CTA */
+    .page-cta{text-align:center;padding-block:3rem;border-top:1px solid rgba(255,255,255,0.08);}
+    .btn-primary{display:inline-block;background:#F5C518;color:#0D1B2E;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:0.9rem 1.8rem;transition:background 0.2s;}
+    .btn-primary:hover{background:#D4A800;}
+
+    /* FOOTER */
+    footer{background:#080F1A;border-top:2px solid #F5C518;padding-block:2rem;}
+    .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;width:min(1100px,92vw);margin-inline:auto;}
+    .footer-logo img{height:28px;width:auto;}
+    .footer-copy{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.08em;color:rgba(255,255,255,0.25);text-align:right;line-height:1.8;}
+
+    /* WHATSAPP */
+    .whatsapp-btn{position:fixed;bottom:1.5rem;right:1.5rem;z-index:99;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,211,102,0.4);transition:transform 0.2s;}
+    .whatsapp-btn:hover{transform:scale(1.1);}
+    .whatsapp-btn svg{width:30px;height:30px;}
+
+    /* RESPONSIVE */
+    @media(max-width:1000px){.articles-grid{grid-template-columns:repeat(3,1fr);}}
+    @media(max-width:700px){.articles-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:480px){.articles-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html"><img src="logo.png" alt="Emme 2000" /></a>
+    <a href="index.html" class="nav-back">← Torna al sito</a>
+    <a href="index.html#contatti" class="nav-cta">Preventivo gratuito</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <p class="eyebrow">Approfondimenti</p>
+    <h1 class="display">Articoli</h1>
+    <p>Guide pratiche e approfondimenti su impianti elettrici, sistemi di sicurezza, automazioni e illuminazione nelle province di Bergamo e Brescia.</p>
+  </div>
+
+  <div class="articles-grid">
+
+    <!-- ARTICOLO 1 — reale -->
+    <div class="article-card">
+      <img src="servizio-allarme.jpg" alt="Impianto d'allarme" />
+      <div class="article-card-body">
+        <p class="article-card-cat">Sistemi d'allarme</p>
+        <h2 class="article-card-title">Come scegliere un impianto d'allarme per proteggere la tua casa</h2>
+        <p class="article-card-excerpt">La sicurezza della propria abitazione è una delle priorità di ogni famiglia. Scopri come scegliere il sistema più adatto.</p>
+        <a href="articolo-allarme.html" class="article-card-link">Continua a leggere →</a>
+      </div>
+    </div>
+
+    <!-- ARTICOLO 2 — reale -->
+    <div class="article-card">
+      <img src="servizio-videosorveglianza.jpg" alt="Videosorveglianza" />
+      <div class="article-card-body">
+        <p class="article-card-cat">Videosorveglianza</p>
+        <h2 class="article-card-title">Videosorveglianza: perché installare telecamere oggi è una scelta intelligente</h2>
+        <p class="article-card-excerpt">I sistemi di videosorveglianza sono diventati sempre più evoluti. Scopri perché rappresentano uno dei migliori strumenti di protezione.</p>
+        <a href="articolo-videosorveglianza.html" class="article-card-link">Continua a leggere →</a>
+      </div>
+    </div>
+
+    <!-- ARTICOLO 3 — reale -->
+    <div class="article-card">
+      <img src="servizio-cancelli.jpg" alt="Cancelli automatici" />
+      <div class="article-card-body">
+        <p class="article-card-cat">Cancelli automatici</p>
+        <h2 class="article-card-title">Cancelli automatici: comfort, sicurezza e valore per la tua abitazione</h2>
+        <p class="article-card-excerpt">Automatizzare un cancello significa migliorare la qualità della vita quotidiana e aumentare la sicurezza della proprietà.</p>
+        <a href="articolo-cancelli.html" class="article-card-link">Continua a leggere →</a>
+      </div>
+    </div>
+
+    <!-- ARTICOLO 4 — reale -->
+    <div class="article-card">
+      <img src="servizio-elettrico.jpg" alt="Impianti elettrici" />
+      <div class="article-card-body">
+        <p class="article-card-cat">Impianti elettrici</p>
+        <h2 class="article-card-title">Quando rifare un impianto elettrico? I segnali da non sottovalutare</h2>
+        <p class="article-card-excerpt">L'impianto elettrico è il cuore di ogni abitazione. Scopri quando è il momento di farlo controllare o rinnovare.</p>
+        <a href="articolo-elettrico.html" class="article-card-link">Continua a leggere →</a>
+      </div>
+    </div>
+
+    <!-- ARTICOLI 5-20 — segnaposto -->
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+    <div class="article-placeholder"><span>Prossimamente</span></div>
+
+  </div>
+
+  <div class="page-cta">
+    <p style="color:rgba(255,255,255,0.5);font-size:0.9rem;margin-bottom:1.5rem;">Hai bisogno di un preventivo gratuito?</p>
+    <a href="index.html#contatti" class="btn-primary">Contattaci →</a>
+  </div>
+</div>
+
+<a href="https://wa.me/393520334436?text=Salve%2C%20vorrei%20richiedere%20un%20preventivo." target="_blank" class="whatsapp-btn" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<footer>
+  <div class="footer-inner">
+    <img src="logo.png" alt="Emme 2000" style="height:28px;width:auto;" />
+    <div class="footer-copy">
+      <div>P.IVA: da inserire</div>
+      <div>© 2026 Emme 2000 · Tutti i diritti riservati</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
