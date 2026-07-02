@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Videocitofoni Bergamo e Brescia | Emme 2000 Impianti Elettrici Bergamo Brescia</title>
+  <meta name="description" content="Installazione videocitofoni IP e tradizionali a Bergamo e Brescia. Apertura da smartphone, visione notturna, integrazione domotica. Preventivo gratuito." />
+  <meta name="robots" content="index, follow" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-61H4CBKLR9"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-61H4CBKLR9');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--navy:#0D1B2E;--navy-mid:#132238;--gold:#F5C518;--white:#FFFFFF;--grey:rgba(255,255,255,0.55);--gap:clamp(3rem,6vw,6rem);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;background:#0D1B2E !important;}
+    body{font-family:'Inter',sans-serif;background:#0D1B2E !important;color:#FFFFFF !important;line-height:1.6;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
+    .display{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.02em;line-height:1.05;}
+    .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:#F5C518;}
+    .container{width:min(1100px,92vw);margin-inline:auto;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:#0D1B2E;border-bottom:2px solid #F5C518;}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 0;width:min(1100px,92vw);margin-inline:auto;}
+    .nav-logo{display:flex;flex-direction:column;line-height:1.1;}
+    .nav-logo .t1{font-family:'Oswald',sans-serif;font-weight:700;font-size:1.4rem;letter-spacing:0.06em;text-transform:uppercase;color:#FFFFFF;}
+    .nav-logo .t1 span{color:#F5C518;}
+    .nav-logo .t2{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.5);}
+    .nav-back{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.65);transition:color 0.2s;}
+    .nav-back:hover{color:#F5C518;}
+    .nav-cta{background:#F5C518;color:#0D1B2E;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:0.45rem 1.1rem;}
+    /* HERO */
+    .hero{position:relative;height:420px;overflow:hidden;margin-top:68px;}
+    .hero img{width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.35);display:block;}
+    .hero-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 5vw;}
+    .hero-overlay .eyebrow{margin-bottom:0.8rem;}
+    .hero-overlay h1{font-size:clamp(2rem,5vw,4rem);color:#FFFFFF;max-width:700px;}
+    .hero-overlay p{color:rgba(255,255,255,0.65);font-size:1rem;margin-top:1rem;max-width:560px;line-height:1.7;}
+    /* CONTENT */
+    .content{padding-block:var(--gap);}
+    .content-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+    .content-text h2{font-family:'Oswald',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;text-transform:uppercase;letter-spacing:0.02em;color:#FFFFFF;margin-bottom:1.2rem;}
+    .content-text p{color:#CCCCCC;font-size:0.95rem;line-height:1.8;margin-bottom:1rem;}
+    .content-text ul{list-style:none;margin:1.5rem 0;display:flex;flex-direction:column;gap:0.7rem;}
+    .content-text ul li{display:flex;align-items:flex-start;gap:0.75rem;font-size:0.93rem;color:#BBBBBB;line-height:1.65;}
+    .content-text ul li::before{content:'◆';font-size:0.45rem;color:#F5C518;margin-top:0.55rem;flex-shrink:0;}
+    /* GALLERY */
+    .gallery{padding-block:var(--gap);background:#132238;}
+    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.1);margin-top:2rem;}
+    .gal-item{aspect-ratio:4/3;overflow:hidden;}
+    .gal-item img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.85);transition:transform 0.4s,filter 0.4s;}
+    .gal-item:hover img{transform:scale(1.04);filter:brightness(1);}
+    /* CTA */
+    .cta-section{padding-block:var(--gap);}
+    .cta-box{background:#132238;border:1px solid rgba(245,197,24,0.2);padding:3rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+    .cta-box h2{font-family:'Oswald',sans-serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;text-transform:uppercase;letter-spacing:0.02em;color:#FFFFFF;margin-bottom:1rem;}
+    .cta-box p{color:#CCCCCC;font-size:0.9rem;line-height:1.75;}
+    .cta-links{display:flex;flex-direction:column;gap:0.8rem;}
+    .cta-link{display:flex;align-items:center;gap:1rem;padding:0.9rem 1.2rem;border:1px solid rgba(245,197,24,0.2);transition:border-color 0.2s,background 0.2s;}
+    .cta-link:hover{border-color:#F5C518;background:rgba(245,197,24,0.05);}
+    .cta-link svg{width:18px;height:18px;color:#F5C518;flex-shrink:0;}
+    .cta-link-text strong{display:block;font-size:0.9rem;color:#FFFFFF;}
+    .cta-link-text span{font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.06em;color:rgba(255,255,255,0.45);}
+    .btn-primary{display:inline-block;background:#F5C518;color:#0D1B2E;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:0.9rem 1.8rem;margin-top:1.5rem;transition:background 0.2s;}
+    .btn-primary:hover{background:#D4A800;}
+    /* ARTICLES */
+    .articles-section{padding-block:var(--gap);background:#132238;}
+    .articles-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.1);margin-top:2rem;}
+    .art-card{background:#0D1B2E;display:flex;flex-direction:column;transition:background 0.2s;}
+    .art-card:hover{background:#1C2F47;}
+    .art-card img{width:100%;height:160px;object-fit:cover;display:block;filter:brightness(0.85);}
+    .art-body{padding:1.5rem;display:flex;flex-direction:column;flex:1;gap:0.6rem;}
+    .art-cat{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:#F5C518;}
+    .art-title{font-family:'Oswald',sans-serif;font-size:1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.03em;color:#FFFFFF !important;line-height:1.3;}
+    .art-excerpt{font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.65;flex:1;}
+    .art-link{display:inline-block;margin-top:0.75rem;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:#F5C518;border-bottom:1px solid rgba(245,197,24,0.3);padding-bottom:0.2rem;width:fit-content;}
+    /* FOOTER */
+    footer{background:#080F1A;border-top:2px solid #F5C518;padding-block:2rem;}
+    .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;width:min(1100px,92vw);margin-inline:auto;}
+    .footer-copy{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;letter-spacing:0.08em;color:rgba(255,255,255,0.25);text-align:right;line-height:1.8;}
+    .whatsapp-btn{position:fixed;bottom:1.5rem;right:1.5rem;z-index:99;width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(37,211,102,0.4);transition:transform 0.2s;}
+    .whatsapp-btn:hover{transform:scale(1.1);}
+    .whatsapp-btn svg{width:30px;height:30px;}
+    @media(max-width:768px){
+      .content-grid{grid-template-columns:1fr;gap:2rem;}
+      .gallery-grid{grid-template-columns:1fr 1fr;}
+      .cta-box{grid-template-columns:1fr;gap:2rem;}
+      .articles-grid{grid-template-columns:1fr;}
+      .hero{height:300px;}
+      .footer-inner{flex-direction:column;text-align:center;}
+      .footer-copy{text-align:center;}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="t1">Emme<span>2000</span></span>
+      <span class="t2">Impianti Elettrici</span>
+    </a>
+    <a href="index.html#servizi" class="nav-back">← Tutti i servizi</a>
+    <a href="contatti.html" class="nav-cta">Preventivo gratuito</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <img src="servizio-videocitofono.jpg" alt="Videocitofoni Bergamo e Brescia" />
+  <div class="hero-overlay">
+    <p class="eyebrow">Videocitofoni</p>
+    <h1 class="display">Videocitofoni Bergamo e Brescia</h1>
+    <p>Installazione professionale nelle province di Bergamo e Brescia. Preventivo gratuito e senza impegno.</p>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<section class="content">
+  <div class="container content-grid">
+    <div class="content-text">
+      <h2>Installazione videocitofoni a Bergamo e Brescia</h2>
+      <p>Emme 2000 Impianti Elettrici installa sistemi videocitofonici monofamiliari e condominiali nelle province di Bergamo e Brescia, con sede operativa a Villongo.</p>
+      <p>Dalla sostituzione di vecchi citofoni ai moderni sistemi IP controllabili da smartphone, ogni intervento è realizzato con cura e materiali certificati.</p>
+      <h2>Cosa installiamo</h2>
+      <ul>
+        <li>Videocitofoni tradizionali monofamiliari.</li>
+        <li>Sistemi IP con controllo da smartphone.</li>
+        <li>Videocitofoni condominiali multiutente.</li>
+        <li>Telecamera HD con visione notturna.</li>
+        <li>Apertura cancello e portone da remoto.</li>
+        <li>Integrazione con impianti domotici e d'allarme.</li>
+        <li>Sostituzione e messa a norma impianti esistenti.</li>
+      </ul>
+      <h2>Perché scegliere un videocitofono moderno</h2>
+      <p>Un videocitofono IP permette di vedere e rispondere a chi suona anche quando non si è in casa, aprire il cancello da remoto e ricevere notifiche sul telefono. Una soluzione ideale per ville, appartamenti e piccoli condomini.</p>
+      <p>Operiamo a Villongo, Sarnico, Credaro, Castelli Calepio e in tutta la provincia di Bergamo e Brescia.</p>
+    </div>
+    <div>
+      <div class="cta-links">
+        <a href="tel:+393520334436" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012.18 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.15a16 16 0 006.94 6.94l1.51-1.51a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          <div class="cta-link-text"><strong>352 033 4436</strong><span>Chiamata o WhatsApp</span></div>
+        </a>
+        <a href="https://wa.me/393520334436?text=Salve%2C%20vorrei%20richiedere%20un%20preventivo." target="_blank" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+          <div class="cta-link-text"><strong>WhatsApp</strong><span>Scrivi un messaggio</span></div>
+        </a>
+        <a href="mailto:info@emme2000impiantielettrici.it" class="cta-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <div class="cta-link-text"><strong>info@emme2000impiantielettrici.it</strong><span>Email</span></div>
+        </a>
+        <div class="cta-link" style="cursor:default;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div class="cta-link-text"><strong>Lun – Ven: 8:00 – 18:00</strong><span>Sab su appuntamento</span></div>
+        </div>
+      </div>
+      <a href="contatti.html" class="btn-primary">Richiedi un preventivo gratuito →</a>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery">
+  <div class="container">
+    <p class="eyebrow">Galleria</p>
+    <h2 class="display" style="font-size:clamp(1.5rem,3vw,2rem);margin-top:0.5rem;color:#FFFFFF;">Lavori eseguiti</h2>
+    <div class="gallery-grid">
+        <div class="gal-item"><img src="servizio-videocitofono.jpg" alt="Videocitofoni Bergamo e Brescia" loading="lazy" /></div>
+        <div class="gal-item"><img src="lavoro11.jpg" alt="Videocitofoni Bergamo e Brescia" loading="lazy" /></div>
+        <div class="gal-item"><img src="lavoro12.jpg" alt="Videocitofoni Bergamo e Brescia" loading="lazy" /></div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLES -->
+<section class="articles-section">
+  <div class="container">
+    <p class="eyebrow">Approfondimenti</p>
+    <h2 class="display" style="font-size:clamp(1.5rem,3vw,2rem);margin-top:0.5rem;color:#FFFFFF;">Articoli correlati</h2>
+    <div class="articles-grid">
+      <div class="art-card">
+        <img src="servizio-videocitofono.jpg" alt="Come scegliere il miglior videocitofono per la tua casa" />
+        <div class="art-body">
+          <p class="art-cat">Videocitofoni</p>
+          <h3 class="art-title">Come scegliere il miglior videocitofono per la tua casa</h3>
+          <p class="art-excerpt">Sistema tradizionale o IP? Guida completa per scegliere il videocitofono più adatto.</p>
+          <a href="articolo16.html" class="art-link">Continua a leggere →</a>
+        </div>
+      </div>
+      <div class="art-card">
+        <img src="servizio-allarme.jpg" alt="Impianto d'allarme controllabile dallo smartphone: tutti i vantaggi" />
+        <div class="art-body">
+          <p class="art-cat">Sistemi d'allarme</p>
+          <h3 class="art-title">Impianto d'allarme controllabile dallo smartphone: tutti i vantaggi</h3>
+          <p class="art-excerpt">Gestisci la sicurezza di casa dal telefono ovunque ti trovi, incluso videocitofono integrato.</p>
+          <a href="articolo18.html" class="art-link">Continua a leggere →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<a href="https://wa.me/393520334436?text=Salve%2C%20vorrei%20richiedere%20un%20preventivo." target="_blank" class="whatsapp-btn" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" style="display:flex;flex-direction:column;line-height:1.1;">
+      <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.06em;text-transform:uppercase;color:#FFFFFF;">Emme<span style="color:#F5C518;">2000</span></span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);">Impianti Elettrici</span>
+    </a>
+    <div class="footer-copy">
+      <div>P.IVA: da inserire</div>
+      <div>© 2026 Emme 2000 · Tutti i diritti riservati</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
