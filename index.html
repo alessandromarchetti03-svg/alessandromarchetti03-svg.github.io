@@ -85,13 +85,23 @@
     ]
   }
   </script>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-61H4CBKLR9"></script>
+  <!-- Google Analytics — caricato solo dopo consenso -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-61H4CBKLR9');
+    gtag('consent', 'default', {
+      'analytics_storage': 'denied'
+    });
+
+    function loadAnalytics() {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-61H4CBKLR9';
+      document.head.appendChild(s);
+      gtag('consent', 'update', { 'analytics_storage': 'granted' });
+      gtag('config', 'G-61H4CBKLR9');
+    }
   </script>
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
@@ -1423,6 +1433,7 @@
     <div class="footer-copy">
       <div>P.IVA: da inserire</div>
       <div>© 2026 Emme 2000 · Tutti i diritti riservati</div>
+      <div style="margin-top:0.4rem;"><a href="privacy-policy.html" style="color:rgba(255,255,255,0.3);text-decoration:underline;">Privacy Policy</a> · <a href="#" onclick="resetCookieConsent();return false;" style="color:rgba(255,255,255,0.3);text-decoration:underline;">Gestisci cookie</a></div>
     </div>
   </div>
 </footer>
@@ -1499,68 +1510,75 @@
   }
 </script>
 
-<!-- COOKIE BANNER -->
+<!-- COOKIE BANNER — a norma Garante Privacy -->
 <style>
   #cookie-banner {
     position: fixed;
     bottom: 0; left: 0; right: 0;
-    z-index: 999;
+    z-index: 9999;
     background: #080F1A;
     border-top: 2px solid var(--gold);
-    padding: 1.2rem 0;
+    padding: 1.4rem 0;
     display: none;
   }
   #cookie-banner.visible { display: block; }
   .cookie-inner {
     width: min(1100px, 92vw);
     margin-inline: auto;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
     align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-    flex-wrap: wrap;
   }
   .cookie-text {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.06em;
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
     color: rgba(255,255,255,0.6);
-    line-height: 1.6;
-    flex: 1;
-    min-width: 200px;
+    line-height: 1.7;
   }
   .cookie-text a { color: var(--gold); text-decoration: underline; }
-  .cookie-actions { display: flex; gap: 0.75rem; flex-shrink: 0; }
+  .cookie-actions { display: flex; gap: 0.75rem; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
   .cookie-accept {
     background: var(--gold);
     color: var(--navy);
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     font-weight: 700;
-    padding: 0.6rem 1.2rem;
+    padding: 0.65rem 1.4rem;
     border: none;
     cursor: pointer;
+    transition: background 0.2s;
   }
+  .cookie-accept:hover { background: #D4A800; }
   .cookie-decline {
     background: transparent;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.5);
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 0.6rem 1.2rem;
-    border: 1px solid rgba(255,255,255,0.15);
+    padding: 0.65rem 1.4rem;
+    border: 1px solid rgba(255,255,255,0.2);
     cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
   }
-  .cookie-decline:hover { border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.7); }
+  .cookie-decline:hover { border-color: rgba(255,255,255,0.5); color: rgba(255,255,255,0.8); }
+  @media(max-width: 600px) {
+    .cookie-inner { grid-template-columns: 1fr; }
+    .cookie-actions { justify-content: stretch; }
+    .cookie-accept, .cookie-decline { flex: 1; text-align: center; }
+  }
 </style>
 
-<div id="cookie-banner">
+<div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Preferenze cookie">
   <div class="cookie-inner">
     <p class="cookie-text">
-      Questo sito utilizza cookie tecnici e di analisi (Google Analytics) per migliorare l'esperienza di navigazione. Continuando accetti l'utilizzo dei cookie.
+      Questo sito utilizza cookie tecnici necessari al funzionamento e, previo tuo consenso, cookie analitici (Google Analytics) per analizzare il traffico in forma aggregata.
+      Puoi accettare tutti i cookie, rifiutare quelli non necessari o consultare la nostra
+      <a href="privacy-policy.html">Privacy Policy</a>.
     </p>
     <div class="cookie-actions">
       <button class="cookie-decline" onclick="declineCookies()">Rifiuta</button>
@@ -1570,31 +1588,38 @@
 </div>
 
 <script>
-  // Cookie banner
   function setCookie(name, value, days) {
-    const d = new Date();
+    var d = new Date();
     d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-    document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/';
+    document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
   }
   function getCookie(name) {
-    const ca = document.cookie.split(';');
-    for (let c of ca) {
-      c = c.trim();
-      if (c.startsWith(name + '=')) return c.substring(name.length + 1);
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i].trim();
+      if (c.indexOf(name + '=') === 0) return c.substring(name.length + 1);
     }
     return '';
   }
   function acceptCookies() {
     setCookie('cookie_consent', 'accepted', 365);
     document.getElementById('cookie-banner').classList.remove('visible');
+    loadAnalytics();
   }
   function declineCookies() {
     setCookie('cookie_consent', 'declined', 365);
     document.getElementById('cookie-banner').classList.remove('visible');
   }
+  function resetCookieConsent() {
+    setCookie('cookie_consent', '', -1);
+    window.location.reload();
+  }
   window.addEventListener('load', function() {
-    if (!getCookie('cookie_consent')) {
+    var consent = getCookie('cookie_consent');
+    if (!consent) {
       document.getElementById('cookie-banner').classList.add('visible');
+    } else if (consent === 'accepted') {
+      loadAnalytics();
     }
   });
 </script>
