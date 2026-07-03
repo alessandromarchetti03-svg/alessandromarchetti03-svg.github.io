@@ -6,8 +6,21 @@
   <title>Illuminazione LED Bergamo e Brescia | Emme 2000 Impianti Elettrici Bergamo Brescia</title>
   <meta name="description" content="Progettazione e installazione impianti di illuminazione LED per interni ed esterni a Bergamo e Brescia. Residenziale, commerciale e industriale. Preventivo gratuito." />
   <meta name="robots" content="index, follow" />
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-61H4CBKLR9"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-61H4CBKLR9');</script>
+    <!-- Google Analytics — caricato solo dopo consenso -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('consent', 'default', { 'analytics_storage': 'denied' });
+    function loadAnalytics() {
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=G-61H4CBKLR9';
+      document.head.appendChild(s);
+      gtag('consent', 'update', { 'analytics_storage': 'granted' });
+      gtag('config', 'G-61H4CBKLR9');
+    }
+  </script>
     <meta property="og:title" content="Illuminazione LED Bergamo e Brescia | Emme 2000" />
   <meta property="og:description" content="Progettazione e installazione impianti LED per interni ed esterni a Bergamo e Brescia. Residenziale, commerciale e industriale." />
   <meta property="og:type" content="website" />
@@ -221,11 +234,44 @@
       <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.06em;text-transform:uppercase;color:#FFFFFF;">Emme<span style="color:#F5C518;">2000</span></span>
       <span style="font-family:'IBM Plex Mono',monospace;font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);">Impianti Elettrici</span>
     </a>
-    <div class="footer-copy">
+        <div class="footer-copy">
       <div>P.IVA: da inserire</div>
       <div>© 2026 Emme 2000 · Tutti i diritti riservati</div>
+      <div style="margin-top:0.4rem;"><a href="privacy-policy.html" style="color:rgba(255,255,255,0.3);text-decoration:underline;">Privacy Policy</a> · <a href="privacy-policy.html#cookie" onclick="resetCookieConsent();return false;" style="color:rgba(255,255,255,0.3);text-decoration:underline;">Gestisci cookie</a></div>
+    </div>
+      <div>© 2026 Emme 2000 · Tutti i diritti riservati</div>
+      <div style="margin-top:0.4rem;"><a href="privacy-policy.html" style="color:rgba(255,255,255,0.3);text-decoration:underline;">Privacy Policy</a> · <a href="#" onclick="resetCookieConsent();return false;" style="color:rgba(255,255,255,0.3);text-decoration:underline;">Gestisci cookie</a></div>
     </div>
   </div>
 </footer>
+<!-- COOKIE BANNER -->
+<style>
+  #cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#080F1A;border-top:2px solid #F5C518;padding:1.4rem 0;display:none;}
+  #cookie-banner.visible{display:block;}
+  .cookie-inner{width:min(1100px,92vw);margin-inline:auto;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;}
+  .cookie-text{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.05em;color:rgba(255,255,255,0.6);line-height:1.7;}
+  .cookie-text a{color:#F5C518;text-decoration:underline;}
+  .cookie-actions{display:flex;gap:0.75rem;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;}
+  .cookie-accept{background:#F5C518;color:#0D1B2E;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;padding:0.65rem 1.4rem;border:none;cursor:pointer;}
+  .cookie-decline{background:transparent;color:rgba(255,255,255,0.5);font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.65rem 1.4rem;border:1px solid rgba(255,255,255,0.2);cursor:pointer;}
+  @media(max-width:600px){.cookie-inner{grid-template-columns:1fr;}.cookie-actions{justify-content:stretch;}.cookie-accept,.cookie-decline{flex:1;text-align:center;}}
+</style>
+<div id="cookie-banner" role="dialog" aria-live="polite" aria-label="Preferenze cookie">
+  <div class="cookie-inner">
+    <p class="cookie-text">Questo sito utilizza cookie tecnici necessari e, previo consenso, cookie analitici (Google Analytics). Consulta la nostra <a href="privacy-policy.html">Privacy Policy</a>.</p>
+    <div class="cookie-actions">
+      <button class="cookie-decline" onclick="declineCookies()">Rifiuta</button>
+      <button class="cookie-accept" onclick="acceptCookies()">Accetta</button>
+    </div>
+  </div>
+</div>
+<script>
+  function setCookie(n,v,d){var e=new Date();e.setTime(e.getTime()+(d*24*60*60*1000));document.cookie=n+'='+v+';expires='+e.toUTCString()+';path=/;SameSite=Lax';}
+  function getCookie(n){var ca=document.cookie.split(';');for(var i=0;i<ca.length;i++){var c=ca[i].trim();if(c.indexOf(n+'=')===0)return c.substring(n.length+1);}return '';}
+  function acceptCookies(){setCookie('cookie_consent','accepted',365);document.getElementById('cookie-banner').classList.remove('visible');if(typeof loadAnalytics==='function')loadAnalytics();}
+  function declineCookies(){setCookie('cookie_consent','declined',365);document.getElementById('cookie-banner').classList.remove('visible');}
+  function resetCookieConsent(){setCookie('cookie_consent','',-1);window.location.reload();}
+  window.addEventListener('load',function(){var c=getCookie('cookie_consent');if(!c){document.getElementById('cookie-banner').classList.add('visible');}else if(c==='accepted'&&typeof loadAnalytics==='function'){loadAnalytics();}});
+</script>
 </body>
 </html>
