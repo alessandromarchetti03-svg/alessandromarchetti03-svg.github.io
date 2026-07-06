@@ -135,11 +135,12 @@
 
     /* PRINT */
     @media print{
-      @page { margin: 10mm; }
+      @page { margin: 8mm; }
       *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
-      html,body{background:#fff !important;color:#1a1a1a !important;margin:0;padding:0;font-size:9pt;}
+      html,body{background:#fff !important;color:#1a1a1a !important;margin:0;padding:0;font-size:9pt;width:100%;}
       .hdr,.body>.card:not(#printWrap),.ov,.no-print{display:none !important;}
-      #printWrap{display:block !important;background:#fff !important;border:none !important;padding:0 !important;}
+      .body{width:100% !important;margin:0 !important;padding:0 !important;gap:0 !important;}
+      #printWrap{display:block !important;background:#fff !important;border:none !important;padding:0 !important;width:100% !important;max-width:100% !important;}
       .ph{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:8pt;border-bottom:2pt solid #F5C518;margin-bottom:10pt;}
       .ph-logo{display:flex;align-items:center;gap:6pt;}
       .ph-icon{width:30pt;height:30pt;background:#0D1B2E;border-radius:4pt;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
