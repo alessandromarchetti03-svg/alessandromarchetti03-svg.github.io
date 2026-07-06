@@ -7,331 +7,173 @@
   <meta name="robots" content="noindex, nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --navy: #0D1B2E;
-      --navy-mid: #132238;
-      --navy-light: #1C2F47;
-      --gold: #F5C518;
-      --gold-dark: #D4A800;
-      --white: #FFFFFF;
-      --grey: rgba(255,255,255,0.55);
-      --danger: #E05252;
-      --success: #4CAF50;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { background: var(--navy); min-height: 100%; }
-    body { font-family: 'Inter', sans-serif; background: var(--navy); color: var(--white); min-height: 100vh; padding-bottom: 3rem; }
+    :root{--navy:#0D1B2E;--navy-mid:#132238;--gold:#F5C518;--gold-dark:#D4A800;--danger:#E05252;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html{background:var(--navy);min-height:100%;}
+    body{font-family:'Inter',sans-serif;background:var(--navy);color:#fff;min-height:100vh;padding-bottom:3rem;}
 
-    /* HEADER */
-    .app-header { background: var(--navy); border-bottom: 2px solid var(--gold); padding: 0.9rem 0; position: sticky; top: 0; z-index: 100; }
-    .header-inner { width: min(900px, 92vw); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-    .header-logo { display: flex; flex-direction: column; line-height: 1.1; }
-    .header-logo .t1 { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.2rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--white); }
-    .header-logo .t1 span { color: var(--gold); }
-    .header-logo .t2 { font-family: 'IBM Plex Mono', monospace; font-size: 0.5rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-    .header-tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(245,197,24,0.3); padding: 0.3rem 0.7rem; }
+    /* ── HEADER ── */
+    .app-header{background:var(--navy);border-bottom:2px solid var(--gold);padding:.9rem 0;position:sticky;top:0;z-index:100;}
+    .header-inner{width:min(920px,92vw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;}
+    .hlogo .t1{font-family:'Oswald',sans-serif;font-weight:700;font-size:1.2rem;letter-spacing:.06em;text-transform:uppercase;color:#fff;}
+    .hlogo .t1 span{color:var(--gold);}
+    .hlogo .t2{font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);}
+    .htag{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(245,197,24,.3);padding:.3rem .7rem;}
 
-    /* LAYOUT */
-    .app-body { width: min(900px, 92vw); margin: 2rem auto 0; display: flex; flex-direction: column; gap: 1.5rem; }
+    /* ── LAYOUT ── */
+    .app-body{width:min(920px,92vw);margin:2rem auto 0;display:flex;flex-direction:column;gap:1.5rem;}
+    .card{background:var(--navy-mid);border:1px solid rgba(245,197,24,.1);padding:1.5rem;}
+    .ctitle{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
 
-    /* CARD */
-    .card { background: var(--navy-mid); border: 1px solid rgba(245,197,24,0.1); padding: 1.5rem; }
-    .card-title { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+    /* ── FIELDS ── */
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    .field{display:flex;flex-direction:column;gap:.4rem;}
+    .field label{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);}
+    .field input,.field textarea,.field select{background:var(--navy);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:'Inter',sans-serif;font-size:.9rem;padding:.65rem .85rem;outline:none;transition:border-color .2s;border-radius:0;-webkit-appearance:none;}
+    .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);}
+    .field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.2);}
+    .field textarea{resize:vertical;min-height:80px;}
 
-    /* INFO CLIENTE */
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .field { display: flex; flex-direction: column; gap: 0.4rem; }
-    .field label { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-    .field input, .field textarea, .field select {
-      background: var(--navy);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: var(--white);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.9rem;
-      padding: 0.65rem 0.85rem;
-      outline: none;
-      transition: border-color 0.2s;
-      border-radius: 0;
-      -webkit-appearance: none;
-    }
-    .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--gold); }
-    .field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,0.2); }
+    /* ── TABLES ── */
+    .vt{width:100%;border-collapse:collapse;}
+    .vt th{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:.5rem .4rem .8rem;text-align:left;border-bottom:1px solid rgba(255,255,255,.06);white-space:nowrap;}
+    .vt th.r{text-align:right;}
+    .vt td{padding:.4rem .4rem;vertical-align:middle;border-bottom:1px solid rgba(255,255,255,.04);}
+    .vt input,.vt select{width:100%;background:var(--navy);border:1px solid rgba(255,255,255,.08);color:#fff;font-family:'Inter',sans-serif;font-size:.85rem;padding:.5rem .5rem;outline:none;border-radius:0;}
+    .vt input:focus,.vt select:focus{border-color:var(--gold);}
+    .vt input::placeholder{color:rgba(255,255,255,.18);}
+    .vt input[type="number"]{text-align:right;-moz-appearance:textfield;}
+    .vt input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;}
+    .vt input[type="date"]{color-scheme:dark;}
+    .ctot{font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:#fff;text-align:right;}
+    .bdel{background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer;font-size:1rem;padding:.3rem;transition:color .2s;}
+    .bdel:hover{color:var(--danger);}
 
-    /* VOCI SECTION HEADER */
-    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-    .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+    /* ── SECTION HEADER ── */
+    .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+    .sl{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);}
+    .sl.blu{color:#64A0FF;}
 
-    /* VOCI TABLE */
-    .voci-table { width: 100%; border-collapse: collapse; }
-    .voci-table th { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); padding: 0.5rem 0.5rem 0.8rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); white-space: nowrap; }
-    .voci-table th.right { text-align: right; }
-    .voci-table td { padding: 0.4rem 0.4rem; vertical-align: middle; }
-    .voci-table tr:not(:last-child) td { border-bottom: 1px solid rgba(255,255,255,0.04); }
-    .voci-table input, .voci-table select {
-      width: 100%;
-      background: var(--navy);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: var(--white);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
-      padding: 0.5rem 0.6rem;
-      outline: none;
-      transition: border-color 0.2s;
-      border-radius: 0;
-    }
-    .voci-table input:focus, .voci-table select:focus { border-color: var(--gold); }
-    .voci-table input::placeholder { color: rgba(255,255,255,0.18); }
-    .voci-table input[type="number"] { text-align: right; -moz-appearance: textfield; }
-    .voci-table input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
-    .col-desc { width: 35%; }
-    .col-tipo { width: 13%; }
-    .col-qty { width: 8%; }
-    .col-um { width: 9%; }
-    .col-prezzo { width: 12%; }
-    .col-tot { width: 11%; }
-    .col-del { width: 5%; }
-    .cell-total { font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; color: var(--white); text-align: right; padding-right: 0.4rem; }
-    .btn-del { background: none; border: none; color: rgba(255,255,255,0.2); cursor: pointer; font-size: 1rem; padding: 0.3rem; transition: color 0.2s; line-height: 1; }
-    .btn-del:hover { color: var(--danger); }
+    /* ── ADD ROW ── */
+    .add-row{display:flex;gap:.75rem;margin-top:1rem;}
+    .badd{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:.6rem 1.2rem;border:1px solid rgba(245,197,24,.3);background:transparent;color:var(--gold);cursor:pointer;transition:background .2s;}
+    .badd:hover{background:rgba(245,197,24,.08);}
+    .badd.blu{border-color:rgba(100,160,255,.3);color:#64A0FF;}
+    .badd.blu:hover{background:rgba(100,160,255,.08);}
 
-    /* ADD ROW */
-    .add-row { display: flex; gap: 0.75rem; margin-top: 1rem; }
-    .btn-add { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.6rem 1.2rem; border: 1px solid rgba(245,197,24,0.3); background: transparent; color: var(--gold); cursor: pointer; transition: background 0.2s, border-color 0.2s; }
-    .btn-add:hover { background: rgba(245,197,24,0.08); border-color: var(--gold); }
-    .btn-add.manodopera { border-color: rgba(100,160,255,0.3); color: #64A0FF; }
-    .btn-add.manodopera:hover { background: rgba(100,160,255,0.08); border-color: #64A0FF; }
+    /* ── RIEPILOGO ── */
+    .riepilogo{display:flex;flex-direction:column;gap:0;}
+    .rr{display:flex;justify-content:space-between;align-items:center;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.06);}
+    .rr:last-child{border-bottom:none;}
+    .rl{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);}
+    .rv{font-family:'IBM Plex Mono',monospace;font-size:.9rem;color:#fff;}
+    .rr.tot .rl{color:var(--gold);font-size:.78rem;}
+    .rr.tot .rv{font-size:1.3rem;font-weight:700;color:var(--gold);}
 
-    /* RIEPILOGO */
-    .riepilogo { display: flex; flex-direction: column; gap: 0; }
-    .riga-riepilogo { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .riga-riepilogo:last-child { border-bottom: none; }
-    .riga-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
-    .riga-value { font-family: 'IBM Plex Mono', monospace; font-size: 0.9rem; color: var(--white); }
-    .riga-riepilogo.totale .riga-label { color: var(--gold); font-size: 0.78rem; }
-    .riga-riepilogo.totale .riga-value { font-size: 1.3rem; font-weight: 700; color: var(--gold); }
+    /* ── SCONTO / IVA ── */
+    .opt-row{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;padding-bottom:1.2rem;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:1.2rem;}
+    .opt-group{display:flex;align-items:center;gap:.6rem;}
+    .opt-group label{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4);}
+    .opt-group input[type="number"]{width:75px;background:var(--navy);border:1px solid rgba(255,255,255,.1);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:.85rem;padding:.45rem .6rem;text-align:center;outline:none;border-radius:0;}
+    .opt-group input[type="number"]:focus{border-color:var(--gold);}
+    .opt-group span{font-family:'IBM Plex Mono',monospace;font-size:.85rem;color:rgba(255,255,255,.4);}
+    .seg{display:flex;border:1px solid rgba(255,255,255,.15);overflow:hidden;}
+    .seg button{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;padding:.4rem .75rem;background:transparent;color:rgba(255,255,255,.4);border:none;cursor:pointer;transition:background .2s,color .2s;}
+    .seg button.active{background:var(--gold);color:var(--navy);font-weight:700;}
 
-    /* IVA TOGGLE */
-    .iva-row { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
-    .iva-toggle { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; }
-    .iva-toggle input[type="checkbox"] { display: none; }
-    .toggle-track { width: 40px; height: 22px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 11px; position: relative; transition: background 0.2s; cursor: pointer; }
-    .toggle-track.active { background: var(--gold); border-color: var(--gold); }
-    .toggle-thumb { width: 16px; height: 16px; background: var(--white); border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: left 0.2s; }
-    .toggle-track.active .toggle-thumb { left: 20px; }
-    .toggle-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); cursor: pointer; }
-    .iva-perc-field { display: flex; align-items: center; gap: 0.5rem; }
-    .iva-perc-field label { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
-    .iva-perc-field input { width: 70px; background: var(--navy); border: 1px solid rgba(255,255,255,0.1); color: var(--white); font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; padding: 0.45rem 0.6rem; text-align: center; outline: none; border-radius: 0; }
-    .iva-perc-field input:focus { border-color: var(--gold); }
-    .iva-perc-field span { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: rgba(255,255,255,0.4); }
+    /* IVA toggle */
+    .iva-toggle{display:flex;align-items:center;gap:.6rem;cursor:pointer;}
+    .ttrack{width:40px;height:22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:11px;position:relative;transition:background .2s;cursor:pointer;}
+    .ttrack.on{background:var(--gold);border-color:var(--gold);}
+    .tthumb{width:16px;height:16px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left .2s;}
+    .ttrack.on .tthumb{left:20px;}
+    .tlabel{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);}
 
-    /* SCONTO */
-    .sconto-row { display: flex; align-items: center; gap: 0.75rem; }
-    .sconto-row label { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); white-space: nowrap; }
-    .sconto-row input { width: 80px; background: var(--navy); border: 1px solid rgba(255,255,255,0.1); color: var(--white); font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; padding: 0.45rem 0.6rem; text-align: center; outline: none; border-radius: 0; }
-    .sconto-row input:focus { border-color: var(--gold); }
-    .sconto-row span { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: rgba(255,255,255,0.4); }
+    /* ── BUTTONS ── */
+    .actions{display:flex;gap:1rem;flex-wrap:wrap;}
+    .bprimary{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:.85rem 1.8rem;background:var(--gold);color:var(--navy);border:none;cursor:pointer;transition:background .2s;}
+    .bprimary:hover{background:var(--gold-dark);}
+    .bsecondary{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 1.8rem;background:transparent;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);cursor:pointer;transition:color .2s,border-color .2s;}
+    .bsecondary:hover{color:#fff;border-color:rgba(255,255,255,.4);}
+    .bdanger{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 1.8rem;background:transparent;color:var(--danger);border:1px solid rgba(224,82,82,.3);cursor:pointer;}
+    .bdanger:hover{background:rgba(224,82,82,.1);}
 
-    /* NOTE */
-    .field textarea { resize: vertical; min-height: 80px; }
+    /* doc meta display */
+    .docmeta{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.2rem;}
+    .dmitem{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+    .dmitem span{color:var(--gold);}
 
-    /* ACTIONS */
-    .actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn-primary { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; padding: 0.85rem 1.8rem; background: var(--gold); color: var(--navy); border: none; cursor: pointer; transition: background 0.2s; }
-    .btn-primary:hover { background: var(--gold-dark); }
-    .btn-secondary { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.85rem 1.8rem; background: transparent; color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: color 0.2s, border-color 0.2s; }
-    .btn-secondary:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
-    .btn-danger { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.85rem 1.8rem; background: transparent; color: var(--danger); border: 1px solid rgba(224,82,82,0.3); cursor: pointer; transition: background 0.2s; }
-    .btn-danger:hover { background: rgba(224,82,82,0.1); }
-
-    /* NUMERO DOC */
-    .doc-meta { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
-    .doc-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
-    .doc-num span { color: var(--gold); }
-
-    /* TIPO BADGE */
-    .tipo-manodopera { background: rgba(100,160,255,0.12); color: #64A0FF; font-size: 0.7rem; padding: 0.2rem 0.4rem; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; }
-    .tipo-materiale { background: rgba(245,197,24,0.1); color: var(--gold); font-size: 0.7rem; padding: 0.2rem 0.4rem; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; }
-
-    /* PRINT — template professionale */
+    /* ═══════════════════════════════
+       PRINT — documento pulito
+    ═══════════════════════════════ */
     @media print {
-      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
+      html,body{background:white !important;color:#1a1a1a !important;margin:0;padding:0;font-size:10pt;}
 
-      html, body { background: white !important; color: #1a1a1a !important; margin: 0; padding: 0; }
+      /* Nascondi TUTTO tranne il documento */
+      .app-header,.add-row,.actions,.bdel,
+      .no-print,.opt-row,.card:not(.print-card) { display:none !important; }
 
-      /* Nascondi UI app */
-      .app-header, .add-row, .actions, .btn-del,
-      .no-print, .card-title, .iva-row, .sconto-row,
-      .section-header { display: none !important; }
+      .app-body{width:100% !important;margin:0 !important;padding:0 !important;gap:0 !important;}
 
-      /* Reset layout */
-      .app-body { width: 100% !important; margin: 0 !important; gap: 0 !important; padding: 0 !important; }
-      .card { background: white !important; border: none !important; padding: 0 !important; margin: 0 !important; }
+      /* Mostra documento stampa */
+      #printDoc{display:block !important;}
 
-      /* ---- INTESTAZIONE DOCUMENTO ---- */
-      /* Nascondi card intestazione normale */
-      .card:first-child { display: none !important; }
+      /* ---- INTESTAZIONE ---- */
+      .p-header{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:14pt;border-bottom:2pt solid #F5C518;margin-bottom:16pt;}
+      .p-logo-row{display:flex;align-items:center;gap:8pt;}
+      .p-logo-icon{width:36pt;height:36pt;background:#0D1B2E;border-radius:4pt;display:flex;align-items:center;justify-content:center;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+      .p-logo-icon svg{width:20pt;height:20pt;}
+      .p-company-name{font-weight:700;font-size:13pt;color:#1a1a1a;}
+      .p-company-services{font-size:7.5pt;color:#666;margin-top:2pt;}
+      .p-contact{text-align:right;font-size:8pt;color:#444;line-height:1.7;}
 
-      /* Header print */
-      body::before {
-        content: '';
-        display: block;
-      }
+      /* ---- TIPO + CLIENTE ---- */
+      .p-docrow{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16pt;}
+      .p-tipo{font-size:22pt;font-weight:900;text-transform:uppercase;letter-spacing:.02em;color:#1a1a1a;}
+      .p-docnum{font-size:8pt;color:#888;margin-top:3pt;}
+      .p-cliente{text-align:right;font-size:9pt;color:#1a1a1a;line-height:1.7;font-weight:600;}
 
-      /* Header intestazione */
-      .print-header {
-        display: flex !important;
-        justify-content: space-between;
-        align-items: flex-start;
-        padding: 0 0 1.2rem 0;
-        border-bottom: 2px solid #F5C518;
-        margin-bottom: 1.5rem;
-      }
-      .print-header-left {}
-      .print-header-logo {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        margin-bottom: 0.3rem;
-      }
-      .print-header-logo-icon {
-        width: 42px; height: 42px;
-        background: #0D1B2E;
-        border-radius: 6px;
-        display: flex; align-items: center; justify-content: center;
-      }
-      .print-header-logo-icon svg { width: 24px; height: 24px; }
-      .print-header-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.1rem; color: #1a1a1a; }
-      .print-header-services { font-size: 0.75rem; color: #666; margin-top: 0.2rem; }
-      .print-header-right { text-align: right; font-size: 0.78rem; color: #444; line-height: 1.7; }
+      /* ---- SEZIONE LABEL ---- */
+      .p-slabel{font-family:'IBM Plex Mono',monospace;font-size:7pt;letter-spacing:.14em;text-transform:uppercase;color:#F5C518 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;border-bottom:1pt solid #e0e0e0;padding-bottom:4pt;margin-bottom:8pt;display:block;}
+      .p-slabel.blu{color:#64A0FF !important;}
 
-      /* Tipo documento + dati cliente */
-      .print-doc-row {
-        display: flex !important;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 1.5rem;
-      }
-      .print-doc-left {}
-      .print-doc-tipo { font-size: 1.8rem; font-weight: 900; color: #1a1a1a; text-transform: uppercase; letter-spacing: 0.02em; }
-      .print-doc-num { font-size: 0.78rem; color: #888; margin-top: 0.2rem; }
-      .print-doc-cliente { text-align: right; font-size: 0.85rem; color: #1a1a1a; line-height: 1.7; font-weight: 600; }
+      /* ---- RIGHE VOCI ---- */
+      .p-table{width:100%;border-collapse:collapse;margin-bottom:6pt;}
+      .p-table tr{border-bottom:1pt solid #f0f0f0;}
+      .p-table td{padding:4pt 3pt;font-size:9pt;color:#1a1a1a;vertical-align:middle;}
+      .p-table td.r{text-align:right;}
+      .p-table td.tot{text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;}
 
-      /* Sezione lavoro svolto */
-      .print-section-label {
-        font-family: 'IBM Plex Mono', monospace;
-        font-size: 0.65rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: #F5C518 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        padding-bottom: 0.4rem;
-        border-bottom: 1px solid #e0e0e0;
-        margin-bottom: 0.6rem;
-        display: block;
-      }
-      .print-lavoro-text { font-size: 0.9rem; color: #1a1a1a; padding: 0.4rem 0 1rem; }
+      /* ---- SUBTOTALI SEZIONE ---- */
+      .p-stot{display:flex;justify-content:flex-end;gap:40pt;font-size:8.5pt;color:#666;padding:4pt 3pt;border-top:1pt solid #e0e0e0;margin-bottom:14pt;}
+      .p-stot strong{color:#1a1a1a;}
 
-      /* Tabella voci */
-      .voci-table { width: 100% !important; border-collapse: collapse; margin-bottom: 0; }
-      .voci-table thead { display: none !important; }
-      .voci-table tr { border-bottom: 1px solid #f0f0f0; }
-      .voci-table td { padding: 0.45rem 0.3rem !important; vertical-align: middle; }
-      .voci-table input, .voci-table select {
-        border: none !important;
-        background: transparent !important;
-        color: #1a1a1a !important;
-        font-size: 0.88rem !important;
-        padding: 0 !important;
-        width: auto !important;
-      }
-      .voci-table .col-desc input { font-size: 0.88rem !important; }
-      .cell-total { color: #1a1a1a !important; font-size: 0.88rem !important; }
-      .col-del { display: none !important; }
+      /* ---- RIEPILOGO ---- */
+      .p-riepilogo{margin-top:8pt;}
+      .p-rr{display:flex;justify-content:space-between;align-items:center;padding:3pt 0;border-bottom:1pt solid #f0f0f0;}
+      .p-rr:last-child{border-bottom:none;}
+      .p-rl{font-family:'IBM Plex Mono',monospace;font-size:7.5pt;letter-spacing:.1em;text-transform:uppercase;color:#888;}
+      .p-rv{font-family:'IBM Plex Mono',monospace;font-size:9pt;color:#1a1a1a;}
+      .p-rr.ptot .p-rl{color:#888;font-size:8pt;}
+      .p-rr.ptot .p-rv{font-size:20pt;font-weight:900;color:#F5C518 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+      .p-sconto-val{color:#c00;}
 
-      /* Riga totale lordo */
-      .print-totale-lordo {
-        display: flex !important;
-        justify-content: space-between;
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
-        padding: 0.6rem 0.3rem;
-        font-weight: 700;
-        font-size: 0.9rem;
-        color: #1a1a1a;
-        margin-top: 0.3rem;
-      }
+      /* ---- NOTE ---- */
+      .p-note{font-size:8pt;color:#444;margin:10pt 0;padding:8pt;border:1pt solid #eee;background:#fafafa;}
+      .p-note-label{font-family:'IBM Plex Mono',monospace;font-size:6.5pt;letter-spacing:.1em;text-transform:uppercase;color:#999;margin-bottom:4pt;}
 
-      /* Riepilogo */
-      .riepilogo { padding-top: 0.5rem; }
-      .riga-riepilogo { border-bottom: none !important; padding: 0.25rem 0 !important; }
-      .riga-label { color: #888 !important; font-size: 0.72rem !important; text-transform: uppercase; letter-spacing: 0.08em; }
-      .riga-value { color: #1a1a1a !important; font-size: 0.88rem !important; }
-      .riga-riepilogo.totale {
-        margin-top: 0.5rem;
-        padding-top: 0.5rem !important;
-      }
-      .riga-riepilogo.totale .riga-label {
-        font-family: 'IBM Plex Mono', monospace;
-        font-size: 0.72rem !important;
-        letter-spacing: 0.14em;
-        color: #888 !important;
-        text-transform: uppercase;
-      }
-      .riga-riepilogo.totale .riga-value {
-        font-size: 2rem !important;
-        font-weight: 900 !important;
-        color: #F5C518 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      /* Note validità */
-      .print-note-validita {
-        display: block !important;
-        font-size: 0.75rem;
-        color: #888;
-        margin-top: 1.5rem;
-        padding-top: 1rem;
-        border-top: 1px solid #e0e0e0;
-      }
-
-      /* Firme */
-      .print-firme {
-        display: flex !important;
-        justify-content: space-around;
-        margin-top: 3rem;
-        gap: 2rem;
-      }
-      .print-firma {
-        flex: 1;
-        border-top: 1px solid #aaa;
-        padding-top: 0.5rem;
-        text-align: center;
-        font-size: 0.75rem;
-        color: #888;
-      }
-
-      /* Note lavoro */
-      .print-note-lavoro {
-        display: block !important;
-        font-size: 0.82rem;
-        color: #444;
-        margin: 0.5rem 0 1rem;
-      }
-
-      /* Sezione manodopera + materiali: mostra label sopra */
-      #cardManodopera .section-header,
-      #cardMateriali .section-header { display: none !important; }
+      /* ---- FOOTER ---- */
+      .p-validity{font-size:7.5pt;color:#999;margin-top:14pt;padding-top:10pt;border-top:1pt solid #e0e0e0;}
+      .p-firme{display:flex;justify-content:space-around;margin-top:28pt;gap:20pt;}
+      .p-firma{flex:1;border-top:1pt solid #aaa;padding-top:5pt;text-align:center;font-size:7.5pt;color:#888;}
     }
 
-    @media (max-width: 700px) {
-      .info-grid { grid-template-columns: 1fr; }
-      .voci-table { font-size: 0.78rem; }
-      .col-tipo, .col-um { display: none; }
+    @media (max-width:700px){
+      .grid2{grid-template-columns:1fr;}
+      .vt{font-size:.78rem;}
     }
   </style>
 </head>
@@ -339,518 +181,531 @@
 
 <div class="app-header">
   <div class="header-inner">
-    <div class="header-logo">
+    <div class="hlogo">
       <span class="t1">Emme<span>2000</span></span>
       <span class="t2">Impianti Elettrici</span>
     </div>
-    <span class="header-tag">Conto Lavoro</span>
+    <span class="htag">Conto Lavoro</span>
   </div>
 </div>
 
 <div class="app-body">
 
-  <!-- PRINT HEADER — visibile solo in stampa -->
-  <div style="display:none;" class="print-header" id="printHeader">
-    <div class="print-header-left">
-      <div class="print-header-logo">
-        <div class="print-header-logo-icon">
-          <svg viewBox="0 0 24 24" fill="#F5C518"><path d="M13 2L4.5 13.5H12L11 22l8.5-11.5H12L13 2z"/></svg>
-        </div>
-        <span class="print-header-name">Emme 2000 Impianti Elettrici</span>
-      </div>
-      <div class="print-header-services">Impianti elettrici · Antifurto · Automazioni · Videosorveglianza</div>
-    </div>
-    <div class="print-header-right">
-      Viale Italia 3, 24060, Villongo (BG), Italia<br/>
-      Tel. 3520334436<br/>
-      info@emme2000impiantielettrici.it
-    </div>
-  </div>
-
-  <!-- PRINT DOC ROW — visibile solo in stampa -->
-  <div style="display:none;" class="print-doc-row" id="printDocRow">
-    <div class="print-doc-left">
-      <div class="print-doc-tipo">Conto Lavoro</div>
-      <div class="print-doc-num" id="printDocNum"></div>
-    </div>
-    <div class="print-doc-cliente" id="printDocCliente"></div>
-  </div>
-
   <!-- INTESTAZIONE DOCUMENTO -->
   <div class="card">
-    <div class="card-title">Documento</div>
-    <div class="doc-meta" style="margin-bottom:1.2rem;">
-      <span class="doc-num">N° <span id="docNumDisplay">—</span></span>
-      <span class="doc-num">Data <span id="docDataDisplay">—</span></span>
+    <div class="ctitle">Documento</div>
+    <div class="docmeta">
+      <span class="dmitem">N° <span id="docNumDisplay">—</span></span>
+      <span class="dmitem">Data <span id="docDataDisplay">—</span></span>
     </div>
-    <div class="info-grid">
+    <div class="grid2">
       <div class="field">
         <label>Numero documento</label>
-        <input type="text" id="docNum" placeholder="es. CL-2026-001" oninput="updateDocMeta()" />
+        <input type="text" id="docNum" placeholder="es. CL-2026-001" oninput="updateMeta()" />
       </div>
       <div class="field">
         <label>Data</label>
-        <input type="date" id="docData" oninput="updateDocMeta()" />
+        <input type="date" id="docData" oninput="updateMeta()" />
       </div>
     </div>
   </div>
 
-  <!-- DATI CLIENTE -->
+  <!-- CLIENTE -->
   <div class="card">
-    <div class="card-title">Cliente</div>
-    <div class="info-grid">
-      <div class="field">
-        <label>Nome / Ragione sociale</label>
-        <input type="text" id="clienteNome" placeholder="Mario Rossi" />
-      </div>
-      <div class="field">
-        <label>Telefono</label>
-        <input type="tel" id="clienteTel" placeholder="339 000 0000" />
-      </div>
-      <div class="field">
-        <label>Indirizzo lavoro</label>
-        <input type="text" id="clienteIndirizzo" placeholder="Via Roma 1, Bergamo" />
-      </div>
-      <div class="field">
-        <label>Riferimento / Note cliente</label>
-        <input type="text" id="clienteNote" placeholder="es. appartamento piano 2" />
-      </div>
+    <div class="ctitle">Cliente</div>
+    <div class="grid2">
+      <div class="field"><label>Nome / Ragione sociale</label><input type="text" id="cNome" placeholder="Mario Rossi" oninput="save()" /></div>
+      <div class="field"><label>Telefono</label><input type="tel" id="cTel" placeholder="339 000 0000" oninput="save()" /></div>
+      <div class="field"><label>Indirizzo lavoro</label><input type="text" id="cInd" placeholder="Via Roma 1, Bergamo" oninput="save()" /></div>
+      <div class="field"><label>Note cliente</label><input type="text" id="cNote" placeholder="es. appartamento piano 2" oninput="save()" /></div>
     </div>
   </div>
 
   <!-- MANODOPERA -->
-  <div class="card" id="cardManodopera">
-    <div class="section-header">
-      <span class="section-label" style="color:#64A0FF;">⚡ Manodopera</span>
-      <span id="totManodoperaLabel" style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:#64A0FF;">€ 0,00</span>
+  <div class="card" id="cardMano">
+    <div class="sh">
+      <span class="sl blu">⚡ Manodopera</span>
+      <span id="lblMano" style="font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:#64A0FF;">€ 0,00</span>
     </div>
-    <table class="voci-table" id="tabellaManodopera">
-      <thead>
-        <tr>
-          <th class="col-desc">Descrizione</th>
-          <th class="col-qty">Ore</th>
-          <th class="col-prezzo right">€/ora</th>
-          <th class="col-tot right">Totale</th>
-          <th class="col-del"></th>
-        </tr>
-      </thead>
-      <tbody id="righeManodopera"></tbody>
+    <table class="vt">
+      <thead><tr>
+        <th style="width:22%">Data</th>
+        <th style="width:38%">Descrizione</th>
+        <th class="r" style="width:9%">Ore</th>
+        <th class="r" style="width:13%">€/ora</th>
+        <th class="r" style="width:13%">Totale</th>
+        <th style="width:5%"></th>
+      </tr></thead>
+      <tbody id="tbMano"></tbody>
     </table>
-    <div class="add-row">
-      <button class="btn-add manodopera" onclick="aggiungiManodopera()">+ Aggiungi riga</button>
-    </div>
+    <div class="add-row"><button class="badd blu" onclick="addMano()">+ Aggiungi riga</button></div>
   </div>
 
   <!-- MATERIALI -->
-  <div class="card" id="cardMateriali">
-    <div class="section-header">
-      <span class="section-label">◆ Materiali</span>
-      <span id="totMaterialiLabel" style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--gold);">€ 0,00</span>
+  <div class="card" id="cardMat">
+    <div class="sh">
+      <span class="sl">◆ Materiali</span>
+      <span id="lblMat" style="font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--gold);">€ 0,00</span>
     </div>
-    <table class="voci-table" id="tabellaMateriali">
-      <thead>
-        <tr>
-          <th class="col-desc">Descrizione</th>
-          <th class="col-qty">Qtà</th>
-          <th class="col-um">U.M.</th>
-          <th class="col-prezzo right">Prezzo</th>
-          <th class="col-tot right">Totale</th>
-          <th class="col-del"></th>
-        </tr>
-      </thead>
-      <tbody id="righeMateriali"></tbody>
+    <table class="vt">
+      <thead><tr>
+        <th style="width:40%">Descrizione</th>
+        <th class="r" style="width:9%">Qtà</th>
+        <th style="width:10%">U.M.</th>
+        <th class="r" style="width:14%">Prezzo</th>
+        <th class="r" style="width:14%">Totale</th>
+        <th style="width:5%"></th>
+      </tr></thead>
+      <tbody id="tbMat"></tbody>
     </table>
-    <div class="add-row">
-      <button class="btn-add" onclick="aggiungiMateriale()">+ Aggiungi riga</button>
-    </div>
+    <div class="add-row"><button class="badd" onclick="addMat()">+ Aggiungi riga</button></div>
   </div>
 
   <!-- RIEPILOGO -->
   <div class="card">
-    <div class="card-title">Riepilogo</div>
+    <div class="ctitle">Riepilogo</div>
 
-    <!-- Impostazioni sconto e IVA -->
-    <div style="display:flex;flex-direction:column;gap:1rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:1.2rem;">
-      <div class="sconto-row no-print">
+    <!-- Sconto + IVA -->
+    <div class="opt-row no-print">
+      <!-- Sconto -->
+      <div class="opt-group">
         <label>Sconto</label>
-        <input type="number" id="scontoPerc" value="0" min="0" max="100" oninput="calcolaTotali()" />
-        <span>%</span>
+        <div class="seg">
+          <button id="btnScontoPct" class="active" onclick="setScontoTipo('pct')">%</button>
+          <button id="btnScontoEur" onclick="setScontoTipo('eur')">€</button>
+        </div>
+        <input type="number" id="scontoVal" value="0" min="0" oninput="calcola()" />
+        <span id="scontoUnit">%</span>
       </div>
-      <div class="iva-row no-print">
-        <div class="iva-toggle" onclick="toggleIva()">
-          <div class="toggle-track" id="ivaTrack"><div class="toggle-thumb"></div></div>
-          <span class="toggle-label">IVA</span>
-        </div>
-        <div class="iva-perc-field" id="ivaField" style="display:none;">
-          <label>Aliquota</label>
-          <input type="number" id="ivaPerc" value="22" min="0" max="100" oninput="calcolaTotali()" />
-          <span>%</span>
-        </div>
+      <!-- IVA -->
+      <div class="iva-toggle" onclick="toggleIva()">
+        <div class="ttrack" id="ivaTrack"><div class="tthumb"></div></div>
+        <span class="tlabel">IVA</span>
+      </div>
+      <div class="opt-group" id="ivaField" style="display:none;">
+        <label>Aliquota</label>
+        <input type="number" id="ivaPerc" value="22" min="0" max="100" oninput="calcola()" />
+        <span>%</span>
       </div>
     </div>
 
     <div class="riepilogo">
-      <div class="riga-riepilogo">
-        <span class="riga-label">⚡ Totale manodopera</span>
-        <span class="riga-value" id="riepilogoManodopera">€ 0,00</span>
-      </div>
-      <div class="riga-riepilogo">
-        <span class="riga-label">◆ Totale materiali</span>
-        <span class="riga-value" id="riepilogoMateriali">€ 0,00</span>
-      </div>
-      <div class="riga-riepilogo">
-        <span class="riga-label">Subtotale</span>
-        <span class="riga-value" id="riepilogoSubtotale">€ 0,00</span>
-      </div>
-      <div class="riga-riepilogo" id="rigaSconto" style="display:none;">
-        <span class="riga-label" id="labelSconto">Sconto (0%)</span>
-        <span class="riga-value" id="riepilogoSconto" style="color:var(--danger);">- € 0,00</span>
-      </div>
-      <div class="riga-riepilogo" id="rigaImponibile" style="display:none;">
-        <span class="riga-label">Imponibile</span>
-        <span class="riga-value" id="riepilogoImponibile">€ 0,00</span>
-      </div>
-      <div class="riga-riepilogo" id="rigaIva" style="display:none;">
-        <span class="riga-label" id="labelIva">IVA (22%)</span>
-        <span class="riga-value" id="riepilogoIva">€ 0,00</span>
-      </div>
-      <div class="riga-riepilogo totale">
-        <span class="riga-label">TOTALE</span>
-        <span class="riga-value" id="riepilogoTotale">€ 0,00</span>
-      </div>
+      <div class="rr"><span class="rl">⚡ Manodopera</span><span class="rv" id="rrMano">€ 0,00</span></div>
+      <div class="rr"><span class="rl">◆ Materiali</span><span class="rv" id="rrMat">€ 0,00</span></div>
+      <div class="rr"><span class="rl">Subtotale</span><span class="rv" id="rrSub">€ 0,00</span></div>
+      <div class="rr" id="rrScontoRow" style="display:none;"><span class="rl" id="rrScontoLbl">Sconto</span><span class="rv" id="rrSconto" style="color:var(--danger);">- € 0,00</span></div>
+      <div class="rr" id="rrImpRow" style="display:none;"><span class="rl">Imponibile</span><span class="rv" id="rrImp">€ 0,00</span></div>
+      <div class="rr" id="rrIvaRow" style="display:none;"><span class="rl" id="rrIvaLbl">IVA (22%)</span><span class="rv" id="rrIva">€ 0,00</span></div>
+      <div class="rr tot"><span class="rl">TOTALE</span><span class="rv" id="rrTot">€ 0,00</span></div>
     </div>
   </div>
 
-  <!-- NOTE LAVORO -->
+  <!-- NOTE -->
   <div class="card">
-    <div class="card-title">Note lavoro</div>
+    <div class="ctitle">Note lavoro</div>
     <div class="field">
-      <textarea id="noteLavoro" placeholder="Descrizione del lavoro eseguito, materiali principali utilizzati, eventuali note per il cliente..."></textarea>
+      <textarea id="noteLavoro" placeholder="Descrizione del lavoro eseguito, materiali principali utilizzati, eventuali note per il cliente..." oninput="save()"></textarea>
     </div>
   </div>
 
   <!-- AZIONI -->
   <div class="card no-print">
     <div class="actions">
-      <button class="btn-primary" onclick="preparaStampa()">🖨 Stampa / Salva PDF</button>
-      <button class="btn-secondary" onclick="nuovoDocumento()">Nuovo documento</button>
-      <button class="btn-danger" onclick="resetTutto()">Cancella tutto</button>
+      <button class="bprimary" onclick="stampa()">🖨 Stampa / Salva PDF</button>
+      <button class="bsecondary" onclick="nuovoDoc()">Nuovo documento</button>
+      <button class="bdanger" onclick="resetTutto()">Cancella tutto</button>
     </div>
   </div>
 
-  <!-- PRINT FOOTER — note validità e firme -->
-  <div style="display:none;" id="printFooter">
-    <span class="print-note-validita">Il presente documento riporta il dettaglio dei lavori eseguiti e dei materiali utilizzati.</span>
-    <div class="print-firme">
-      <div class="print-firma">Firma azienda</div>
-      <div class="print-firma">Firma cliente per accettazione</div>
+  <!-- ═══ DOCUMENTO STAMPA ═══ (nascosto a schermo, visibile in stampa) -->
+  <div id="printDoc" style="display:none;">
+
+    <!-- Intestazione -->
+    <div class="p-header">
+      <div>
+        <div class="p-logo-row">
+          <div class="p-logo-icon">
+            <svg viewBox="0 0 24 24" fill="#F5C518"><path d="M13 2L4.5 13.5H12L11 22l8.5-11.5H12L13 2z"/></svg>
+          </div>
+          <div>
+            <div class="p-company-name">Emme 2000 Impianti Elettrici</div>
+            <div class="p-company-services">Impianti elettrici · Antifurto · Automazioni · Videosorveglianza</div>
+          </div>
+        </div>
+      </div>
+      <div class="p-contact">
+        Viale Italia 3, 24060, Villongo (BG), Italia<br/>
+        Tel. 3520334436<br/>
+        info@emme2000impiantielettrici.it
+      </div>
+    </div>
+
+    <!-- Tipo doc + cliente -->
+    <div class="p-docrow">
+      <div>
+        <div class="p-tipo">Conto Lavoro</div>
+        <div class="p-docnum" id="pDocNum"></div>
+      </div>
+      <div class="p-cliente" id="pCliente"></div>
+    </div>
+
+    <!-- Manodopera -->
+    <span class="p-slabel blu">⚡ Manodopera</span>
+    <table class="p-table" id="pTbMano">
+      <tbody></tbody>
+    </table>
+    <div class="p-stot"><span>Totale manodopera: <strong id="pTotMano">€ 0,00</strong></span></div>
+
+    <!-- Materiali -->
+    <span class="p-slabel">◆ Materiali</span>
+    <table class="p-table" id="pTbMat">
+      <tbody></tbody>
+    </table>
+    <div class="p-stot"><span>Totale materiali: <strong id="pTotMat">€ 0,00</strong></span></div>
+
+    <!-- Riepilogo -->
+    <span class="p-slabel">Riepilogo</span>
+    <div class="p-riepilogo" id="pRiepilogo"></div>
+
+    <!-- Note -->
+    <div class="p-note" id="pNote" style="display:none;">
+      <div class="p-note-label">Note lavoro</div>
+      <div id="pNoteText"></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="p-validity">Il presente documento riporta il dettaglio dei lavori eseguiti e dei materiali utilizzati.</div>
+    <div class="p-firme">
+      <div class="p-firma">Firma azienda</div>
+      <div class="p-firma">Firma cliente per accettazione</div>
     </div>
   </div>
 
-</div>
+</div><!-- /app-body -->
 
 <script>
-  // --- STATE ---
-  let ivaAttiva = false;
+  // ── STATE ──
+  let ivaOn = false;
+  let scontoTipo = 'pct'; // 'pct' | 'eur'
 
-  // --- INIT ---
-  window.onload = function() {
-    const oggi = new Date().toISOString().split('T')[0];
-    document.getElementById('docData').value = oggi;
-    updateDocMeta();
-    aggiungiManodopera();
-    aggiungiMateriale();
-    caricaDati();
+  // ── INIT ──
+  window.onload = () => {
+    document.getElementById('docData').value = new Date().toISOString().split('T')[0];
+    updateMeta();
+    carica();
+    if (!document.getElementById('tbMano').children.length) addMano();
+    if (!document.getElementById('tbMat').children.length) addMat();
   };
 
-  // --- DOC META ---
-  function updateDocMeta() {
+  // ── META ──
+  function updateMeta() {
     const num = document.getElementById('docNum').value || '—';
-    const data = document.getElementById('docData').value;
+    const d = document.getElementById('docData').value;
     document.getElementById('docNumDisplay').textContent = num;
-    document.getElementById('docDataDisplay').textContent = data
-      ? new Date(data).toLocaleDateString('it-IT') : '—';
-    salvaDati();
+    document.getElementById('docDataDisplay').textContent = d ? new Date(d).toLocaleDateString('it-IT') : '—';
+    save();
   }
 
-  // --- MANODOPERA ---
-  function aggiungiManodopera(desc='', ore='', prezzo='') {
-    const tbody = document.getElementById('righeManodopera');
-    const id = 'mano_' + Date.now() + '_' + Math.random().toString(36).substr(2,5);
-    const tr = document.createElement('tr');
-    tr.id = id;
-    tr.innerHTML = `
-      <td class="col-desc"><input type="text" placeholder="Descrizione intervento" value="${desc}" oninput="calcolaTotali();salvaDati()" /></td>
-      <td class="col-qty"><input type="number" placeholder="0" value="${ore}" min="0" step="0.5" oninput="aggiornaRigaM('${id}');salvaDati()" /></td>
-      <td class="col-prezzo"><input type="number" placeholder="0,00" value="${prezzo}" min="0" step="0.01" oninput="aggiornaRigaM('${id}');salvaDati()" /></td>
-      <td class="col-tot"><div class="cell-total" id="tot_${id}">€ 0,00</div></td>
-      <td class="col-del"><button class="btn-del" onclick="rimuoviRiga('${id}')">✕</button></td>
-    `;
-    tbody.appendChild(tr);
-    if (ore && prezzo) aggiornaRigaM(id);
+  // ── SCONTO TIPO ──
+  function setScontoTipo(t) {
+    scontoTipo = t;
+    document.getElementById('btnScontoPct').classList.toggle('active', t === 'pct');
+    document.getElementById('btnScontoEur').classList.toggle('active', t === 'eur');
+    document.getElementById('scontoUnit').textContent = t === 'pct' ? '%' : '€';
+    calcola();
   }
 
-  function aggiornaRigaM(id) {
-    const tr = document.getElementById(id);
-    if (!tr) return;
-    const ore = parseFloat(tr.querySelectorAll('input')[1].value) || 0;
-    const prezzo = parseFloat(tr.querySelectorAll('input')[2].value) || 0;
-    const tot = ore * prezzo;
-    document.getElementById('tot_' + id).textContent = formatEur(tot);
-    calcolaTotali();
-  }
-
-  // --- MATERIALI ---
-  function aggiungiMateriale(desc='', qty='', um='', prezzo='') {
-    const tbody = document.getElementById('righeMateriali');
-    const id = 'mat_' + Date.now() + '_' + Math.random().toString(36).substr(2,5);
-    const tr = document.createElement('tr');
-    tr.id = id;
-    tr.innerHTML = `
-      <td class="col-desc"><input type="text" placeholder="Descrizione materiale" value="${desc}" oninput="calcolaTotali();salvaDati()" /></td>
-      <td class="col-qty"><input type="number" placeholder="0" value="${qty}" min="0" step="1" oninput="aggiornaRigaMat('${id}');salvaDati()" /></td>
-      <td class="col-um">
-        <select onchange="salvaDati()">
-          <option ${um==='pz'?'selected':''}>pz</option>
-          <option ${um==='m'?'selected':''}>m</option>
-          <option ${um==='mq'?'selected':''}>mq</option>
-          <option ${um==='ml'?'selected':''}>ml</option>
-          <option ${um==='l'?'selected':''}>l</option>
-          <option ${um==='kg'?'selected':''}>kg</option>
-          <option ${um==='conf'?'selected':''}>conf</option>
-          <option ${um==='h'?'selected':''}>h</option>
-        </select>
-      </td>
-      <td class="col-prezzo"><input type="number" placeholder="0,00" value="${prezzo}" min="0" step="0.01" oninput="aggiornaRigaMat('${id}');salvaDati()" /></td>
-      <td class="col-tot"><div class="cell-total" id="tot_${id}">€ 0,00</div></td>
-      <td class="col-del"><button class="btn-del" onclick="rimuoviRiga('${id}')">✕</button></td>
-    `;
-    tbody.appendChild(tr);
-    if (qty && prezzo) aggiornaRigaMat(id);
-  }
-
-  function aggiornaRigaMat(id) {
-    const tr = document.getElementById(id);
-    if (!tr) return;
-    const qty = parseFloat(tr.querySelectorAll('input')[1].value) || 0;
-    const prezzo = parseFloat(tr.querySelectorAll('input')[2].value) || 0;
-    const tot = qty * prezzo;
-    document.getElementById('tot_' + id).textContent = formatEur(tot);
-    calcolaTotali();
-  }
-
-  // --- RIMUOVI RIGA ---
-  function rimuoviRiga(id) {
-    const tr = document.getElementById(id);
-    if (tr) { tr.remove(); calcolaTotali(); salvaDati(); }
-  }
-
-  // --- CALCOLA TOTALI ---
-  function calcolaTotali() {
-    // Manodopera
-    let totMano = 0;
-    document.querySelectorAll('#righeManodopera tr').forEach(tr => {
-      const inputs = tr.querySelectorAll('input[type="number"]');
-      if (inputs.length >= 2) {
-        totMano += (parseFloat(inputs[0].value)||0) * (parseFloat(inputs[1].value)||0);
-      }
-    });
-
-    // Materiali
-    let totMat = 0;
-    document.querySelectorAll('#righeMateriali tr').forEach(tr => {
-      const inputs = tr.querySelectorAll('input[type="number"]');
-      if (inputs.length >= 2) {
-        totMat += (parseFloat(inputs[0].value)||0) * (parseFloat(inputs[1].value)||0);
-      }
-    });
-
-    const subtotale = totMano + totMat;
-    const scontoPerc = parseFloat(document.getElementById('scontoPerc').value) || 0;
-    const scontoVal = subtotale * scontoPerc / 100;
-    const imponibile = subtotale - scontoVal;
-    const ivaPerc = parseFloat(document.getElementById('ivaPerc').value) || 22;
-    const ivaVal = ivaAttiva ? imponibile * ivaPerc / 100 : 0;
-    const totale = imponibile + ivaVal;
-
-    // Aggiorna header sezioni
-    document.getElementById('totManodoperaLabel').textContent = formatEur(totMano);
-    document.getElementById('totMaterialiLabel').textContent = formatEur(totMat);
-
-    // Aggiorna riepilogo
-    document.getElementById('riepilogoManodopera').textContent = formatEur(totMano);
-    document.getElementById('riepilogoMateriali').textContent = formatEur(totMat);
-    document.getElementById('riepilogoSubtotale').textContent = formatEur(subtotale);
-
-    if (scontoPerc > 0) {
-      document.getElementById('rigaSconto').style.display = 'flex';
-      document.getElementById('labelSconto').textContent = `Sconto (${scontoPerc}%)`;
-      document.getElementById('riepilogoSconto').textContent = '- ' + formatEur(scontoVal);
-    } else {
-      document.getElementById('rigaSconto').style.display = 'none';
-    }
-
-    if (scontoPerc > 0 || ivaAttiva) {
-      document.getElementById('rigaImponibile').style.display = 'flex';
-      document.getElementById('riepilogoImponibile').textContent = formatEur(imponibile);
-    } else {
-      document.getElementById('rigaImponibile').style.display = 'none';
-    }
-
-    if (ivaAttiva) {
-      document.getElementById('rigaIva').style.display = 'flex';
-      document.getElementById('labelIva').textContent = `IVA (${ivaPerc}%)`;
-      document.getElementById('riepilogoIva').textContent = formatEur(ivaVal);
-    } else {
-      document.getElementById('rigaIva').style.display = 'none';
-    }
-
-    document.getElementById('riepilogoTotale').textContent = formatEur(totale);
-    salvaDati();
-  }
-
-  // --- IVA TOGGLE ---
+  // ── IVA TOGGLE ──
   function toggleIva() {
-    ivaAttiva = !ivaAttiva;
-    const track = document.getElementById('ivaTrack');
-    const field = document.getElementById('ivaField');
-    if (ivaAttiva) {
-      track.classList.add('active');
-      field.style.display = 'flex';
+    ivaOn = !ivaOn;
+    document.getElementById('ivaTrack').classList.toggle('on', ivaOn);
+    document.getElementById('ivaField').style.display = ivaOn ? 'flex' : 'none';
+    calcola();
+  }
+
+  // ── ADD MANODOPERA ──
+  function addMano(data='', desc='', ore='', prezzo='') {
+    const id = 'M' + Date.now() + Math.random().toString(36).substr(2,4);
+    const tr = document.createElement('tr');
+    tr.id = id;
+    tr.innerHTML = `
+      <td><input type="date" value="${data}" oninput="save()" style="color-scheme:dark;font-size:.78rem;" /></td>
+      <td><input type="text" placeholder="Intervento" value="${desc}" oninput="save()" /></td>
+      <td><input type="number" placeholder="0" value="${ore}" min="0" step="0.5" oninput="updMano('${id}')" /></td>
+      <td><input type="number" placeholder="0,00" value="${prezzo}" min="0" step="0.01" oninput="updMano('${id}')" /></td>
+      <td><div class="ctot" id="t${id}">€ 0,00</div></td>
+      <td><button class="bdel" onclick="delRow('${id}')">✕</button></td>`;
+    document.getElementById('tbMano').appendChild(tr);
+    if (ore && prezzo) updMano(id);
+  }
+
+  function updMano(id) {
+    const tr = document.getElementById(id);
+    if (!tr) return;
+    const ins = tr.querySelectorAll('input[type="number"]');
+    const t = (parseFloat(ins[0].value)||0) * (parseFloat(ins[1].value)||0);
+    document.getElementById('t'+id).textContent = eur(t);
+    calcola(); save();
+  }
+
+  // ── ADD MATERIALI ──
+  function addMat(desc='', qty='', um='pz', prezzo='') {
+    const id = 'T' + Date.now() + Math.random().toString(36).substr(2,4);
+    const tr = document.createElement('tr');
+    tr.id = id;
+    const umOpts = ['pz','m','mq','ml','l','kg','conf','h'].map(u => `<option${u===um?' selected':''}>${u}</option>`).join('');
+    tr.innerHTML = `
+      <td><input type="text" placeholder="Descrizione materiale" value="${desc}" oninput="save()" /></td>
+      <td><input type="number" placeholder="0" value="${qty}" min="0" step="1" oninput="updMat('${id}')" /></td>
+      <td><select onchange="save()">${umOpts}</select></td>
+      <td><input type="number" placeholder="0,00" value="${prezzo}" min="0" step="0.01" oninput="updMat('${id}')" /></td>
+      <td><div class="ctot" id="t${id}">€ 0,00</div></td>
+      <td><button class="bdel" onclick="delRow('${id}')">✕</button></td>`;
+    document.getElementById('tbMat').appendChild(tr);
+    if (qty && prezzo) updMat(id);
+  }
+
+  function updMat(id) {
+    const tr = document.getElementById(id);
+    if (!tr) return;
+    const ins = tr.querySelectorAll('input[type="number"]');
+    const t = (parseFloat(ins[0].value)||0) * (parseFloat(ins[1].value)||0);
+    document.getElementById('t'+id).textContent = eur(t);
+    calcola(); save();
+  }
+
+  function delRow(id) {
+    document.getElementById(id)?.remove();
+    calcola(); save();
+  }
+
+  // ── CALCOLA ──
+  function calcola() {
+    let totMano = 0;
+    document.querySelectorAll('#tbMano tr').forEach(tr => {
+      const ins = tr.querySelectorAll('input[type="number"]');
+      if (ins.length >= 2) totMano += (parseFloat(ins[0].value)||0) * (parseFloat(ins[1].value)||0);
+    });
+    let totMat = 0;
+    document.querySelectorAll('#tbMat tr').forEach(tr => {
+      const ins = tr.querySelectorAll('input[type="number"]');
+      if (ins.length >= 2) totMat += (parseFloat(ins[0].value)||0) * (parseFloat(ins[1].value)||0);
+    });
+
+    const sub = totMano + totMat;
+    const sv = parseFloat(document.getElementById('scontoVal').value) || 0;
+    const scontoAmt = scontoTipo === 'pct' ? sub * sv / 100 : Math.min(sv, sub);
+    const imponibile = sub - scontoAmt;
+    const ivaPerc = parseFloat(document.getElementById('ivaPerc').value) || 22;
+    const ivaAmt = ivaOn ? imponibile * ivaPerc / 100 : 0;
+    const totale = imponibile + ivaAmt;
+
+    // Header sezioni
+    document.getElementById('lblMano').textContent = eur(totMano);
+    document.getElementById('lblMat').textContent = eur(totMat);
+
+    // Riepilogo
+    document.getElementById('rrMano').textContent = eur(totMano);
+    document.getElementById('rrMat').textContent = eur(totMat);
+    document.getElementById('rrSub').textContent = eur(sub);
+
+    if (sv > 0) {
+      document.getElementById('rrScontoRow').style.display = 'flex';
+      document.getElementById('rrScontoLbl').textContent = scontoTipo === 'pct' ? `Sconto (${sv}%)` : 'Sconto';
+      document.getElementById('rrSconto').textContent = '- ' + eur(scontoAmt);
     } else {
-      track.classList.remove('active');
-      field.style.display = 'none';
+      document.getElementById('rrScontoRow').style.display = 'none';
     }
-    calcolaTotali();
+
+    if (sv > 0 || ivaOn) {
+      document.getElementById('rrImpRow').style.display = 'flex';
+      document.getElementById('rrImp').textContent = eur(imponibile);
+    } else {
+      document.getElementById('rrImpRow').style.display = 'none';
+    }
+
+    if (ivaOn) {
+      document.getElementById('rrIvaRow').style.display = 'flex';
+      document.getElementById('rrIvaLbl').textContent = `IVA (${ivaPerc}%)`;
+      document.getElementById('rrIva').textContent = eur(ivaAmt);
+    } else {
+      document.getElementById('rrIvaRow').style.display = 'none';
+    }
+
+    document.getElementById('rrTot').textContent = eur(totale);
+    save();
   }
 
-  // --- FORMATO EUR ---
-  function formatEur(val) {
-    return '€ ' + val.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  }
-
-  // --- SALVA / CARICA (localStorage) ---
-  function salvaDati() {
-    try {
-      const manoRighe = [];
-      document.querySelectorAll('#righeManodopera tr').forEach(tr => {
-        const inputs = tr.querySelectorAll('input');
-        manoRighe.push({ desc: inputs[0]?.value||'', ore: inputs[1]?.value||'', prezzo: inputs[2]?.value||'' });
-      });
-      const matRighe = [];
-      document.querySelectorAll('#righeMateriali tr').forEach(tr => {
-        const inputs = tr.querySelectorAll('input');
-        const sel = tr.querySelector('select');
-        matRighe.push({ desc: inputs[0]?.value||'', qty: inputs[1]?.value||'', um: sel?.value||'pz', prezzo: inputs[2]?.value||'' });
-      });
-      const data = {
-        docNum: document.getElementById('docNum').value,
-        docData: document.getElementById('docData').value,
-        clienteNome: document.getElementById('clienteNome').value,
-        clienteTel: document.getElementById('clienteTel').value,
-        clienteIndirizzo: document.getElementById('clienteIndirizzo').value,
-        clienteNote: document.getElementById('clienteNote').value,
-        noteLavoro: document.getElementById('noteLavoro').value,
-        scontoPerc: document.getElementById('scontoPerc').value,
-        ivaAttiva: ivaAttiva,
-        ivaPerc: document.getElementById('ivaPerc').value,
-        manoRighe, matRighe
-      };
-      localStorage.setItem('emme2000_conto', JSON.stringify(data));
-    } catch(e) {}
-  }
-
-  function caricaDati() {
-    try {
-      const raw = localStorage.getItem('emme2000_conto');
-      if (!raw) return;
-      const data = JSON.parse(raw);
-      document.getElementById('docNum').value = data.docNum || '';
-      document.getElementById('docData').value = data.docData || '';
-      document.getElementById('clienteNome').value = data.clienteNome || '';
-      document.getElementById('clienteTel').value = data.clienteTel || '';
-      document.getElementById('clienteIndirizzo').value = data.clienteIndirizzo || '';
-      document.getElementById('clienteNote').value = data.clienteNote || '';
-      document.getElementById('noteLavoro').value = data.noteLavoro || '';
-      document.getElementById('scontoPerc').value = data.scontoPerc || 0;
-      document.getElementById('ivaPerc').value = data.ivaPerc || 22;
-
-      if (data.ivaAttiva) { ivaAttiva = false; toggleIva(); }
-
-      document.getElementById('righeManodopera').innerHTML = '';
-      (data.manoRighe || []).forEach(r => aggiungiManodopera(r.desc, r.ore, r.prezzo));
-      if (!data.manoRighe || data.manoRighe.length === 0) aggiungiManodopera();
-
-      document.getElementById('righeMateriali').innerHTML = '';
-      (data.matRighe || []).forEach(r => aggiungiMateriale(r.desc, r.qty, r.um, r.prezzo));
-      if (!data.matRighe || data.matRighe.length === 0) aggiungiMateriale();
-
-      updateDocMeta();
-      calcolaTotali();
-    } catch(e) {}
-  }
-
-  // --- NUOVO DOCUMENTO ---
-  function nuovoDocumento() {
-    if (!confirm('Vuoi iniziare un nuovo documento? Il documento corrente resterà salvato.')) return;
-    localStorage.removeItem('emme2000_conto');
-    const oggi = new Date().toISOString().split('T')[0];
-    document.getElementById('docNum').value = '';
-    document.getElementById('docData').value = oggi;
-    document.getElementById('clienteNome').value = '';
-    document.getElementById('clienteTel').value = '';
-    document.getElementById('clienteIndirizzo').value = '';
-    document.getElementById('clienteNote').value = '';
-    document.getElementById('noteLavoro').value = '';
-    document.getElementById('scontoPerc').value = 0;
-    document.getElementById('righeManodopera').innerHTML = '';
-    document.getElementById('righeMateriali').innerHTML = '';
-    aggiungiManodopera();
-    aggiungiMateriale();
-    if (ivaAttiva) toggleIva();
-    updateDocMeta();
-    calcolaTotali();
-  }
-
-  // --- PREPARA STAMPA ---
-  function preparaStampa() {
-    // Popola header print
+  // ── STAMPA ──
+  function stampa() {
+    // Popola documento stampa
     const num = document.getElementById('docNum').value;
-    const data = document.getElementById('docData').value;
-    const nome = document.getElementById('clienteNome').value;
-    const tel = document.getElementById('clienteTel').value;
-    const ind = document.getElementById('clienteIndirizzo').value;
+    const d = document.getElementById('docData').value;
+    document.getElementById('pDocNum').textContent =
+      (num ? 'N° ' + num : '') + (d ? ' · ' + new Date(d).toLocaleDateString('it-IT') : '');
 
-    document.getElementById('printDocNum').textContent =
-      (num ? 'N° ' + num : '') + (data ? ' · ' + new Date(data).toLocaleDateString('it-IT') : '');
+    // Cliente
+    const nome = document.getElementById('cNome').value;
+    const tel = document.getElementById('cTel').value;
+    const ind = document.getElementById('cInd').value;
+    document.getElementById('pCliente').innerHTML =
+      [nome, tel, ind].filter(Boolean).join('<br/>');
 
-    let clienteHtml = '';
-    if (nome) clienteHtml += nome + '<br/>';
-    if (tel) clienteHtml += tel + '<br/>';
-    if (ind) clienteHtml += ind;
-    document.getElementById('printDocCliente').innerHTML = clienteHtml;
+    // Tabella manodopera
+    const tbManoP = document.getElementById('pTbMano').querySelector('tbody');
+    tbManoP.innerHTML = '';
+    let totMano = 0;
+    document.querySelectorAll('#tbMano tr').forEach(tr => {
+      const data = tr.querySelector('input[type="date"]')?.value || '';
+      const desc = tr.querySelectorAll('input[type="text"]')[0]?.value || '';
+      const ins = tr.querySelectorAll('input[type="number"]');
+      const ore = parseFloat(ins[0]?.value) || 0;
+      const pr = parseFloat(ins[1]?.value) || 0;
+      const tot = ore * pr;
+      if (!desc && !ore && !pr) return;
+      totMano += tot;
+      const dataFmt = data ? new Date(data).toLocaleDateString('it-IT') : '';
+      tbManoP.innerHTML += `<tr>
+        <td style="width:18%;color:#555;">${dataFmt}</td>
+        <td style="width:46%;">${desc || '—'}</td>
+        <td class="r" style="width:12%;color:#555;">${ore > 0 ? ore + ' h' : ''}</td>
+        <td class="r" style="width:12%;color:#555;">${pr > 0 ? '× ' + eur(pr) : ''}</td>
+        <td class="tot" style="width:12%;">${tot > 0 ? eur(tot) : ''}</td>
+      </tr>`;
+    });
+    document.getElementById('pTotMano').textContent = eur(totMano);
 
-    // Mostra elementi print
-    document.getElementById('printHeader').style.display = 'flex';
-    document.getElementById('printDocRow').style.display = 'flex';
-    document.getElementById('printFooter').style.display = 'block';
+    // Tabella materiali
+    const tbMatP = document.getElementById('pTbMat').querySelector('tbody');
+    tbMatP.innerHTML = '';
+    let totMat = 0;
+    document.querySelectorAll('#tbMat tr').forEach(tr => {
+      const desc = tr.querySelector('input[type="text"]')?.value || '';
+      const ins = tr.querySelectorAll('input[type="number"]');
+      const qty = parseFloat(ins[0]?.value) || 0;
+      const pr = parseFloat(ins[1]?.value) || 0;
+      const um = tr.querySelector('select')?.value || 'pz';
+      const tot = qty * pr;
+      if (!desc && !qty && !pr) return;
+      totMat += tot;
+      tbMatP.innerHTML += `<tr>
+        <td style="width:46%;">${desc || '—'}</td>
+        <td class="r" style="width:10%;color:#555;">${qty > 0 ? qty : ''}</td>
+        <td style="width:8%;color:#555;">${um}</td>
+        <td class="r" style="width:18%;color:#555;">${pr > 0 ? eur(pr) : ''}</td>
+        <td class="tot" style="width:18%;">${tot > 0 ? eur(tot) : ''}</td>
+      </tr>`;
+    });
+    document.getElementById('pTotMat').textContent = eur(totMat);
 
+    // Riepilogo stampa
+    const sub = totMano + totMat;
+    const sv = parseFloat(document.getElementById('scontoVal').value) || 0;
+    const scontoAmt = scontoTipo === 'pct' ? sub * sv / 100 : Math.min(sv, sub);
+    const imponibile = sub - scontoAmt;
+    const ivaPerc = parseFloat(document.getElementById('ivaPerc').value) || 22;
+    const ivaAmt = ivaOn ? imponibile * ivaPerc / 100 : 0;
+    const totale = imponibile + ivaAmt;
+
+    let rHtml = `
+      <div class="p-rr"><span class="p-rl">⚡ Manodopera</span><span class="p-rv">${eur(totMano)}</span></div>
+      <div class="p-rr"><span class="p-rl">◆ Materiali</span><span class="p-rv">${eur(totMat)}</span></div>
+      <div class="p-rr"><span class="p-rl">Subtotale</span><span class="p-rv">${eur(sub)}</span></div>`;
+    if (sv > 0) rHtml += `<div class="p-rr"><span class="p-rl">${scontoTipo==='pct'?`Sconto (${sv}%)`:'Sconto'}</span><span class="p-rv p-sconto-val">- ${eur(scontoAmt)}</span></div>`;
+    if (sv > 0 || ivaOn) rHtml += `<div class="p-rr"><span class="p-rl">Imponibile</span><span class="p-rv">${eur(imponibile)}</span></div>`;
+    if (ivaOn) rHtml += `<div class="p-rr"><span class="p-rl">IVA (${ivaPerc}%)</span><span class="p-rv">${eur(ivaAmt)}</span></div>`;
+    rHtml += `<div class="p-rr ptot"><span class="p-rl">TOTALE</span><span class="p-rv">${eur(totale)}</span></div>`;
+    document.getElementById('pRiepilogo').innerHTML = rHtml;
+
+    // Note
+    const note = document.getElementById('noteLavoro').value.trim();
+    if (note) {
+      document.getElementById('pNote').style.display = 'block';
+      document.getElementById('pNoteText').textContent = note;
+    } else {
+      document.getElementById('pNote').style.display = 'none';
+    }
+
+    document.getElementById('printDoc').style.display = 'block';
     setTimeout(() => {
       window.print();
-      // Nasconde dopo la stampa
-      setTimeout(() => {
-        document.getElementById('printHeader').style.display = 'none';
-        document.getElementById('printDocRow').style.display = 'none';
-        document.getElementById('printFooter').style.display = 'none';
-      }, 1000);
-    }, 100);
+      setTimeout(() => { document.getElementById('printDoc').style.display = 'none'; }, 1500);
+    }, 150);
   }
 
-  // --- RESET ---
-  function resetTutto() {
-    if (!confirm('Sei sicuro di voler cancellare tutto?')) return;
-    localStorage.removeItem('emme2000_conto');
+  // ── SALVA / CARICA ──
+  function save() {
+    try {
+      const mano = [];
+      document.querySelectorAll('#tbMano tr').forEach(tr => {
+        const data = tr.querySelector('input[type="date"]')?.value || '';
+        const desc = tr.querySelectorAll('input[type="text"]')[0]?.value || '';
+        const ins = tr.querySelectorAll('input[type="number"]');
+        mano.push({ data, desc, ore: ins[0]?.value||'', pr: ins[1]?.value||'' });
+      });
+      const mat = [];
+      document.querySelectorAll('#tbMat tr').forEach(tr => {
+        const desc = tr.querySelector('input[type="text"]')?.value || '';
+        const ins = tr.querySelectorAll('input[type="number"]');
+        const um = tr.querySelector('select')?.value || 'pz';
+        mat.push({ desc, qty: ins[0]?.value||'', um, pr: ins[1]?.value||'' });
+      });
+      localStorage.setItem('em2k_conto', JSON.stringify({
+        docNum: document.getElementById('docNum').value,
+        docData: document.getElementById('docData').value,
+        cNome: document.getElementById('cNome').value,
+        cTel: document.getElementById('cTel').value,
+        cInd: document.getElementById('cInd').value,
+        cNote: document.getElementById('cNote').value,
+        noteLavoro: document.getElementById('noteLavoro').value,
+        scontoVal: document.getElementById('scontoVal').value,
+        scontoTipo, ivaOn,
+        ivaPerc: document.getElementById('ivaPerc').value,
+        mano, mat
+      }));
+    } catch(e){}
+  }
+
+  function carica() {
+    try {
+      const raw = localStorage.getItem('em2k_conto');
+      if (!raw) return;
+      const d = JSON.parse(raw);
+      document.getElementById('docNum').value = d.docNum || '';
+      document.getElementById('docData').value = d.docData || '';
+      document.getElementById('cNome').value = d.cNome || '';
+      document.getElementById('cTel').value = d.cTel || '';
+      document.getElementById('cInd').value = d.cInd || '';
+      document.getElementById('cNote').value = d.cNote || '';
+      document.getElementById('noteLavoro').value = d.noteLavoro || '';
+      document.getElementById('scontoVal').value = d.scontoVal || 0;
+      document.getElementById('ivaPerc').value = d.ivaPerc || 22;
+      if (d.scontoTipo && d.scontoTipo !== scontoTipo) setScontoTipo(d.scontoTipo);
+      if (d.ivaOn) toggleIva();
+      document.getElementById('tbMano').innerHTML = '';
+      (d.mano||[]).forEach(r => addMano(r.data, r.desc, r.ore, r.pr));
+      document.getElementById('tbMat').innerHTML = '';
+      (d.mat||[]).forEach(r => addMat(r.desc, r.qty, r.um, r.pr));
+      updateMeta();
+      calcola();
+    } catch(e){}
+  }
+
+  function nuovoDoc() {
+    if (!confirm('Iniziare un nuovo documento?')) return;
+    localStorage.removeItem('em2k_conto');
     location.reload();
+  }
+
+  function resetTutto() {
+    if (!confirm('Cancellare tutto?')) return;
+    localStorage.removeItem('em2k_conto');
+    location.reload();
+  }
+
+  // ── EUR FORMAT ──
+  function eur(v) {
+    return '€ ' + v.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   }
 </script>
 </body>
