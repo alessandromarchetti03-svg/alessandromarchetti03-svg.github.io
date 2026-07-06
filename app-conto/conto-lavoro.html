@@ -135,6 +135,7 @@
 
     /* PRINT */
     @media print{
+      @page { margin: 10mm; }
       *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
       html,body{background:#fff !important;color:#1a1a1a !important;margin:0;padding:0;font-size:9pt;}
       .hdr,.body>.card:not(#printWrap),.ov,.no-print{display:none !important;}
