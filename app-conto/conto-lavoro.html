@@ -136,39 +136,40 @@
     /* PRINT */
     @media print{
       *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;}
-      html,body{background:#fff !important;color:#1a1a1a !important;margin:0;padding:0;font-size:10pt;}
+      html,body{background:#fff !important;color:#1a1a1a !important;margin:0;padding:0;font-size:9pt;}
       .hdr,.body>.card:not(#printWrap),.ov,.no-print{display:none !important;}
       #printWrap{display:block !important;background:#fff !important;border:none !important;padding:0 !important;}
-      .ph{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:12pt;border-bottom:2pt solid #F5C518;margin-bottom:14pt;}
-      .ph-logo{display:flex;align-items:center;gap:8pt;}
-      .ph-icon{width:36pt;height:36pt;background:#0D1B2E;border-radius:4pt;display:flex;align-items:center;justify-content:center;}
-      .ph-icon svg{width:20pt;height:20pt;}
-      .ph-name{font-weight:700;font-size:13pt;color:#1a1a1a;}
-      .ph-svc{font-size:7.5pt;color:#666;margin-top:2pt;}
-      .ph-info{text-align:right;font-size:8pt;color:#444;line-height:1.7;}
-      .pd{display:flex;justify-content:space-between;margin-bottom:14pt;}
-      .pd-tipo{font-size:22pt;font-weight:900;text-transform:uppercase;color:#1a1a1a;}
-      .pd-num{font-size:8pt;color:#888;margin-top:3pt;}
-      .pd-cli{text-align:right;font-size:9pt;color:#1a1a1a;font-weight:600;line-height:1.7;}
-      .ps{font-family:'IBM Plex Mono',monospace;font-size:7pt;letter-spacing:.14em;text-transform:uppercase;color:#F5C518 !important;border-bottom:1pt solid #e0e0e0;padding-bottom:4pt;margin-bottom:8pt;display:block;}
+      .ph{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:8pt;border-bottom:2pt solid #F5C518;margin-bottom:10pt;}
+      .ph-logo{display:flex;align-items:center;gap:6pt;}
+      .ph-icon{width:30pt;height:30pt;background:#0D1B2E;border-radius:4pt;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+      .ph-icon svg{width:16pt;height:16pt;}
+      .ph-name{font-weight:700;font-size:11pt;color:#1a1a1a;}
+      .ph-svc{font-size:7pt;color:#666;margin-top:1pt;}
+      .ph-info{text-align:right;font-size:7.5pt;color:#444;line-height:1.6;}
+      .pd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10pt;}
+      .pd-tipo{font-size:18pt;font-weight:900;text-transform:uppercase;color:#1a1a1a;line-height:1;}
+      .pd-num{font-size:7.5pt;color:#888;margin-top:2pt;}
+      .pd-cli{text-align:right;font-size:8.5pt;color:#1a1a1a;font-weight:600;line-height:1.6;}
+      .ps{font-family:'IBM Plex Mono',monospace;font-size:6.5pt;letter-spacing:.14em;text-transform:uppercase;color:#F5C518 !important;border-bottom:1pt solid #e0e0e0;padding-bottom:3pt;margin-bottom:5pt;display:block;margin-top:8pt;}
       .ps.b{color:#64A0FF !important;}
-      .pt{width:100%;border-collapse:collapse;margin-bottom:4pt;}
-      .pt tr{border-bottom:1pt solid #f0f0f0;}
-      .pt td{padding:4pt 3pt;font-size:9pt;color:#1a1a1a;vertical-align:middle;}
+      .pt{width:100%;border-collapse:collapse;margin-bottom:3pt;}
+      .pt tr{border-bottom:1pt solid #f5f5f5;}
+      .pt td{padding:2.5pt 3pt;font-size:8.5pt;color:#1a1a1a;vertical-align:middle;}
       .pt td.r{text-align:right;}
       .pt td.tot{text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;}
-      .pst{display:flex;justify-content:flex-end;font-size:8.5pt;color:#666;padding:4pt 3pt;border-top:1pt solid #e0e0e0;margin-bottom:12pt;}
+      .pst{display:flex;justify-content:flex-end;font-size:8pt;color:#666;padding:3pt 3pt;border-top:1pt solid #e0e0e0;margin-bottom:6pt;}
       .pst strong{color:#1a1a1a;}
-      .prr{display:flex;justify-content:space-between;align-items:center;padding:3pt 0;border-bottom:1pt solid #f0f0f0;}
+      .prr{display:flex;justify-content:space-between;align-items:center;padding:2.5pt 0;border-bottom:1pt solid #f5f5f5;}
       .prr:last-child{border-bottom:none;}
-      .prl{font-family:'IBM Plex Mono',monospace;font-size:7.5pt;letter-spacing:.1em;text-transform:uppercase;color:#888;}
-      .prv{font-family:'IBM Plex Mono',monospace;font-size:9pt;color:#1a1a1a;}
-      .prr.ptot .prv{font-size:20pt;font-weight:900;color:#F5C518 !important;}
-      .pnote{font-size:8pt;color:#444;margin:10pt 0;padding:8pt;border:1pt solid #eee;background:#fafafa;}
-      .pnlbl{font-family:'IBM Plex Mono',monospace;font-size:6.5pt;letter-spacing:.1em;text-transform:uppercase;color:#999;margin-bottom:4pt;}
-      .pval{font-size:7.5pt;color:#999;margin-top:12pt;padding-top:10pt;border-top:1pt solid #e0e0e0;}
-      .pfirme{display:flex;justify-content:space-around;margin-top:28pt;gap:20pt;}
-      .pfirma{flex:1;border-top:1pt solid #aaa;padding-top:5pt;text-align:center;font-size:7.5pt;color:#888;}
+      .prl{font-family:'IBM Plex Mono',monospace;font-size:7pt;letter-spacing:.1em;text-transform:uppercase;color:#888;}
+      .prv{font-family:'IBM Plex Mono',monospace;font-size:8.5pt;color:#1a1a1a;}
+      .prr.ptot{margin-top:3pt;}
+      .prr.ptot .prv{font-size:18pt;font-weight:900;color:#F5C518 !important;}
+      .pnote{font-size:7.5pt;color:#444;margin:6pt 0;padding:6pt;border:1pt solid #eee;background:#fafafa;}
+      .pnlbl{font-family:'IBM Plex Mono',monospace;font-size:6pt;letter-spacing:.1em;text-transform:uppercase;color:#999;margin-bottom:3pt;}
+      .pval{font-size:7pt;color:#999;margin-top:10pt;padding-top:8pt;border-top:1pt solid #e0e0e0;}
+      .pfirme{display:flex;justify-content:space-around;margin-top:20pt;gap:20pt;}
+      .pfirma{flex:1;border-top:1pt solid #aaa;padding-top:4pt;text-align:center;font-size:7pt;color:#888;}
     }
     @media(max-width:680px){.g2{grid-template-columns:1fr;}}
   </style>
@@ -358,10 +359,9 @@
       <div id="pNoteTxt"></div>
     </div>
     <div class="pval">Il presente documento riporta il dettaglio dei lavori eseguiti e dei materiali utilizzati.</div>
-    <div style="margin-top:8pt;padding-top:8pt;border-top:1pt solid #e0e0e0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6pt;">
-      <span style="font-size:7.5pt;color:#666;">🌐 www.emme2000impiantielettrici.it</span>
-      <span style="font-size:7.5pt;color:#666;">📷 @emme2000_impiantielettrici</span>
-      <span style="font-size:7.5pt;color:#666;">📘 Emme 2000 Impianti Elettrici</span>
+    <div class="pfirme">
+      <div class="pfirma">Firma azienda</div>
+      <div class="pfirma">Firma cliente per accettazione</div>
     </div>
     <div class="pfirme">
       <div class="pfirma">Firma azienda</div>
