@@ -21,6 +21,34 @@
     .hlogo .t1 span{color:var(--gold);}
     .hlogo .t2{font-family:'IBM Plex Mono',monospace;font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);}
     .htag{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(245,197,24,.3);padding:.3rem .7rem;}
+    .harchive{font-family:'IBM Plex Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;background:rgba(245,197,24,.1);color:var(--gold);border:1px solid rgba(245,197,24,.3);padding:.4rem .9rem;cursor:pointer;transition:background .2s;}
+    .harchive:hover{background:rgba(245,197,24,.2);}
+
+    /* ── ARCHIVIO OVERLAY ── */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto;}
+    .overlay.open{display:flex;}
+    .arch-panel{background:var(--navy-mid);border:1px solid rgba(245,197,24,.2);width:min(700px,100%);max-height:85vh;display:flex;flex-direction:column;}
+    .arch-header{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.08);}
+    .arch-title{font-family:'IBM Plex Mono',monospace;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);}
+    .arch-close{background:none;border:none;color:rgba(255,255,255,.4);font-size:1.2rem;cursor:pointer;padding:.2rem .4rem;}
+    .arch-close:hover{color:#fff;}
+    .arch-body{overflow-y:auto;flex:1;}
+    .arch-empty{padding:2rem;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.2);}
+    .arch-item{display:grid;grid-template-columns:1fr auto;align-items:center;gap:1rem;padding:1rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;transition:background .2s;}
+    .arch-item:hover{background:rgba(245,197,24,.05);}
+    .arch-item-info{}
+    .arch-item-num{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
+    .arch-item-cliente{font-size:.9rem;color:#fff;margin:.2rem 0 .15rem;}
+    .arch-item-meta{font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.35);}
+    .arch-item-tot{font-family:'IBM Plex Mono',monospace;font-size:1rem;font-weight:700;color:#fff;text-align:right;white-space:nowrap;}
+    .arch-item-actions{display:flex;gap:.5rem;margin-top:.5rem;}
+    .arch-btn{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .7rem;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;}
+    .arch-btn:hover{border-color:#fff;color:#fff;}
+    .arch-btn.open-btn{border-color:rgba(245,197,24,.3);color:var(--gold);}
+    .arch-btn.open-btn:hover{background:rgba(245,197,24,.1);}
+    .arch-btn.del-btn:hover{border-color:var(--danger);color:var(--danger);}
+    .arch-footer{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:flex-end;}
+    .arch-count{font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.25);}
 
     /* ── LAYOUT ── */
     .app-body{width:min(920px,92vw);margin:2rem auto 0;display:flex;flex-direction:column;gap:1.5rem;}
@@ -186,6 +214,7 @@
       <span class="t2">Impianti Elettrici</span>
     </div>
     <span class="htag">Conto Lavoro</span>
+    <button class="harchive" onclick="apriArchivio()">📁 Archivio</button>
   </div>
 </div>
 
@@ -218,6 +247,14 @@
       <div class="field"><label>Telefono</label><input type="tel" id="cTel" placeholder="339 000 0000" oninput="save()" /></div>
       <div class="field"><label>Indirizzo lavoro</label><input type="text" id="cInd" placeholder="Via Roma 1, Bergamo" oninput="save()" /></div>
       <div class="field"><label>Note cliente</label><input type="text" id="cNote" placeholder="es. appartamento piano 2" oninput="save()" /></div>
+    </div>
+  </div>
+
+  <!-- DESCRIZIONE LAVORO -->
+  <div class="card">
+    <div class="ctitle">Descrizione lavoro</div>
+    <div class="field">
+      <textarea id="descLavoro" placeholder="Descrivi brevemente il lavoro svolto: tipo di intervento, ambienti interessati, eventuali problemi riscontrati..." style="min-height:100px;" oninput="save()"></textarea>
     </div>
   </div>
 
@@ -317,7 +354,23 @@
     </div>
   </div>
 
-  <!-- ═══ DOCUMENTO STAMPA ═══ (nascosto a schermo, visibile in stampa) -->
+  <!-- ═══ ARCHIVIO OVERLAY ═══ -->
+<div class="overlay" id="archOverlay">
+  <div class="arch-panel">
+    <div class="arch-header">
+      <span class="arch-title">📁 Archivio documenti</span>
+      <button class="arch-close" onclick="chiudiArchivio()">✕</button>
+    </div>
+    <div class="arch-body" id="archBody">
+      <div class="arch-empty">Nessun documento salvato</div>
+    </div>
+    <div class="arch-footer">
+      <span class="arch-count" id="archCount"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DOCUMENTO STAMPA ═══ (nascosto a schermo, visibile in stampa) -->
   <div id="printDoc" style="display:none;">
 
     <!-- Intestazione -->
@@ -347,6 +400,12 @@
         <div class="p-docnum" id="pDocNum"></div>
       </div>
       <div class="p-cliente" id="pCliente"></div>
+    </div>
+
+    <!-- Descrizione lavoro -->
+    <div id="pDescLavoro" style="display:none;margin-bottom:14pt;">
+      <span class="p-slabel">Lavoro svolto</span>
+      <div style="font-size:9pt;color:#333;padding:2pt 0;" id="pDescText"></div>
     </div>
 
     <!-- Manodopera -->
@@ -551,6 +610,15 @@
     document.getElementById('pCliente').innerHTML =
       [nome, tel, ind].filter(Boolean).join('<br/>');
 
+    // Descrizione lavoro
+    const desc = document.getElementById('descLavoro').value.trim();
+    if (desc) {
+      document.getElementById('pDescLavoro').style.display = 'block';
+      document.getElementById('pDescText').textContent = desc;
+    } else {
+      document.getElementById('pDescLavoro').style.display = 'none';
+    }
+
     // Tabella manodopera
     const tbManoP = document.getElementById('pTbMano').querySelector('tbody');
     tbManoP.innerHTML = '';
@@ -634,74 +702,171 @@
   }
 
   // ── SALVA / CARICA ──
+  function getData() {
+    const mano = [];
+    document.querySelectorAll('#tbMano tr').forEach(tr => {
+      const data = tr.querySelector('input[type="date"]')?.value || '';
+      const desc = tr.querySelectorAll('input[type="text"]')[0]?.value || '';
+      const ins = tr.querySelectorAll('input[type="number"]');
+      mano.push({ data, desc, ore: ins[0]?.value||'', pr: ins[1]?.value||'' });
+    });
+    const mat = [];
+    document.querySelectorAll('#tbMat tr').forEach(tr => {
+      const desc = tr.querySelector('input[type="text"]')?.value || '';
+      const ins = tr.querySelectorAll('input[type="number"]');
+      const um = tr.querySelector('select')?.value || 'pz';
+      mat.push({ desc, qty: ins[0]?.value||'', um, pr: ins[1]?.value||'' });
+    });
+    // Calcola totale corrente
+    let totMano = 0, totMat = 0;
+    mano.forEach(r => { totMano += (parseFloat(r.ore)||0)*(parseFloat(r.pr)||0); });
+    mat.forEach(r => { totMat += (parseFloat(r.qty)||0)*(parseFloat(r.pr)||0); });
+    const sub = totMano + totMat;
+    const sv = parseFloat(document.getElementById('scontoVal').value)||0;
+    const scontoAmt = scontoTipo==='pct' ? sub*sv/100 : Math.min(sv,sub);
+    const imp = sub - scontoAmt;
+    const ivaPerc = parseFloat(document.getElementById('ivaPerc').value)||22;
+    const ivaAmt = ivaOn ? imp*ivaPerc/100 : 0;
+    const totale = imp + ivaAmt;
+
+    return {
+      docNum: document.getElementById('docNum').value,
+      docData: document.getElementById('docData').value,
+      cNome: document.getElementById('cNome').value,
+      cTel: document.getElementById('cTel').value,
+      cInd: document.getElementById('cInd').value,
+      cNote: document.getElementById('cNote').value,
+      descLavoro: document.getElementById('descLavoro').value,
+      noteLavoro: document.getElementById('noteLavoro').value,
+      scontoVal: document.getElementById('scontoVal').value,
+      scontoTipo, ivaOn,
+      ivaPerc: document.getElementById('ivaPerc').value,
+      mano, mat, totale,
+      savedAt: new Date().toISOString()
+    };
+  }
+
   function save() {
     try {
-      const mano = [];
-      document.querySelectorAll('#tbMano tr').forEach(tr => {
-        const data = tr.querySelector('input[type="date"]')?.value || '';
-        const desc = tr.querySelectorAll('input[type="text"]')[0]?.value || '';
-        const ins = tr.querySelectorAll('input[type="number"]');
-        mano.push({ data, desc, ore: ins[0]?.value||'', pr: ins[1]?.value||'' });
-      });
-      const mat = [];
-      document.querySelectorAll('#tbMat tr').forEach(tr => {
-        const desc = tr.querySelector('input[type="text"]')?.value || '';
-        const ins = tr.querySelectorAll('input[type="number"]');
-        const um = tr.querySelector('select')?.value || 'pz';
-        mat.push({ desc, qty: ins[0]?.value||'', um, pr: ins[1]?.value||'' });
-      });
-      localStorage.setItem('em2k_conto', JSON.stringify({
-        docNum: document.getElementById('docNum').value,
-        docData: document.getElementById('docData').value,
-        cNome: document.getElementById('cNome').value,
-        cTel: document.getElementById('cTel').value,
-        cInd: document.getElementById('cInd').value,
-        cNote: document.getElementById('cNote').value,
-        noteLavoro: document.getElementById('noteLavoro').value,
-        scontoVal: document.getElementById('scontoVal').value,
-        scontoTipo, ivaOn,
-        ivaPerc: document.getElementById('ivaPerc').value,
-        mano, mat
-      }));
+      const d = getData();
+      // Salva documento corrente
+      localStorage.setItem('em2k_conto', JSON.stringify(d));
+      // Salva in archivio se ha numero documento
+      if (d.docNum.trim()) {
+        const arch = getArchivio();
+        const idx = arch.findIndex(x => x.docNum === d.docNum.trim());
+        if (idx >= 0) arch[idx] = d;
+        else arch.unshift(d);
+        localStorage.setItem('em2k_archivio', JSON.stringify(arch));
+      }
     } catch(e){}
+  }
+
+  function getArchivio() {
+    try { return JSON.parse(localStorage.getItem('em2k_archivio')) || []; }
+    catch(e) { return []; }
   }
 
   function carica() {
     try {
       const raw = localStorage.getItem('em2k_conto');
       if (!raw) return;
-      const d = JSON.parse(raw);
-      document.getElementById('docNum').value = d.docNum || '';
-      document.getElementById('docData').value = d.docData || '';
-      document.getElementById('cNome').value = d.cNome || '';
-      document.getElementById('cTel').value = d.cTel || '';
-      document.getElementById('cInd').value = d.cInd || '';
-      document.getElementById('cNote').value = d.cNote || '';
-      document.getElementById('noteLavoro').value = d.noteLavoro || '';
-      document.getElementById('scontoVal').value = d.scontoVal || 0;
-      document.getElementById('ivaPerc').value = d.ivaPerc || 22;
-      if (d.scontoTipo && d.scontoTipo !== scontoTipo) setScontoTipo(d.scontoTipo);
-      if (d.ivaOn) toggleIva();
-      document.getElementById('tbMano').innerHTML = '';
-      (d.mano||[]).forEach(r => addMano(r.data, r.desc, r.ore, r.pr));
-      document.getElementById('tbMat').innerHTML = '';
-      (d.mat||[]).forEach(r => addMat(r.desc, r.qty, r.um, r.pr));
-      updateMeta();
-      calcola();
+      caricaDati(JSON.parse(raw));
     } catch(e){}
   }
 
+  function caricaDati(d) {
+    document.getElementById('docNum').value = d.docNum || '';
+    document.getElementById('docData').value = d.docData || '';
+    document.getElementById('cNome').value = d.cNome || '';
+    document.getElementById('cTel').value = d.cTel || '';
+    document.getElementById('cInd').value = d.cInd || '';
+    document.getElementById('cNote').value = d.cNote || '';
+    document.getElementById('descLavoro').value = d.descLavoro || '';
+    document.getElementById('noteLavoro').value = d.noteLavoro || '';
+    document.getElementById('scontoVal').value = d.scontoVal || 0;
+    document.getElementById('ivaPerc').value = d.ivaPerc || 22;
+    if (d.scontoTipo && d.scontoTipo !== scontoTipo) setScontoTipo(d.scontoTipo);
+    if (d.ivaOn && !ivaOn) toggleIva();
+    else if (!d.ivaOn && ivaOn) toggleIva();
+    document.getElementById('tbMano').innerHTML = '';
+    (d.mano||[]).forEach(r => addMano(r.data, r.desc, r.ore, r.pr));
+    if (!document.getElementById('tbMano').children.length) addMano();
+    document.getElementById('tbMat').innerHTML = '';
+    (d.mat||[]).forEach(r => addMat(r.desc, r.qty, r.um, r.pr));
+    if (!document.getElementById('tbMat').children.length) addMat();
+    updateMeta();
+    calcola();
+  }
+
+  // ── ARCHIVIO ──
+  function apriArchivio() {
+    const arch = getArchivio();
+    const body = document.getElementById('archBody');
+    const count = document.getElementById('archCount');
+    if (!arch.length) {
+      body.innerHTML = '<div class="arch-empty">Nessun documento salvato</div>';
+      count.textContent = '';
+    } else {
+      count.textContent = arch.length + ' document' + (arch.length===1?'o':'i');
+      body.innerHTML = arch.map((d,i) => `
+        <div class="arch-item">
+          <div class="arch-item-info">
+            <div class="arch-item-num">${d.docNum || 'Senza numero'}</div>
+            <div class="arch-item-cliente">${d.cNome || 'Cliente non specificato'}</div>
+            <div class="arch-item-meta">
+              ${d.docData ? new Date(d.docData).toLocaleDateString('it-IT') : '—'}
+              ${d.cInd ? ' · ' + d.cInd : ''}
+            </div>
+            <div class="arch-item-actions">
+              <button class="arch-btn open-btn" onclick="apriDoc(${i})">↗ Apri e modifica</button>
+              <button class="arch-btn del-btn" onclick="eliminaDoc(${i})">✕ Elimina</button>
+            </div>
+          </div>
+          <div class="arch-item-tot">${d.totale !== undefined ? eur(d.totale) : '—'}</div>
+        </div>`).join('');
+    }
+    document.getElementById('archOverlay').classList.add('open');
+  }
+
+  function chiudiArchivio() {
+    document.getElementById('archOverlay').classList.remove('open');
+  }
+
+  function apriDoc(i) {
+    const arch = getArchivio();
+    if (!arch[i]) return;
+    if (!confirm('Aprire "' + (arch[i].docNum || 'questo documento') + '"? Il documento corrente verrà sovrascritto.')) return;
+    localStorage.setItem('em2k_conto', JSON.stringify(arch[i]));
+    chiudiArchivio();
+    caricaDati(arch[i]);
+  }
+
+  function eliminaDoc(i) {
+    const arch = getArchivio();
+    if (!arch[i]) return;
+    if (!confirm('Eliminare "' + (arch[i].docNum || 'questo documento') + '" dall\'archivio?')) return;
+    arch.splice(i, 1);
+    localStorage.setItem('em2k_archivio', JSON.stringify(arch));
+    apriArchivio(); // Aggiorna la lista
+  }
+
   function nuovoDoc() {
-    if (!confirm('Iniziare un nuovo documento?')) return;
+    if (!confirm('Iniziare un nuovo documento? Quello corrente è già salvato in archivio se ha un numero.')) return;
     localStorage.removeItem('em2k_conto');
     location.reload();
   }
 
   function resetTutto() {
-    if (!confirm('Cancellare tutto?')) return;
+    if (!confirm('Cancellare il documento corrente?')) return;
     localStorage.removeItem('em2k_conto');
     location.reload();
   }
+
+  // Chiudi archivio cliccando fuori
+  document.getElementById('archOverlay').addEventListener('click', function(e) {
+    if (e.target === this) chiudiArchivio();
+  });
 
   // ── EUR FORMAT ──
   function eur(v) {
