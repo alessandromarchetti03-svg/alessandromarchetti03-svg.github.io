@@ -41,6 +41,7 @@ const emptyForm = () => ({
   lavoro: "",
   ore: "",
   tariffaOraria: "35",
+  persone: "1",
   materiali: [{ id: uid(), desc: "", quantita: "1", unita: "pz", prezzoUnitario: "" }],
   scontoTipo: "percentuale",
   scontoValore: "",
@@ -122,7 +123,7 @@ function App() {
     setForm((f) => ({ ...f, materiali: f.materiali.filter((m) => m.id !== id) }));
   }
 
-  const subtotaleManodopera = (Number(form.ore) || 0) * (Number(form.tariffaOraria) || 0);
+  const subtotaleManodopera = (Number(form.ore) || 0) * (Number(form.tariffaOraria) || 0) * (Number(form.persone) || 1);
   const subtotaleMateriali = form.materiali.reduce((sum, m) => sum + (Number(m.quantita) || 0) * (Number(m.prezzoUnitario) || 0), 0);
   const totaleLordo = subtotaleManodopera + subtotaleMateriali;
   const scontoValoreCalc = form.scontoTipo === "percentuale"
@@ -161,6 +162,7 @@ function App() {
         lavoro: form.lavoro,
         ore: Number(form.ore) || 0,
         tariffaOraria: Number(form.tariffaOraria) || 0,
+        persone: Number(form.persone) || 1,
         materiali: materialiCalcolati,
         scontoTipo: form.scontoTipo,
         scontoValore: Number(form.scontoValore) || 0,
@@ -187,6 +189,7 @@ function App() {
       lavoro: form.lavoro,
       ore: Number(form.ore) || 0,
       tariffaOraria: Number(form.tariffaOraria) || 0,
+      persone: Number(form.persone) || 1,
       materiali: materialiCalcolati,
       scontoTipo: form.scontoTipo,
       scontoValore: Number(form.scontoValore) || 0,
@@ -216,6 +219,7 @@ function App() {
       lavoro: doc.lavoro || "",
       ore: String(doc.ore ?? ""),
       tariffaOraria: String(doc.tariffaOraria ?? "35"),
+      persone: String(doc.persone ?? "1"),
       materiali: doc.materiali && doc.materiali.length
         ? doc.materiali.map((m) => ({
             id: m.id || uid(),
@@ -300,10 +304,14 @@ function App() {
               <textarea rows="4" value={form.lavoro} onChange={(e) => updateForm("lavoro", e.target.value)} placeholder="Descrizione dell'intervento..." />
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="field">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }} className="field">
               <div>
                 <label>Ore previste</label>
                 <input type="number" min="0" step="0.5" value={form.ore} onChange={(e) => updateForm("ore", e.target.value)} placeholder="0" />
+              </div>
+              <div>
+                <label>Persone</label>
+                <input type="number" min="1" step="1" value={form.persone} onChange={(e) => updateForm("persone", e.target.value)} placeholder="1" />
               </div>
               <div>
                 <label>Tariffa oraria (€)</label>
@@ -311,7 +319,7 @@ function App() {
               </div>
             </div>
             <div style={{ fontSize: 13, color: STEEL, marginTop: -8, marginBottom: 16 }}>
-              Manodopera: <strong style={{ color: NAVY_DARK }}>{fmt(subtotaleManodopera)}</strong>
+              Manodopera ({form.ore || 0} h × {form.persone || 1} pers. × {fmt(form.tariffaOraria)}): <strong style={{ color: NAVY_DARK }}>{fmt(subtotaleManodopera)}</strong>
             </div>
 
             <label>Materiali</label>
@@ -363,7 +371,7 @@ function App() {
             <div style={{ color: STEEL, fontSize: 14, marginBottom: 18 }}>{form.cliente} · {todayStr()}</div>
 
             <div style={{ background: PAPER, borderRadius: 8, padding: 16, marginBottom: 18 }}>
-              <Riga label="Manodopera" value={fmt(subtotaleManodopera)} sub={`${form.ore || 0} h × ${fmt(form.tariffaOraria)}`} />
+              <Riga label="Manodopera" value={fmt(subtotaleManodopera)} sub={`${form.ore || 0} h × ${form.persone || 1} pers. × ${fmt(form.tariffaOraria)}`} />
               <Riga label="Materiali" value={fmt(subtotaleMateriali)} />
               <hr style={{ border: "none", borderTop: "1px solid #d6d2c4", margin: "10px 0" }} />
               <Riga label="Totale lordo" value={fmt(totaleLordo)} bold />
@@ -501,7 +509,7 @@ function DocumentoPreventivo({ doc, company }) {
       <table style={{ width: "100%", fontSize: 14, borderCollapse: "collapse", marginBottom: 6 }}>
         <tbody>
           <tr>
-            <td style={{ padding: "7px 0", color: NAVY_DARK }}>Manodopera ({doc.ore} h × {fmt(doc.tariffaOraria)})</td>
+            <td style={{ padding: "7px 0", color: NAVY_DARK }}>Manodopera ({doc.ore} h × {doc.persone || 1} pers. × {fmt(doc.tariffaOraria)})</td>
             <td style={{ padding: "7px 0", textAlign: "right", color: NAVY_DARK }}>{fmt(doc.subtotaleManodopera)}</td>
           </tr>
           {doc.materiali.map((m) => (
