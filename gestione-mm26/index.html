@@ -88,6 +88,7 @@ function App() {
   const [companyDraft, setCompanyDraft] = useState(defaultCompany);
   const [store, setStoreState] = useState({ counter: 0, list: [] });
   const [current, setCurrent] = useState(null);
+  const [editingId, setEditingId] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -143,6 +144,37 @@ function App() {
   }
 
   function confermaEGenera() {
+    const materialiCalcolati = form.materiali
+      .filter((m) => m.desc.trim() || m.prezzoUnitario)
+      .map((m) => ({
+        ...m,
+        totaleRiga: (Number(m.quantita) || 0) * (Number(m.prezzoUnitario) || 0),
+      }));
+
+    if (editingId) {
+      const esistente = store.list.find((d) => d.id === editingId);
+      const aggiornato = {
+        ...esistente,
+        cliente: form.cliente,
+        telefono: form.telefono,
+        indirizzo: form.indirizzo,
+        lavoro: form.lavoro,
+        ore: Number(form.ore) || 0,
+        tariffaOraria: Number(form.tariffaOraria) || 0,
+        materiali: materialiCalcolati,
+        scontoTipo: form.scontoTipo,
+        scontoValore: Number(form.scontoValore) || 0,
+        note: form.note,
+        subtotaleManodopera, subtotaleMateriali, totaleLordo, scontoValoreCalc, totaleNetto,
+      };
+      const nextList = store.list.map((d) => (d.id === editingId ? aggiornato : d));
+      persistStore({ ...store, list: nextList });
+      setCurrent(aggiornato);
+      setEditingId(null);
+      setView("documento");
+      return;
+    }
+
     const numero = store.counter + 1;
     const anno = new Date().getFullYear();
     const doc = {
@@ -155,12 +187,7 @@ function App() {
       lavoro: form.lavoro,
       ore: Number(form.ore) || 0,
       tariffaOraria: Number(form.tariffaOraria) || 0,
-      materiali: form.materiali
-        .filter((m) => m.desc.trim() || m.prezzoUnitario)
-        .map((m) => ({
-          ...m,
-          totaleRiga: (Number(m.quantita) || 0) * (Number(m.prezzoUnitario) || 0),
-        })),
+      materiali: materialiCalcolati,
       scontoTipo: form.scontoTipo,
       scontoValore: Number(form.scontoValore) || 0,
       note: form.note,
@@ -174,11 +201,38 @@ function App() {
   function nuovoPreventivo() {
     setForm(emptyForm());
     setCurrent(null);
+    setEditingId(null);
     setError("");
     setView("form");
   }
-  function apriDaStorico(doc) { setCurrent(doc); setView("documento"); }
+  function apriDaStorico(doc) { setCurrent(doc); setEditingId(null); setView("documento"); }
   function eliminaDaStorico(id) { persistStore({ ...store, list: store.list.filter((d) => d.id !== id) }); }
+
+  function modificaPreventivo(doc) {
+    setForm({
+      cliente: doc.cliente || "",
+      telefono: doc.telefono || "",
+      indirizzo: doc.indirizzo || "",
+      lavoro: doc.lavoro || "",
+      ore: String(doc.ore ?? ""),
+      tariffaOraria: String(doc.tariffaOraria ?? "35"),
+      materiali: doc.materiali && doc.materiali.length
+        ? doc.materiali.map((m) => ({
+            id: m.id || uid(),
+            desc: m.desc || "",
+            quantita: String(m.quantita ?? "1"),
+            unita: m.unita || "pz",
+            prezzoUnitario: String(m.prezzoUnitario ?? ""),
+          }))
+        : [{ id: uid(), desc: "", quantita: "1", unita: "pz", prezzoUnitario: "" }],
+      scontoTipo: doc.scontoTipo || "percentuale",
+      scontoValore: String(doc.scontoValore ?? ""),
+      note: doc.note || "",
+    });
+    setEditingId(doc.id);
+    setError("");
+    setView("form");
+  }
   function stampa() { window.print(); }
 
   return (
@@ -341,16 +395,19 @@ function App() {
 
             <div style={{ display: "flex", gap: 10 }}>
               <button onClick={() => setView("form")} className="btn btn-secondary" style={{ flex: 1 }}>← Modifica</button>
-              <button onClick={confermaEGenera} className="btn btn-primary" style={{ flex: 2 }}>Confermo, genera documento</button>
+              <button onClick={confermaEGenera} className="btn btn-primary" style={{ flex: 2 }}>{editingId ? "Salva modifiche" : "Confermo, genera documento"}</button>
             </div>
           </div>
         )}
 
         {view === "documento" && current && (
           <React.Fragment>
-            <div className="no-print" style={{ display: "flex", gap: 10, marginBottom: 16 }}>
-              <button onClick={stampa} className="btn btn-primary" style={{ flex: 1 }}>🖨️ Stampa / Salva PDF</button>
-              <button onClick={nuovoPreventivo} className="btn btn-secondary" style={{ flex: 1 }}>+ Nuovo preventivo</button>
+            <div className="no-print" style={{ marginBottom: 16 }}>
+              <button onClick={stampa} className="btn btn-primary" style={{ width: "100%", marginBottom: 10 }}>🖨️ Stampa / Salva PDF</button>
+              <div style={{ display: "flex", gap: 10 }}>
+                <button onClick={() => modificaPreventivo(current)} className="btn btn-secondary" style={{ flex: 1 }}>✎ Modifica</button>
+                <button onClick={nuovoPreventivo} className="btn btn-secondary" style={{ flex: 1 }}>+ Nuovo</button>
+              </div>
             </div>
             <DocumentoPreventivo doc={current} company={company} />
           </React.Fragment>
@@ -366,8 +423,9 @@ function App() {
                   <div style={{ fontWeight: 700, color: NAVY_DARK }}>{d.cliente}</div>
                   <div style={{ fontSize: 13, color: STEEL }}>N° {d.numero} · {d.data} · {fmt(d.totaleNetto)}</div>
                 </div>
-                <div style={{ display: "flex", gap: 8 }}>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                   <button onClick={() => apriDaStorico(d)} className="btn btn-secondary" style={{ padding: "7px 12px", fontSize: 13 }}>Apri</button>
+                  <button onClick={() => modificaPreventivo(d)} className="btn btn-secondary" style={{ padding: "7px 12px", fontSize: 13 }}>Modifica</button>
                   <button onClick={() => eliminaDaStorico(d.id)} className="btn btn-danger" style={{ padding: "7px 12px", fontSize: 13 }}>Elimina</button>
                 </div>
               </div>
