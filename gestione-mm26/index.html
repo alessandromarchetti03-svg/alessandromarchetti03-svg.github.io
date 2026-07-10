@@ -508,7 +508,7 @@ function DocumentoPreventivo({ doc, company }) {
             <tr key={m.id}>
               <td style={{ padding: "5px 0", color: STEEL }}>
                 Materiale — {m.desc || "—"}
-                <span style={{ color: "#a8a396" }}> ({m.quantita} {m.unita} × {fmt(m.prezzoUnitario)})</span>
+                <span style={{ color: STEEL }}> ({m.quantita} {m.unita} × {fmt(m.prezzoUnitario)})</span>
               </td>
               <td style={{ padding: "5px 0", textAlign: "right", color: STEEL }}>{fmt(m.totaleRiga)}</td>
             </tr>
