@@ -41,7 +41,7 @@ const emptyForm = () => ({
   lavoro: "",
   ore: "",
   tariffaOraria: "35",
-  materiali: [{ id: uid(), desc: "", costo: "" }],
+  materiali: [{ id: uid(), desc: "", quantita: "1", unita: "pz", prezzoUnitario: "" }],
   scontoTipo: "percentuale",
   scontoValore: "",
   note: "",
@@ -115,14 +115,14 @@ function App() {
     setForm((f) => ({ ...f, materiali: f.materiali.map((m) => m.id === id ? { ...m, [field]: value } : m) }));
   }
   function addMateriale() {
-    setForm((f) => ({ ...f, materiali: [...f.materiali, { id: uid(), desc: "", costo: "" }] }));
+    setForm((f) => ({ ...f, materiali: [...f.materiali, { id: uid(), desc: "", quantita: "1", unita: "pz", prezzoUnitario: "" }] }));
   }
   function removeMateriale(id) {
     setForm((f) => ({ ...f, materiali: f.materiali.filter((m) => m.id !== id) }));
   }
 
   const subtotaleManodopera = (Number(form.ore) || 0) * (Number(form.tariffaOraria) || 0);
-  const subtotaleMateriali = form.materiali.reduce((sum, m) => sum + (Number(m.costo) || 0), 0);
+  const subtotaleMateriali = form.materiali.reduce((sum, m) => sum + (Number(m.quantita) || 0) * (Number(m.prezzoUnitario) || 0), 0);
   const totaleLordo = subtotaleManodopera + subtotaleMateriali;
   const scontoValoreCalc = form.scontoTipo === "percentuale"
     ? (totaleLordo * (Number(form.scontoValore) || 0)) / 100
@@ -155,7 +155,12 @@ function App() {
       lavoro: form.lavoro,
       ore: Number(form.ore) || 0,
       tariffaOraria: Number(form.tariffaOraria) || 0,
-      materiali: form.materiali.filter((m) => m.desc.trim() || m.costo),
+      materiali: form.materiali
+        .filter((m) => m.desc.trim() || m.prezzoUnitario)
+        .map((m) => ({
+          ...m,
+          totaleRiga: (Number(m.quantita) || 0) * (Number(m.prezzoUnitario) || 0),
+        })),
       scontoTipo: form.scontoTipo,
       scontoValore: Number(form.scontoValore) || 0,
       note: form.note,
@@ -256,13 +261,39 @@ function App() {
             </div>
 
             <label>Materiali</label>
-            {form.materiali.map((m) => (
-              <div key={m.id} style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-                <input placeholder="Descrizione materiale" value={m.desc} onChange={(e) => updateMateriale(m.id, "desc", e.target.value)} style={{ flex: 2 }} />
-                <input placeholder="€" type="number" min="0" step="1" value={m.costo} onChange={(e) => updateMateriale(m.id, "costo", e.target.value)} style={{ flex: 1 }} />
-                <button className="btn-danger btn" onClick={() => removeMateriale(m.id)} style={{ padding: "9px 12px" }}>✕</button>
-              </div>
-            ))}
+            {form.materiali.map((m) => {
+              const totaleRiga = (Number(m.quantita) || 0) * (Number(m.prezzoUnitario) || 0);
+              return (
+                <div key={m.id} style={{ border: "1px solid #e6e2d4", borderRadius: 8, padding: 10, marginBottom: 10 }}>
+                  <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+                    <input placeholder="Descrizione materiale" value={m.desc} onChange={(e) => updateMateriale(m.id, "desc", e.target.value)} style={{ flex: 1 }} />
+                    <button className="btn-danger btn" onClick={() => removeMateriale(m.id)} style={{ padding: "9px 12px" }}>✕</button>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1.3fr", gap: 8 }}>
+                    <div>
+                      <label style={{ fontSize: 11, marginBottom: 3 }}>Quantità</label>
+                      <input type="number" min="0" step="0.5" placeholder="1" value={m.quantita} onChange={(e) => updateMateriale(m.id, "quantita", e.target.value)} />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: 11, marginBottom: 3 }}>Unità</label>
+                      <select value={m.unita} onChange={(e) => updateMateriale(m.id, "unita", e.target.value)}>
+                        <option value="pz">pz</option>
+                        <option value="mt">mt</option>
+                        <option value="kg">kg</option>
+                        <option value="l">l</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label style={{ fontSize: 11, marginBottom: 3 }}>Prezzo unitario (€)</label>
+                      <input type="number" min="0" step="0.01" placeholder="0.00" value={m.prezzoUnitario} onChange={(e) => updateMateriale(m.id, "prezzoUnitario", e.target.value)} />
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "right", fontSize: 13, color: STEEL, marginTop: 6 }}>
+                    Totale riga: <strong style={{ color: NAVY_DARK }}>{fmt(totaleRiga)}</strong>
+                  </div>
+                </div>
+              );
+            })}
             <button onClick={addMateriale} className="btn btn-secondary" style={{ fontSize: 13, padding: "8px 14px", marginBottom: 10 }}>+ Aggiungi materiale</button>
             <div style={{ fontSize: 13, color: STEEL, marginBottom: 20 }}>
               Materiali: <strong style={{ color: NAVY_DARK }}>{fmt(subtotaleMateriali)}</strong>
@@ -417,8 +448,11 @@ function DocumentoPreventivo({ doc, company }) {
           </tr>
           {doc.materiali.map((m) => (
             <tr key={m.id}>
-              <td style={{ padding: "5px 0", color: STEEL }}>Materiale — {m.desc || "—"}</td>
-              <td style={{ padding: "5px 0", textAlign: "right", color: STEEL }}>{fmt(m.costo)}</td>
+              <td style={{ padding: "5px 0", color: STEEL }}>
+                Materiale — {m.desc || "—"}
+                <span style={{ color: "#a8a396" }}> ({m.quantita} {m.unita} × {fmt(m.prezzoUnitario)})</span>
+              </td>
+              <td style={{ padding: "5px 0", textAlign: "right", color: STEEL }}>{fmt(m.totaleRiga)}</td>
             </tr>
           ))}
           <tr>
