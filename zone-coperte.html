@@ -3,14 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contatti | Emme 2000 — Preventivo Gratuito Bergamo e Brescia</title>
-  <meta name="description" content="Contatta Emme 2000 per un preventivo gratuito su sistemi di sicurezza, allarmi, videosorveglianza e impianti elettrici a Bergamo e Brescia. Risposta entro 24 ore." />
+  <title>Operatività | Emme 2000 — Zone Coperte Bergamo e Brescia</title>
+  <meta name="description" content="Emme 2000 opera in 20 comuni della provincia di Bergamo e Brescia. Villongo, Sarnico, Seriate, Lovere e dintorni. Preventivo gratuito." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.emme2000impiantielettrici.it/contatti.html" />
-  <meta property="og:title" content="Contatti | Emme 2000 — Preventivo Gratuito" />
-  <meta property="og:description" content="Richiedi un preventivo gratuito per sistemi di sicurezza e impianti elettrici a Bergamo e Brescia." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.emme2000impiantielettrici.it/contatti.html" />
+  <link rel="canonical" href="https://www.emme2000impiantielettrici.it/zone-coperte.html" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png" />
@@ -34,43 +30,48 @@
     .nav-cta:hover{background:var(--blue2)!important;}
     .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
     .burger span{display:block;width:24px;height:2px;background:var(--pure);border-radius:2px;}
-    .mobile-menu{display:none;position:fixed;inset:0;z-index:199;background:var(--black);flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;}
+    .mobile-menu{display:none;position:fixed;inset:0;z-index:999;background:var(--black);flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;}
     .mobile-menu.open{display:flex;}
     .mobile-menu a{font-size:1.5rem;font-weight:700;color:var(--lighter);}
     .mobile-menu a.nav-cta{background:var(--blue);color:var(--pure)!important;padding:0.7rem 2rem;border-radius:8px;font-size:1rem!important;}
     .mobile-close{position:absolute;top:1.5rem;right:5%;font-size:1.5rem;color:var(--mid);cursor:pointer;background:none;border:none;}
     .section{padding-block:var(--gap);}
-    .section-label{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue-light);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.75rem;}
-    .section-label::before{content:'';display:block;width:24px;height:1px;background:var(--blue-light);}
     .section-title{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:800;letter-spacing:-0.02em;color:#FFFFFF;line-height:1.1;margin-bottom:1rem;}
-    .section-sub{font-size:1rem;color:var(--lighter);line-height:1.8;}
-    .btn-blue{display:inline-flex;align-items:center;gap:0.5rem;background:var(--blue);color:var(--pure);font-size:0.88rem;font-weight:600;padding:0.85rem 1.8rem;border-radius:8px;transition:background 0.2s;border:none;cursor:pointer;width:100%;justify-content:center;margin-top:0.5rem;}
+    .btn-blue{display:inline-flex;align-items:center;gap:0.5rem;background:var(--blue);color:var(--pure);font-size:0.88rem;font-weight:600;padding:0.85rem 1.8rem;border-radius:8px;transition:background 0.2s;border:none;cursor:pointer;}
     .btn-blue:hover{background:var(--blue2);}
+    .btn-ghost{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:var(--lighter);font-size:0.88rem;font-weight:500;padding:0.85rem 1.8rem;border-radius:8px;border:1px solid var(--grey2);transition:border-color 0.2s,color 0.2s;}
+    .btn-ghost:hover{border-color:var(--light);color:var(--pure);}
+    .btn-outline{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:var(--blue);font-size:0.88rem;font-weight:600;padding:0.85rem 1.8rem;border-radius:8px;border:2px solid var(--blue);transition:background 0.2s,color 0.2s;}
+    .btn-outline:hover{background:var(--blue);color:var(--pure);}
     .page-hero{padding-top:calc(var(--gap) + 4rem);padding-bottom:var(--gap);background:var(--black);border-bottom:1px solid rgba(255,255,255,0.06);position:relative;overflow:hidden;}
-    .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(27,110,243,0.08) 0%,transparent 70%);pointer-events:none;}
+    .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 70% 50%,rgba(27,110,243,0.08) 0%,transparent 70%);pointer-events:none;}
     .breadcrumb{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid);margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem;}
     .breadcrumb a{color:var(--mid);}
     .breadcrumb a:hover{color:var(--blue-light);}
     .breadcrumb span{color:var(--grey2);}
-    /* CONTATTI */
-    .contatti-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
-    .contact-links{display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;margin-bottom:2rem;}
-    .cl{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.4rem;background:var(--dark2);transition:background 0.2s;}
+    /* COMUNI GRID */
+    .comuni-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;margin-top:2.5rem;}
+    .comune-btn{background:var(--dark2);padding:1.4rem 1.5rem;display:flex;flex-direction:column;gap:0.4rem;transition:background 0.2s,border-color 0.2s;border:1px solid transparent;cursor:pointer;}
+    .comune-btn:hover{background:var(--dark3);border-color:rgba(27,110,243,0.3);}
+    .comune-btn.sede{background:rgba(27,110,243,0.08);border-color:rgba(27,110,243,0.2);}
+    .comune-btn .sede-tag{font-family:'IBM Plex Mono',monospace;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue-light);margin-bottom:0.2rem;}
+    .comune-btn .cn{font-family:'Inter',sans-serif;font-size:0.95rem;font-weight:600;color:var(--pure);}
+    .comune-btn.sede .cn{color:var(--blue-light);}
+    .comune-btn .ca{font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);opacity:0;transition:opacity 0.2s;}
+    .comune-btn:hover .ca{opacity:1;}
+    /* FUORI AREA */
+    .fuori-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+    .contact-links{display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;}
+    .cl{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.3rem;background:var(--dark2);transition:background 0.2s;}
     .cl:hover{background:var(--dark3);}
-    .cl-icon{width:40px;height:40px;background:var(--blue-glow);border:1px solid rgba(27,110,243,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-    .cl-icon svg{width:18px;height:18px;color:var(--blue);}
+    .cl-icon{width:38px;height:38px;background:var(--blue-glow);border:1px solid rgba(27,110,243,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .cl-icon svg{width:17px;height:17px;color:var(--blue);}
     .cl strong{display:block;font-size:0.88rem;font-weight:600;color:var(--pure);}
     .cl span{font-size:0.75rem;color:var(--mid);}
-    .orari{background:var(--dark2);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:1.5rem;margin-bottom:2rem;}
-    .orari-title{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue-light);margin-bottom:1rem;}
-    .orari-row{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);font-size:0.85rem;}
-    .orari-row:last-child{border-bottom:none;}
-    .orari-row .day{color:var(--light);}
-    .orari-row .time{color:var(--pure);font-weight:500;}
     /* FORM */
     .form-card{background:var(--dark2);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:2.5rem;position:relative;overflow:hidden;}
     .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
-    .form-title{font-size:1.2rem;font-weight:700;color:var(--pure);margin-bottom:0.3rem;}
+    .form-title{font-size:1.1rem;font-weight:700;color:var(--pure);margin-bottom:0.3rem;}
     .form-sub{font-size:0.82rem;color:var(--mid);margin-bottom:1.5rem;}
     .fg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
     .f{display:flex;flex-direction:column;gap:0.4rem;}
@@ -79,16 +80,10 @@
     .f input:focus,.f textarea:focus,.f select:focus{border-color:var(--blue);}
     .f input::placeholder,.f textarea::placeholder{color:var(--grey2);}
     .f select option{background:var(--dark2);}
-    .f textarea{resize:vertical;min-height:110px;}
+    .f textarea{resize:vertical;min-height:100px;}
     .f.full{grid-column:1/-1;}
-    #fmsg{display:none;margin-top:1rem;font-size:0.78rem;text-align:center;font-family:'IBM Plex Mono',monospace;}
-    /* MAP */
-    .map-wrap{border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.07);height:280px;background:var(--dark2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;}
-    .map-wrap:hover{background:var(--dark3);}
-    .map-inner{text-align:center;}
-    .map-inner svg{width:48px;height:48px;color:var(--blue);margin-bottom:1rem;}
-    .map-inner p{font-size:0.88rem;color:var(--light);margin-bottom:1rem;}
-    .map-inner span{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue-light);}
+    #fmsg{display:none;margin-top:1rem;font-size:0.78rem;text-align:center;}
+    /* FOOTER */
     footer{background:var(--black);border-top:1px solid rgba(255,255,255,0.06);padding-block:3rem;}
     .footer-inner{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem;}
     .footer-slogan{font-family:'IBM Plex Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;color:var(--grey2);font-style:italic;margin-bottom:1rem;}
@@ -113,7 +108,8 @@
     .ca2{display:flex;gap:0.75rem;}
     .cacc{background:var(--blue);color:var(--pure);font-size:0.8rem;font-weight:600;padding:0.6rem 1.4rem;border-radius:6px;border:none;cursor:pointer;}
     .cref{background:transparent;color:var(--mid);font-size:0.8rem;padding:0.6rem 1.2rem;border-radius:6px;border:1px solid var(--grey2);cursor:pointer;}
-    @media(max-width:900px){.nav-links{display:none;}.burger{display:flex;}.contatti-grid{grid-template-columns:1fr;gap:3rem;}.fg{grid-template-columns:1fr;}.f.full{grid-column:1;}.footer-inner{grid-template-columns:1fr;gap:2rem;}.footer-bottom{flex-direction:column;text-align:center;}.ci{grid-template-columns:1fr;gap:1rem;}}
+    @media(max-width:900px){.nav-links{display:none;}.burger{display:flex;}.comuni-grid{grid-template-columns:repeat(3,1fr);}.fuori-grid{grid-template-columns:1fr;gap:3rem;}.fg{grid-template-columns:1fr;}.f.full{grid-column:1;}.footer-inner{grid-template-columns:1fr;gap:2rem;}.footer-bottom{flex-direction:column;text-align:center;}.ci{grid-template-columns:1fr;gap:1rem;}}
+    @media(max-width:580px){.comuni-grid{grid-template-columns:repeat(2,1fr);}}
   </style>
 </head>
 <body>
@@ -134,9 +130,9 @@
       <a href="index.html#servizi">Servizi</a>
       <a href="chi-siamo.html">Chi siamo</a>
       <a href="faq.html">FAQ</a>
-      <a href="zone-coperte.html">Operatività</a>
+      <a href="zone-coperte.html" class="active">Operatività</a>
       <a href="articoli.html">Articoli</a>
-      <a href="contatti.html" class="nav-cta active">Preventivo gratuito</a>
+      <a href="contatti.html" class="nav-cta">Preventivo gratuito</a>
     </div>
     <button class="burger" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
@@ -153,79 +149,112 @@
 
 <section class="page-hero">
   <div class="container" style="position:relative;z-index:1;">
-    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span>Contatti</div>
-    <h1 class="section-title" style="max-width:600px;">Richiedi un preventivo gratuito</h1>
-    <p class="section-sub">Sopralluogo gratuito e senza impegno in tutta la provincia di Bergamo e Brescia. Risposta garantita entro 24 ore.</p>
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span>Operatività</div>
+    <h1 class="section-title" style="max-width:640px;">Zone coperte</h1>
+    <p style="font-size:1rem;color:var(--lighter);line-height:1.8;max-width:560px;margin-bottom:2rem;">Con sede operativa a Villongo, interveniamo rapidamente in tutta la zona del Lago d'Iseo e della pianura bergamasca. Seleziona il tuo comune per scoprire i servizi disponibili nella tua zona.</p>
+    <a href="#preventivo" class="btn-blue">Richiedi un sopralluogo gratuito →</a>
   </div>
 </section>
 
+<!-- COMUNI -->
 <section class="section" style="background:var(--dark);">
-  <div class="container contatti-grid">
-    <!-- Colonna sinistra: contatti + orari + mappa -->
-    <div>
-      <h2 class="section-title" style="font-size:clamp(1.4rem,2.5vw,2rem);margin-bottom:1.5rem;">Parliamone</h2>
-      <div class="contact-links">
-        <a href="tel:+393520334436" class="cl">
-          <div class="cl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012.18 1h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.91 8.15a16 16 0 006.94 6.94l1.51-1.51a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg></div>
-          <div><strong>352 033 4436</strong><span>Chiamata diretta</span></div>
-        </a>
-        <a href="https://wa.me/393520334436?text=Salve%2C%20vorrei%20richiedere%20un%20preventivo." target="_blank" class="cl">
-          <div class="cl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
-          <div><strong>WhatsApp</strong><span>Scrivi un messaggio</span></div>
-        </a>
-        <a href="mailto:info@emme2000impiantielettrici.it" class="cl">
-          <div class="cl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div><strong>info@emme2000impiantielettrici.it</strong><span>Email</span></div>
-        </a>
-        <a href="https://www.instagram.com/emme2000_impiantielettrici" target="_blank" rel="noopener" class="cl">
-          <div class="cl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/></svg></div>
-          <div><strong>@emme2000_impiantielettrici</strong><span>Instagram</span></div>
-        </a>
-      </div>
-      <div class="orari">
-        <div class="orari-title">Orari di disponibilità</div>
-        <div class="orari-row"><span class="day">Lunedì — Venerdì</span><span class="time">08:00 — 18:00</span></div>
-        <div class="orari-row"><span class="day">Sabato</span><span class="time">Su appuntamento</span></div>
-        <div class="orari-row"><span class="day">Domenica</span><span class="time">Chiuso</span></div>
-      </div>
-      <a href="https://www.google.com/maps/search/?api=1&query=Villongo+BG+Italia" target="_blank" class="map-wrap">
-        <div class="map-inner">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          <p>Villongo (BG) — Viale Italia 3<br/>Provincia di Bergamo</p>
-          <span>Apri su Google Maps →</span>
-        </div>
+  <div class="container">
+    <h2 class="section-title">20 comuni serviti</h2>
+    <p style="color:var(--lighter);font-size:0.95rem;line-height:1.8;max-width:580px;margin-bottom:0;">Clicca sul tuo comune per scoprire tutti i servizi disponibili e richiedere un preventivo gratuito.</p>
+    <div class="comuni-grid">
+      <a href="villongo.html" class="comune-btn sede">
+        <span class="sede-tag">Sede operativa</span>
+        <span class="cn">Villongo</span>
+        <span class="ca">Scopri →</span>
       </a>
+      <a href="sarnico.html" class="comune-btn"><span class="cn">Sarnico</span><span class="ca">Scopri →</span></a>
+      <a href="paratico.html" class="comune-btn"><span class="cn">Paratico</span><span class="ca">Scopri →</span></a>
+      <a href="grumello-del-monte.html" class="comune-btn"><span class="cn">Grumello del Monte</span><span class="ca">Scopri →</span></a>
+      <a href="bolgare.html" class="comune-btn"><span class="cn">Bolgare</span><span class="ca">Scopri →</span></a>
+      <a href="bagnatica.html" class="comune-btn"><span class="cn">Bagnatica</span><span class="ca">Scopri →</span></a>
+      <a href="seriate.html" class="comune-btn"><span class="cn">Seriate</span><span class="ca">Scopri →</span></a>
+      <a href="clusane.html" class="comune-btn"><span class="cn">Clusane</span><span class="ca">Scopri →</span></a>
+      <a href="tavernola-bergamasca.html" class="comune-btn"><span class="cn">Tavernola Bergamasca</span><span class="ca">Scopri →</span></a>
+      <a href="predore.html" class="comune-btn"><span class="cn">Predore</span><span class="ca">Scopri →</span></a>
+      <a href="foresto-sparso.html" class="comune-btn"><span class="cn">Foresto Sparso</span><span class="ca">Scopri →</span></a>
+      <a href="gandosso.html" class="comune-btn"><span class="cn">Gandosso</span><span class="ca">Scopri →</span></a>
+      <a href="zanica.html" class="comune-btn"><span class="cn">Zanica</span><span class="ca">Scopri →</span></a>
+      <a href="orio-al-serio.html" class="comune-btn"><span class="cn">Orio al Serio</span><span class="ca">Scopri →</span></a>
+      <a href="osio-sotto.html" class="comune-btn"><span class="cn">Osio Sotto</span><span class="ca">Scopri →</span></a>
+      <a href="lovere.html" class="comune-btn"><span class="cn">Lovere</span><span class="ca">Scopri →</span></a>
+      <a href="solto-collina.html" class="comune-btn"><span class="cn">Solto Collina</span><span class="ca">Scopri →</span></a>
+      <a href="riva-di-solto.html" class="comune-btn"><span class="cn">Riva di Solto</span><span class="ca">Scopri →</span></a>
+      <a href="credaro.html" class="comune-btn"><span class="cn">Credaro</span><span class="ca">Scopri →</span></a>
+      <a href="rovato.html" class="comune-btn"><span class="cn">Rovato</span><span class="ca">Scopri →</span></a>
     </div>
-    <!-- Colonna destra: form -->
+  </div>
+</section>
+
+<!-- FUORI AREA -->
+<section class="section" style="background:var(--black);border-top:1px solid rgba(255,255,255,0.06);">
+  <div class="container fuori-grid">
     <div>
+      <h2 class="section-title">Non trovi il tuo comune?</h2>
+      <p style="font-size:0.95rem;color:var(--lighter);line-height:1.8;margin-bottom:2rem;">Operiamo principalmente nelle zone indicate, ma valutiamo interventi anche in comuni limitrofi della provincia di Bergamo e Brescia. Contattaci per verificare la disponibilità nella tua zona.</p>
+      <a href="contatti.html" class="btn-outline">Contattaci per interventi fuori area →</a>
+    </div>
+    <div class="contact-links">
+      <a href="tel:+393520334436" class="cl">
+        <div class="cl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012.18 1h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L6.91 8.15a16 16 0 006.94 6.94l1.51-1.51a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+        <div><strong>352 033 4436</strong><span>Chiamata diretta</span></div>
+      </a>
+      <a href="https://wa.me/393520334436?text=Salve%2C%20vorrei%20richiedere%20un%20preventivo." target="_blank" class="cl">
+        <div class="cl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
+        <div><strong>WhatsApp</strong><span>Scrivi un messaggio</span></div>
+      </a>
+      <a href="mailto:info@emme2000impiantielettrici.it" class="cl">
+        <div class="cl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div><strong>info@emme2000impiantielettrici.it</strong><span>Email</span></div>
+      </a>
+      <div class="cl" style="cursor:default;">
+        <div class="cl-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><strong>Lun – Ven: 8:00 – 18:00</strong><span>Sab su appuntamento</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="section" id="preventivo" style="background:var(--dark);border-top:1px solid rgba(255,255,255,0.06);">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;">
+      <div>
+        <h2 class="section-title">Richiedi un preventivo gratuito</h2>
+        <p style="font-size:0.95rem;color:var(--lighter);line-height:1.8;">Sopralluogo gratuito e senza impegno. Rispondiamo entro 24 ore. Indica il tuo comune e il tipo di intervento.</p>
+      </div>
       <div class="form-card">
         <div class="form-title">Preventivo gratuito</div>
-        <div class="form-sub">Compila il modulo — ti risponderemo entro 24 ore.</div>
+        <div class="form-sub">Compila il form — ti risponderemo entro 24 ore.</div>
         <div class="fg">
-          <div class="f"><label>Nome *</label><input type="text" id="nome" placeholder="Mario Rossi" /></div>
+          <div class="f"><label>Nome</label><input type="text" id="nome" placeholder="Mario Rossi" /></div>
           <div class="f"><label>Telefono</label><input type="tel" id="tel" placeholder="339 000 0000" /></div>
-          <div class="f full"><label>Email *</label><input type="email" id="email" placeholder="mario@esempio.it" /></div>
+          <div class="f full"><label>Email</label><input type="email" id="email" placeholder="mario@esempio.it" /></div>
           <div class="f full"><label>Comune</label><input type="text" id="comune" placeholder="Es. Sarnico, Seriate, Lovere..." /></div>
           <div class="f full">
-            <label>Servizio di interesse</label>
+            <label>Servizio</label>
             <select id="servizio">
-              <option value="">Seleziona un servizio…</option>
+              <option value="">Seleziona…</option>
               <option>Sistema d'allarme</option>
               <option>Videosorveglianza</option>
               <option>Cancello automatico</option>
               <option>Videocitofono</option>
               <option>Impianto elettrico</option>
               <option>Illuminazione LED</option>
-              <option>Più servizi / non so ancora</option>
+              <option>Altro</option>
             </select>
           </div>
-          <div class="f full"><label>Messaggio *</label><textarea id="msg" placeholder="Descrivi brevemente il lavoro che vorresti fare o il problema che hai…"></textarea></div>
-          <div class="f full">
-<input type="checkbox" id="privacy" style="width:16px;height:16px;flex-shrink:0;margin-top:3px;accent-color:var(--blue);cursor:pointer;" />
-            <label for="privacy" style="font-size:0.78rem;color:var(--mid);line-height:1.5;cursor:pointer;">Ho letto e accetto la <a href="privacy-policy.html" style="color:var(--blue-light);text-decoration:underline;">Privacy Policy</a> e acconsento al trattamento dei miei dati per ricevere risposta. *</label>
+          <div class="f full"><label>Messaggio</label><textarea id="msg" placeholder="Descrivi brevemente il lavoro…"></textarea></div>
+          <div class="f full" style="display:flex;align-items:flex-start;gap:0.6rem;">
+            <input type="checkbox" id="privacy" style="width:16px;height:16px;flex-shrink:0;margin-top:3px;accent-color:var(--blue);cursor:pointer;" />
+            <label for="privacy" style="font-size:0.78rem;color:var(--mid);line-height:1.5;cursor:pointer;">Ho letto e accetto la <a href="privacy-policy.html" style="color:var(--blue-light);text-decoration:underline;">Privacy Policy</a>. Acconsento al trattamento dei miei dati.</label>
           </div>
           <div class="f full">
-            <button type="button" class="btn-blue" id="submitBtn" onclick="handleSubmit()">Invia richiesta →</button>
+            <button type="button" class="btn-blue" id="submitBtn" onclick="handleSubmit()" style="width:100%;justify-content:center;">Invia richiesta →</button>
             <p id="fmsg"></p>
           </div>
         </div>
@@ -267,11 +296,7 @@
 </footer>
 
 <a href="https://wa.me/393520334436?text=Salve%2C%20vorrei%20richiedere%20un%20preventivo." target="_blank" class="wa" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
-
-<div id="cb" role="dialog" aria-label="Preferenze cookie">
-  <div class="ci"><p class="ct">Utilizziamo cookie tecnici necessari e, previo consenso, cookie analitici anonimi (Google Analytics). <a href="privacy-policy.html">Privacy Policy</a>.</p><div class="ca2"><button class="cref" onclick="declineCookies()">Rifiuta</button><button class="cacc" onclick="acceptCookies()">Accetta</button></div></div>
-</div>
-
+<div id="cb" role="dialog"><div class="ci"><p class="ct">Utilizziamo cookie tecnici necessari e, previo consenso, cookie analitici anonimi (Google Analytics). <a href="privacy-policy.html">Privacy Policy</a>.</p><div class="ca2"><button class="cref" onclick="declineCookies()">Rifiuta</button><button class="cacc" onclick="acceptCookies()">Accetta</button></div></div></div>
 <script>
   function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
   async function handleSubmit(){
@@ -284,7 +309,7 @@
     if(!privacy){fm.style.display='block';fm.style.color='#ef4444';fm.textContent='Devi accettare la Privacy Policy per inviare il modulo.';return;}
     var btn=document.getElementById('submitBtn');btn.textContent='Invio in corso…';btn.style.opacity='0.7';
     try{
-      var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:'02c2a9d0-4f62-4210-9b98-6e413d3b762c',name:nome,email:email,phone:document.getElementById('tel').value,comune:document.getElementById('comune').value,service:document.getElementById('servizio').value,message:msg,subject:'Nuova richiesta da '+nome+' — Emme 2000 Contatti'})});
+      var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:'02c2a9d0-4f62-4210-9b98-6e413d3b762c',name:nome,email:email,phone:document.getElementById('tel').value,comune:document.getElementById('comune').value,service:document.getElementById('servizio').value,message:msg,subject:'Nuova richiesta da '+nome+' — Zone Coperte'})});
       var json=await res.json();
       if(json.success){fm.style.display='block';fm.style.color='#22c55e';fm.textContent='Inviato! Ti risponderemo entro 24 ore.';btn.textContent='Inviato ✓';btn.style.background='#16a34a';}
       else{throw new Error();}
