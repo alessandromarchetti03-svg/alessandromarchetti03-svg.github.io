@@ -221,8 +221,10 @@
           </div>
           <div class="f full"><label>Messaggio *</label><textarea id="msg" placeholder="Descrivi brevemente il lavoro che vorresti fare o il problema che hai…"></textarea></div>
           <div class="f full">
-<input type="checkbox" id="privacy" style="width:16px;height:16px;flex-shrink:0;margin-top:3px;accent-color:var(--blue);cursor:pointer;" />
-            <label for="privacy" style="font-size:0.78rem;color:var(--mid);line-height:1.5;cursor:pointer;">Ho letto e accetto la <a href="privacy-policy.html" style="color:var(--blue-light);text-decoration:underline;">Privacy Policy</a> e acconsento al trattamento dei miei dati per ricevere risposta. *</label>
+<label for="privacy" style="display:flex;align-items:flex-start;gap:0.75rem;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--mid);line-height:1.6;text-transform:none;letter-spacing:0;">
+              <input type="checkbox" id="privacy" style="width:18px;height:18px;min-width:18px;flex-shrink:0;margin-top:2px;accent-color:var(--blue);cursor:pointer;" />
+              Ho letto e accetto la <a href="privacy-policy.html" style="color:var(--blue-light);text-decoration:underline;margin-inline:0.25rem;">Privacy Policy</a>. Acconsento al trattamento dei miei dati.
+            </label>
           </div>
           <div class="f full">
             <button type="button" class="btn-blue" id="submitBtn" onclick="handleSubmit()">Invia richiesta →</button>
