@@ -256,7 +256,7 @@
     .fg { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .f { display: flex; flex-direction: column; gap: 0.4rem; }
     .f label { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); }
-    .f input, .f textarea, .f select { background: var(--dark2); border: 1px solid rgba(255,255,255,0.08); color: var(--pure); font-family: 'Inter', sans-serif; font-size: 0.9rem; padding: 0.75rem 1rem; outline: none; border-radius: 8px; transition: border-color 0.2s; -webkit-appearance: none; }
+    .f input:not([type=checkbox]), .f textarea, .f select { background: var(--dark2); border: 1px solid rgba(255,255,255,0.08); color: var(--pure); font-family: 'Inter', sans-serif; font-size: 0.9rem; padding: 0.75rem 1rem; outline: none; border-radius: 8px; transition: border-color 0.2s; -webkit-appearance: none; }
     .f input:focus, .f textarea:focus, .f select:focus { border-color: var(--blue); }
     .f input::placeholder, .f textarea::placeholder { color: var(--grey2); }
     .f select option { background: var(--dark2); }
@@ -326,6 +326,10 @@
       .brand-grid { flex-direction: column; }
       [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: 1fr !important; }
     }
+    .privacy-row{position:relative;display:block;padding-left:2rem;min-height:20px;}
+    .privacy-check{position:absolute;top:2px;left:0;width:18px;height:18px;margin:0;accent-color:var(--blue);cursor:pointer;z-index:2;-webkit-appearance:auto;appearance:auto;opacity:1;}
+    .privacy-label{display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--mid);line-height:1.6;text-transform:none;letter-spacing:0;cursor:pointer;}
+    .privacy-label a{color:var(--blue-light);text-decoration:underline;}
   </style>
 </head>
 <body>
@@ -799,11 +803,9 @@
             </select>
           </div>
           <div class="f full"><label>Messaggio</label><textarea id="msg" placeholder="Descrivi brevemente il lavoro…"></textarea></div>
-          <div class="f full">
-            <label for="privacy" style="display:flex;align-items:flex-start;gap:0.75rem;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.82rem;color:var(--mid);line-height:1.6;text-transform:none;letter-spacing:0;">
-              <input type="checkbox" id="privacy" style="width:18px;height:18px;min-width:18px;flex-shrink:0;margin-top:2px;accent-color:var(--blue);cursor:pointer;border-radius:4px;" />
-              Ho letto e accetto la <a href="privacy-policy.html" style="color:var(--blue-light);text-decoration:underline;margin-inline:0.25rem;">Privacy Policy</a>. Acconsento al trattamento dei miei dati per ricevere risposta.
-            </label>
+          <div class="f full privacy-row">
+            <input type="checkbox" id="privacy" class="privacy-check" />
+            <label for="privacy" class="privacy-label">Ho letto e accetto la <a href="privacy-policy.html">Privacy Policy</a>. Acconsento al trattamento dei miei dati per ricevere risposta.</label>
           </div>
           <div class="f full">
             <button type="button" class="btn-blue" id="submitBtn" onclick="handleSubmit()" style="width:100%;justify-content:center;">Invia richiesta →</button>
