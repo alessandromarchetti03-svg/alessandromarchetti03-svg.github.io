@@ -64,7 +64,7 @@
     .article-cat-badge{display:inline-flex;font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;background:var(--blue);color:var(--pure);padding:0.3rem 0.8rem;border-radius:100px;margin-bottom:1.2rem;position:relative;z-index:1;}
     .article-h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:-0.02em;color:#FFFFFF;line-height:1.2;margin-bottom:1rem;max-width:800px;position:relative;z-index:1;}
     .article-meta{font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--mid);position:relative;z-index:1;}
-    .article-hero-img{width:100%;height:340px;object-fit:cover;border-radius:16px;margin-top:2.5rem;filter:brightness(0.75);position:relative;z-index:1;}
+    .article-hero-img{width:100%;height:340px;object-fit:cover;border-radius:16px;margin-top:2.5rem;filter:brightness(0.75);position:relative;z-index:1;background:linear-gradient(135deg,#1A1A1A 0%,#0d1f3c 100%);display:block;}
     /* ARTICLE BODY */
     .article-content{padding-block:var(--gap);}
     .article-content-inner{max-width:760px;margin-inline:auto;}
@@ -89,7 +89,7 @@
     .related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
     .related-card{background:var(--dark2);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.2s;}
     .related-card:hover{border-color:rgba(27,110,243,0.3);}
-    .related-img{height:150px;overflow:hidden;}
+    .related-img{height:150px;overflow:hidden;background:linear-gradient(135deg,#1A1A1A 0%,#0d1f3c 100%);}
     .related-img img{width:100%;height:100%;object-fit:cover;filter:brightness(0.7);}
     .related-body{padding:1.3rem;}
     .related-body h4{font-size:0.9rem;font-weight:700;color:var(--pure);line-height:1.4;}
@@ -106,9 +106,9 @@
     .footer-links{display:flex;gap:1.5rem;}
     .footer-links a{font-size:0.75rem;color:var(--grey2);}
     .footer-links a:hover{color:var(--light);}
-    .wa{position:fixed;bottom:1.5rem;right:1.5rem;z-index:99;width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.35);transition:transform 0.2s;}
+    .wa{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;width:54px;height:54px;min-width:54px;min-height:54px;max-width:54px;max-height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.35);transition:transform 0.2s;overflow:hidden;}
     .wa:hover{transform:scale(1.08);}
-    .wa svg{width:28px;height:28px;}
+    .wa svg{width:28px;height:28px;min-width:28px;min-height:28px;flex-shrink:0;}
     #cb{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(17,17,17,0.98);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.08);padding:1.4rem 0;display:none;}
     #cb.visible{display:block;}
     .ci{width:min(1140px,92vw);margin-inline:auto;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;}
@@ -162,7 +162,7 @@
     <span class="article-cat-badge">Videosorveglianza</span>
     <h1 class="article-h1">Telecamere Wi-Fi o cablate? Quale scegliere nel 2026</h1>
     <p class="article-meta">Emme 2000 · Specialisti in Sistemi di Sicurezza · Bergamo e Brescia</p>
-    <img src="fotoarticolo10.jpg" alt="Telecamere Wi-Fi o cablate? Quale scegliere nel 2026" class="article-hero-img" />
+    <img src="fotoarticolo10.jpg" alt="Telecamere Wi-Fi o cablate? Quale scegliere nel 2026" class="article-hero-img" onerror="this.style.objectFit=\'none\';this.style.opacity=\'0\';" />
   </div>
 </section>
 
@@ -232,11 +232,11 @@
     <h2 class="related-title">Altri articoli che potrebbero interessarti</h2>
     <div class="related-grid">
       <a href="articolo-allarme.html" class="related-card">
-        <div class="related-img"><img src="servizio-allarme.jpg" alt="Sistemi d'allarme" /></div>
+        <div class="related-img"><img src="servizio-allarme.jpg" alt="Sistemi d'allarme" onerror="this.style.opacity=\'0\';" /></div>
         <div class="related-body"><h4>Come scegliere un impianto d'allarme per la tua casa</h4></div>
       </a>
       <a href="articolo-videosorveglianza.html" class="related-card">
-        <div class="related-img"><img src="servizio-videosorveglianza.jpg" alt="Videosorveglianza" /></div>
+        <div class="related-img"><img src="servizio-videosorveglianza.jpg" alt="Videosorveglianza" onerror="this.style.opacity=\'0\';" /></div>
         <div class="related-body"><h4>Perché installare telecamere di videosorveglianza oggi</h4></div>
       </a>
       <a href="articoli.html" class="related-card" style="align-items:center;justify-content:center;display:flex;">
