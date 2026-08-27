@@ -4,74 +4,193 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Preventivi — Emme 2000</title>
-<meta name="theme-color" content="#0c1f3f" />
+<meta name="theme-color" content="#0A0A0A" />
 <meta name="robots" content="noindex, nofollow, noarchive" />
 <link rel="manifest" href="manifest.json" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Preventivi" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
-  html,body{margin:0;padding:0;background:#f7f5f0;}
+  html, body { margin: 0; padding: 0; background: #0A0A0A; font-family: 'Inter', sans-serif; }
+
+  /* ── PRINT ── */
+  @media print {
+    @page { margin: 9mm 10mm; size: A4; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body { background: #fff !important; }
+    .no-print { display: none !important; }
+    .print-page { box-shadow: none !important; margin: 0 !important; padding: 24px !important; }
+  }
 </style>
 </head>
 <body>
 <div id="root"></div>
+
 <script type="text/babel" data-type="module">
 const { useState, useEffect } = React;
 
-const NAVY = "#0c1f3f";
-const NAVY_DARK = "#081527";
-const GOLD = "#c9a227";
-const GOLD_LIGHT = "#e0c366";
-const PAPER = "#f7f5f0";
-const STEEL = "#6b7684";
+/* ── BRAND TOKENS ── */
+const C = {
+  black:      "#0A0A0A",
+  dark:       "#111111",
+  dark2:      "#1A1A1A",
+  dark3:      "#222222",
+  grey:       "#2E2E2E",
+  grey2:      "#3D3D3D",
+  mid:        "#6B6B6B",
+  light:      "#A0A0A0",
+  lighter:    "#D0D0D0",
+  white:      "#F8F8F8",
+  pure:       "#FFFFFF",
+  blue:       "#1B6EF3",
+  blue2:      "#1459CC",
+  blueLight:  "#4D8FF5",
+  blueGlow:   "rgba(27,110,243,0.15)",
+  red:        "#E05252",
+  redGlow:    "rgba(224,82,82,0.15)",
+};
 
+/* ── GLOBAL STYLE (injected once) ── */
+const GLOBAL_CSS = `
+  * { box-sizing: border-box; }
+  body { background: ${C.black}; color: ${C.white}; font-family: 'Inter', sans-serif; }
+
+  input, textarea, select {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 7px;
+    width: 100%;
+    background: ${C.dark3};
+    color: ${C.white};
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: ${C.blue};
+    box-shadow: 0 0 0 3px ${C.blueGlow};
+  }
+  input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.22); }
+  select option { background: ${C.dark2}; color: ${C.white}; }
+
+  label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: ${C.mid};
+    margin-bottom: 6px;
+  }
+  .field { margin-bottom: 16px; }
+
+  /* Buttons */
+  .btn { border: none; border-radius: 7px; padding: 11px 18px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.18s; font-family: 'Inter', sans-serif; }
+  .btn:hover { opacity: 0.88; }
+  .btn-primary { background: ${C.blue}; color: ${C.pure}; }
+  .btn-primary:hover { background: ${C.blue2}; opacity: 1; }
+  .btn-secondary { background: transparent; color: ${C.lighter}; border: 1px solid rgba(255,255,255,0.15); }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.35); color: ${C.pure}; opacity: 1; }
+  .btn-danger { background: transparent; color: ${C.red}; border: 1px solid rgba(224,82,82,0.3); }
+  .btn-danger:hover { background: ${C.redGlow}; opacity: 1; }
+
+  /* Card */
+  .card {
+    background: ${C.dark2};
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 22px;
+  }
+
+  /* Section label */
+  .sec-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: ${C.blueLight};
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sec-label::before { content: ''; display: block; width: 16px; height: 1px; background: ${C.blue}; }
+
+  /* Materiale row */
+  .mat-row {
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    background: ${C.dark3};
+  }
+
+  /* Totale bar */
+  .tot-bar {
+    background: ${C.blue};
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 14px 0;
+  }
+
+  /* Storico row */
+  .storico-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .storico-row:last-child { border-bottom: none; }
+
+  /* Error box */
+  .err-box {
+    background: rgba(224,82,82,0.12);
+    color: #ff8080;
+    border: 1px solid rgba(224,82,82,0.25);
+    padding: 10px 14px;
+    border-radius: 7px;
+    margin-bottom: 14px;
+    font-size: 13px;
+  }
+
+  /* Riepilogo calcoli */
+  .riepi-box {
+    background: ${C.dark3};
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+
+  /* ── PRINT DOCUMENT ── */
+  @media print {
+    .print-page {
+      background: #fff !important;
+      color: #111 !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+  }
+`;
+
+/* ── HELPERS ── */
 function uid() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
-
-const emptyForm = () => ({
-  cliente: "",
-  telefono: "",
-  indirizzo: "",
-  lavoro: "",
-  ore: "",
-  tariffaOraria: "35",
-  persone: "1",
-  materiali: [{ id: uid(), desc: "", quantita: "1", unita: "pz", prezzoUnitario: "" }],
-  scontoTipo: "percentuale",
-  scontoValore: "",
-  note: "",
-});
-
-const defaultCompany = {
-  ragioneSociale: "Emme 2000",
-  sottotitolo: "Impianti elettrici · Antifurto · Automazioni · Videosorveglianza",
-  piva: "",
-  indirizzo: "Provincia di Bergamo e Brescia",
-  telefono: "",
-  email: "",
-};
-
-// --- storage locale del dispositivo (persiste tra sessioni) ---
-const storage = {
-  get(key) {
-    try {
-      const v = localStorage.getItem(key);
-      return v === null ? null : JSON.parse(v);
-    } catch (e) { return null; }
-  },
-  set(key, value) {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-      return true;
-    } catch (e) { return false; }
-  },
-};
 
 function fmt(n) {
   const v = Number(n) || 0;
@@ -82,6 +201,61 @@ function todayStr() {
   return new Date().toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
+/* ── STORAGE ── */
+const storage = {
+  get(key) {
+    try { const v = localStorage.getItem(key); return v === null ? null : JSON.parse(v); }
+    catch (e) { return null; }
+  },
+  set(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+    catch (e) { return false; }
+  },
+};
+
+/* ── DEFAULTS ── */
+const emptyForm = () => ({
+  cliente: "", telefono: "", indirizzo: "", lavoro: "",
+  ore: "", tariffaOraria: "35", persone: "1",
+  materiali: [{ id: uid(), desc: "", quantita: "1", unita: "pz", prezzoUnitario: "" }],
+  scontoTipo: "percentuale", scontoValore: "", note: "",
+});
+
+const defaultCompany = {
+  ragioneSociale: "Emme 2000",
+  sottotitolo: "Impianti elettrici · Antifurto · Automazioni · Videosorveglianza",
+  piva: "",
+  indirizzo: "Viale Italia 3, 24060 Villongo (BG)",
+  telefono: "352 033 4436",
+  email: "info@emme2000impiantielettrici.it",
+};
+
+/* ── SVG LOGO ── */
+function LogoSVG({ size = 32 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="34" height="34" rx="4" stroke="#F8F8F8" strokeWidth="1.5"/>
+      <rect x="8" y="10" width="20" height="3" fill="#F8F8F8"/>
+      <rect x="8" y="16.5" width="20" height="3" fill="#1B6EF3"/>
+      <rect x="8" y="23" width="20" height="3" fill="#F8F8F8"/>
+    </svg>
+  );
+}
+
+function LogoSVGPrint({ size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="34" height="34" rx="4" stroke="#111111" strokeWidth="1.5"/>
+      <rect x="8" y="10" width="20" height="3" fill="#111111"/>
+      <rect x="8" y="16.5" width="20" height="3" fill="#1B6EF3"/>
+      <rect x="8" y="23" width="20" height="3" fill="#111111"/>
+    </svg>
+  );
+}
+
+/* ════════════════════════════════════
+   MAIN APP
+════════════════════════════════════ */
 function App() {
   const [view, setView] = useState("form");
   const [form, setForm] = useState(emptyForm());
@@ -133,7 +307,7 @@ function App() {
 
   function validaForm() {
     if (!form.cliente.trim()) return "Inserisci il nome del cliente.";
-    if (!form.lavoro.trim()) return "Descrivi il lavoro svolto.";
+    if (!form.lavoro.trim()) return "Descrivi il lavoro svolto o da svolgere.";
     return "";
   }
 
@@ -147,26 +321,17 @@ function App() {
   function confermaEGenera() {
     const materialiCalcolati = form.materiali
       .filter((m) => m.desc.trim() || m.prezzoUnitario)
-      .map((m) => ({
-        ...m,
-        totaleRiga: (Number(m.quantita) || 0) * (Number(m.prezzoUnitario) || 0),
-      }));
+      .map((m) => ({ ...m, totaleRiga: (Number(m.quantita) || 0) * (Number(m.prezzoUnitario) || 0) }));
 
     if (editingId) {
       const esistente = store.list.find((d) => d.id === editingId);
       const aggiornato = {
         ...esistente,
-        cliente: form.cliente,
-        telefono: form.telefono,
-        indirizzo: form.indirizzo,
-        lavoro: form.lavoro,
-        ore: Number(form.ore) || 0,
-        tariffaOraria: Number(form.tariffaOraria) || 0,
-        persone: Number(form.persone) || 1,
-        materiali: materialiCalcolati,
-        scontoTipo: form.scontoTipo,
-        scontoValore: Number(form.scontoValore) || 0,
-        note: form.note,
+        cliente: form.cliente, telefono: form.telefono, indirizzo: form.indirizzo,
+        lavoro: form.lavoro, ore: Number(form.ore) || 0,
+        tariffaOraria: Number(form.tariffaOraria) || 0, persone: Number(form.persone) || 1,
+        materiali: materialiCalcolati, scontoTipo: form.scontoTipo,
+        scontoValore: Number(form.scontoValore) || 0, note: form.note,
         subtotaleManodopera, subtotaleMateriali, totaleLordo, scontoValoreCalc, totaleNetto,
       };
       const nextList = store.list.map((d) => (d.id === editingId ? aggiornato : d));
@@ -183,17 +348,11 @@ function App() {
       id: uid(),
       numero: `${anno}-${String(numero).padStart(3, "0")}`,
       data: todayStr(),
-      cliente: form.cliente,
-      telefono: form.telefono,
-      indirizzo: form.indirizzo,
-      lavoro: form.lavoro,
-      ore: Number(form.ore) || 0,
-      tariffaOraria: Number(form.tariffaOraria) || 0,
-      persone: Number(form.persone) || 1,
-      materiali: materialiCalcolati,
-      scontoTipo: form.scontoTipo,
-      scontoValore: Number(form.scontoValore) || 0,
-      note: form.note,
+      cliente: form.cliente, telefono: form.telefono, indirizzo: form.indirizzo,
+      lavoro: form.lavoro, ore: Number(form.ore) || 0,
+      tariffaOraria: Number(form.tariffaOraria) || 0, persone: Number(form.persone) || 1,
+      materiali: materialiCalcolati, scontoTipo: form.scontoTipo,
+      scontoValore: Number(form.scontoValore) || 0, note: form.note,
       subtotaleManodopera, subtotaleMateriali, totaleLordo, scontoValoreCalc, totaleNetto,
     };
     persistStore({ counter: numero, list: [doc, ...store.list] });
@@ -202,185 +361,170 @@ function App() {
   }
 
   function nuovoPreventivo() {
-    setForm(emptyForm());
-    setCurrent(null);
-    setEditingId(null);
-    setError("");
-    setView("form");
+    setForm(emptyForm()); setCurrent(null); setEditingId(null); setError(""); setView("form");
   }
   function apriDaStorico(doc) { setCurrent(doc); setEditingId(null); setView("documento"); }
   function eliminaDaStorico(id) { persistStore({ ...store, list: store.list.filter((d) => d.id !== id) }); }
 
   function modificaPreventivo(doc) {
     setForm({
-      cliente: doc.cliente || "",
-      telefono: doc.telefono || "",
-      indirizzo: doc.indirizzo || "",
-      lavoro: doc.lavoro || "",
-      ore: String(doc.ore ?? ""),
-      tariffaOraria: String(doc.tariffaOraria ?? "35"),
+      cliente: doc.cliente || "", telefono: doc.telefono || "",
+      indirizzo: doc.indirizzo || "", lavoro: doc.lavoro || "",
+      ore: String(doc.ore ?? ""), tariffaOraria: String(doc.tariffaOraria ?? "35"),
       persone: String(doc.persone ?? "1"),
       materiali: doc.materiali && doc.materiali.length
-        ? doc.materiali.map((m) => ({
-            id: m.id || uid(),
-            desc: m.desc || "",
-            quantita: String(m.quantita ?? "1"),
-            unita: m.unita || "pz",
-            prezzoUnitario: String(m.prezzoUnitario ?? ""),
-          }))
+        ? doc.materiali.map((m) => ({ id: m.id || uid(), desc: m.desc || "", quantita: String(m.quantita ?? "1"), unita: m.unita || "pz", prezzoUnitario: String(m.prezzoUnitario ?? "") }))
         : [{ id: uid(), desc: "", quantita: "1", unita: "pz", prezzoUnitario: "" }],
       scontoTipo: doc.scontoTipo || "percentuale",
-      scontoValore: String(doc.scontoValore ?? ""),
-      note: doc.note || "",
+      scontoValore: String(doc.scontoValore ?? ""), note: doc.note || "",
     });
-    setEditingId(doc.id);
-    setError("");
-    setView("form");
+    setEditingId(doc.id); setError(""); setView("form");
   }
+
   function stampa() { window.print(); }
 
   return (
-    <div style={{ fontFamily: "'Segoe UI', system-ui, sans-serif", minHeight: "100vh", background: PAPER }}>
-      <style>{`
-        * { box-sizing: border-box; }
-        input, textarea, select {
-          font-family: inherit; font-size: 15px; padding: 9px 11px;
-          border: 1px solid #d6d2c4; border-radius: 6px; width: 100%;
-          background: #fff; color: ${NAVY_DARK};
-        }
-        input:focus, textarea:focus, select:focus {
-          outline: none; border-color: ${GOLD}; box-shadow: 0 0 0 3px rgba(201,162,39,0.15);
-        }
-        label { display: block; font-size: 13px; font-weight: 600; color: ${STEEL}; margin-bottom: 5px; letter-spacing: 0.02em; }
-        .field { margin-bottom: 16px; }
-        .btn { border: none; border-radius: 7px; padding: 12px 20px; font-weight: 700; font-size: 15px; cursor: pointer; transition: opacity .15s; }
-        .btn:hover { opacity: .88; }
-        .btn-primary { background: ${GOLD}; color: ${NAVY_DARK}; }
-        .btn-secondary { background: transparent; color: ${NAVY}; border: 1.5px solid ${NAVY}; }
-        .btn-danger { background: transparent; color: #a33; border: 1.5px solid #a33; }
-        .card { background: #fff; border-radius: 10px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-        @media print {
-          .no-print { display: none !important; }
-          body { background: #fff !important; }
-          .print-page { box-shadow: none !important; margin: 0 !important; padding: 0 !important; }
-        }
-      `}</style>
+    <div style={{ fontFamily: "'Inter', sans-serif", minHeight: "100vh", background: C.black }}>
+      <style>{GLOBAL_CSS}</style>
 
-      <div className="no-print" style={{ background: NAVY, color: "#fff", padding: "14px 20px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <img src="icons/logo.png" alt="Emme 2000" style={{ width: 32, height: 32, objectFit: "contain" }} />
-          <div style={{ fontWeight: 800, fontSize: 16, letterSpacing: 0.3 }}>{company.ragioneSociale}</div>
+      {/* ── NAVBAR ── */}
+      <nav className="no-print" style={{
+        position: "sticky", top: 0, zIndex: 100,
+        background: "rgba(10,10,10,0.95)", backdropFilter: "blur(16px)",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
+      }}>
+        <div style={{ maxWidth: 660, margin: "0 auto", padding: "0 16px", display: "flex", justifyContent: "space-between", alignItems: "center", height: 58 }}>
+          {/* Logo */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <LogoSVG size={32} />
+            <div>
+              <div style={{ fontWeight: 800, fontSize: 15, letterSpacing: "-0.02em", color: C.pure, lineHeight: 1 }}>
+                Emme<span style={{ color: C.blue }}>2000</span>
+              </div>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: C.mid }}>
+                Preventivi
+              </div>
+            </div>
+          </div>
+          {/* Nav links */}
+          <div style={{ display: "flex", gap: 6 }}>
+            <NavBtn active={view === "form" || view === "anteprima" || view === "documento"} onClick={() => view !== "form" ? nuovoPreventivo() : null}>
+              + Nuovo
+            </NavBtn>
+            <NavBtn active={view === "storico"} onClick={() => setView("storico")}>
+              Storico
+            </NavBtn>
+            <NavBtn active={view === "impostazioni"} onClick={() => setView("impostazioni")}>
+              Azienda
+            </NavBtn>
+          </div>
         </div>
-        <div style={{ display: "flex", gap: 14, fontSize: 14 }}>
-          <button onClick={() => setView("storico")} style={{ background: "none", border: "none", color: view === "storico" ? GOLD : "#fff", cursor: "pointer", fontWeight: 600 }}>Storico</button>
-          <button onClick={() => setView("impostazioni")} style={{ background: "none", border: "none", color: view === "impostazioni" ? GOLD : "#fff", cursor: "pointer", fontWeight: 600 }}>Dati azienda</button>
-        </div>
-      </div>
+      </nav>
 
-      <div style={{ maxWidth: 640, margin: "0 auto", padding: "24px 16px 60px" }}>
+      {/* ── CONTENT ── */}
+      <div style={{ maxWidth: 660, margin: "0 auto", padding: "24px 16px 80px" }}>
 
+        {/* ══ FORM ══ */}
         {view === "form" && (
           <div className="card no-print">
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 18 }}>
-              <h2 style={{ margin: 0, color: NAVY_DARK, fontSize: 20 }}>Nuovo preventivo</h2>
-              <div style={{ color: STEEL, fontSize: 14, alignSelf: "center" }}>{todayStr()}</div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+              <div>
+                <div className="sec-label">{editingId ? "Modifica preventivo" : "Nuovo preventivo"}</div>
+                <h2 style={{ margin: 0, color: C.pure, fontSize: 20, fontWeight: 800, letterSpacing: "-0.02em" }}>
+                  {editingId ? "Aggiorna dati" : "Crea documento"}
+                </h2>
+              </div>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.mid }}>{todayStr()}</div>
             </div>
-            {error && <div style={{ background: "#fdeaea", color: "#a33", padding: "10px 12px", borderRadius: 6, marginBottom: 14, fontSize: 14 }}>{error}</div>}
 
-            <div className="field">
-              <label>Cliente</label>
-              <input value={form.cliente} onChange={(e) => updateForm("cliente", e.target.value)} placeholder="Nome e cognome / ragione sociale" />
+            {error && <div className="err-box">{error}</div>}
+
+            <div className="sec-label" style={{ marginBottom: 12 }}>Dati cliente</div>
+            <div className="field"><label>Cliente</label><input value={form.cliente} onChange={(e) => updateForm("cliente", e.target.value)} placeholder="Nome e cognome / ragione sociale" /></div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="field">
+              <div><label>Telefono</label><input value={form.telefono} onChange={(e) => updateForm("telefono", e.target.value)} placeholder="333 1234567" /></div>
+              <div><label>Indirizzo</label><input value={form.indirizzo} onChange={(e) => updateForm("indirizzo", e.target.value)} placeholder="Via, numero, comune" /></div>
             </div>
-            <div className="field">
-              <label>Telefono</label>
-              <input value={form.telefono} onChange={(e) => updateForm("telefono", e.target.value)} placeholder="333 1234567" />
-            </div>
-            <div className="field">
-              <label>Indirizzo</label>
-              <input value={form.indirizzo} onChange={(e) => updateForm("indirizzo", e.target.value)} placeholder="Via, numero, comune" />
-            </div>
+
+            <div className="sec-label" style={{ marginBottom: 12, marginTop: 4 }}>Lavoro</div>
             <div className="field">
               <label>Lavoro svolto / da svolgere</label>
               <textarea rows="4" value={form.lavoro} onChange={(e) => updateForm("lavoro", e.target.value)} placeholder="Descrizione dell'intervento..." />
             </div>
 
+            <div className="sec-label" style={{ marginBottom: 12 }}>⚡ Manodopera</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }} className="field">
-              <div>
-                <label>Ore previste</label>
-                <input type="number" min="0" step="0.5" value={form.ore} onChange={(e) => updateForm("ore", e.target.value)} placeholder="0" />
-              </div>
-              <div>
-                <label>Persone</label>
-                <input type="number" min="1" step="1" value={form.persone} onChange={(e) => updateForm("persone", e.target.value)} placeholder="1" />
-              </div>
-              <div>
-                <label>Tariffa oraria (€)</label>
-                <input type="number" min="0" step="1" value={form.tariffaOraria} onChange={(e) => updateForm("tariffaOraria", e.target.value)} placeholder="35" />
-              </div>
+              <div><label>Ore previste</label><input type="number" min="0" step="0.5" value={form.ore} onChange={(e) => updateForm("ore", e.target.value)} placeholder="0" /></div>
+              <div><label>Persone</label><input type="number" min="1" step="1" value={form.persone} onChange={(e) => updateForm("persone", e.target.value)} placeholder="1" /></div>
+              <div><label>Tariffa oraria (€)</label><input type="number" min="0" step="1" value={form.tariffaOraria} onChange={(e) => updateForm("tariffaOraria", e.target.value)} placeholder="35" /></div>
             </div>
-            <div style={{ fontSize: 13, color: STEEL, marginTop: -8, marginBottom: 16 }}>
-              Manodopera ({form.ore || 0} h × {form.persone || 1} pers. × {fmt(form.tariffaOraria)}): <strong style={{ color: NAVY_DARK }}>{fmt(subtotaleManodopera)}</strong>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.mid, marginTop: -6, marginBottom: 18 }}>
+              {form.ore || 0} h × {form.persone || 1} pers. × {fmt(form.tariffaOraria)} =&nbsp;
+              <span style={{ color: C.blueLight, fontWeight: 600 }}>{fmt(subtotaleManodopera)}</span>
             </div>
 
-            <label>Materiali</label>
+            <div className="sec-label" style={{ marginBottom: 12 }}>◆ Materiali</div>
             {form.materiali.map((m) => {
               const totaleRiga = (Number(m.quantita) || 0) * (Number(m.prezzoUnitario) || 0);
               return (
-                <div key={m.id} style={{ border: "1px solid #e6e2d4", borderRadius: 8, padding: 10, marginBottom: 10 }}>
-                  <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+                <div key={m.id} className="mat-row">
+                  <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
                     <input placeholder="Descrizione materiale" value={m.desc} onChange={(e) => updateMateriale(m.id, "desc", e.target.value)} style={{ flex: 1 }} />
-                    <button className="btn-danger btn" onClick={() => removeMateriale(m.id)} style={{ padding: "9px 12px" }}>✕</button>
+                    <button className="btn btn-danger" onClick={() => removeMateriale(m.id)} style={{ padding: "9px 12px", flexShrink: 0 }}>✕</button>
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1.3fr", gap: 8 }}>
+                    <div><label style={{ fontSize: 10 }}>Quantità</label><input type="number" min="0" step="0.5" placeholder="1" value={m.quantita} onChange={(e) => updateMateriale(m.id, "quantita", e.target.value)} /></div>
                     <div>
-                      <label style={{ fontSize: 11, marginBottom: 3 }}>Quantità</label>
-                      <input type="number" min="0" step="0.5" placeholder="1" value={m.quantita} onChange={(e) => updateMateriale(m.id, "quantita", e.target.value)} />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: 11, marginBottom: 3 }}>Unità</label>
+                      <label style={{ fontSize: 10 }}>Unità</label>
                       <select value={m.unita} onChange={(e) => updateMateriale(m.id, "unita", e.target.value)}>
-                        <option value="pz">pz</option>
-                        <option value="mt">mt</option>
-                        <option value="kg">kg</option>
-                        <option value="l">l</option>
+                        <option value="pz">pz</option><option value="mt">mt</option>
+                        <option value="kg">kg</option><option value="l">l</option>
+                        <option value="mq">mq</option><option value="conf">conf</option>
                       </select>
                     </div>
-                    <div>
-                      <label style={{ fontSize: 11, marginBottom: 3 }}>Prezzo unitario (€)</label>
-                      <input type="number" min="0" step="0.01" placeholder="0.00" value={m.prezzoUnitario} onChange={(e) => updateMateriale(m.id, "prezzoUnitario", e.target.value)} />
+                    <div><label style={{ fontSize: 10 }}>Prezzo unitario (€)</label><input type="number" min="0" step="0.01" placeholder="0.00" value={m.prezzoUnitario} onChange={(e) => updateMateriale(m.id, "prezzoUnitario", e.target.value)} /></div>
+                  </div>
+                  {totaleRiga > 0 && (
+                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.mid, textAlign: "right", marginTop: 6 }}>
+                      Totale riga: <span style={{ color: C.lighter }}>{fmt(totaleRiga)}</span>
                     </div>
-                  </div>
-                  <div style={{ textAlign: "right", fontSize: 13, color: STEEL, marginTop: 6 }}>
-                    Totale riga: <strong style={{ color: NAVY_DARK }}>{fmt(totaleRiga)}</strong>
-                  </div>
+                  )}
                 </div>
               );
             })}
-            <button onClick={addMateriale} className="btn btn-secondary" style={{ fontSize: 13, padding: "8px 14px", marginBottom: 10 }}>+ Aggiungi materiale</button>
-            <div style={{ fontSize: 13, color: STEEL, marginBottom: 20 }}>
-              Materiali: <strong style={{ color: NAVY_DARK }}>{fmt(subtotaleMateriali)}</strong>
-            </div>
+            <button onClick={addMateriale} className="btn btn-secondary" style={{ fontSize: 13, padding: "8px 14px", marginBottom: 14 }}>+ Aggiungi materiale</button>
+            {subtotaleMateriali > 0 && (
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.mid, marginBottom: 18 }}>
+                Totale materiali: <span style={{ color: "#CCAA44" }}>{fmt(subtotaleMateriali)}</span>
+              </div>
+            )}
 
-            <button onClick={vaiAdAnteprima} className="btn btn-primary" style={{ width: "100%" }}>Genera anteprima preventivo →</button>
+            <button onClick={vaiAdAnteprima} className="btn btn-primary" style={{ width: "100%", fontSize: 15, padding: "13px 20px" }}>
+              Genera anteprima preventivo →
+            </button>
           </div>
         )}
 
+        {/* ══ ANTEPRIMA ══ */}
         {view === "anteprima" && (
           <div className="card no-print">
-            <h2 style={{ margin: "0 0 4px", color: NAVY_DARK, fontSize: 20 }}>Anteprima preventivo</h2>
-            <div style={{ color: STEEL, fontSize: 14, marginBottom: 18 }}>{form.cliente} · {todayStr()}</div>
-
-            <div style={{ background: PAPER, borderRadius: 8, padding: 16, marginBottom: 18 }}>
-              <Riga label="Manodopera" value={fmt(subtotaleManodopera)} sub={`${form.ore || 0} h × ${form.persone || 1} pers. × ${fmt(form.tariffaOraria)}`} />
-              <Riga label="Materiali" value={fmt(subtotaleMateriali)} />
-              <hr style={{ border: "none", borderTop: "1px solid #d6d2c4", margin: "10px 0" }} />
-              <Riga label="Totale lordo" value={fmt(totaleLordo)} bold />
+            <div style={{ marginBottom: 20 }}>
+              <div className="sec-label">Riepilogo</div>
+              <h2 style={{ margin: 0, color: C.pure, fontSize: 20, fontWeight: 800, letterSpacing: "-0.02em" }}>Anteprima preventivo</h2>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.mid, marginTop: 4 }}>{form.cliente} · {todayStr()}</div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 12, alignItems: "end", marginBottom: 16 }}>
+            <div className="riepi-box">
+              <RiepiRow label="⚡ Manodopera" value={fmt(subtotaleManodopera)} sub={`${form.ore || 0} h × ${form.persone || 1} pers. × ${fmt(form.tariffaOraria)}`} />
+              <RiepiRow label="◆ Materiali" value={fmt(subtotaleMateriali)} />
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "10px 0" }}></div>
+              <RiepiRow label="Totale lordo" value={fmt(totaleLordo)} bold />
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 12, alignItems: "end" }} className="field">
               <div>
-                <label>Sconto</label>
-                <select value={form.scontoTipo} onChange={(e) => updateForm("scontoTipo", e.target.value)}>
+                <label>Tipo sconto</label>
+                <select value={form.scontoTipo} onChange={(e) => updateForm("scontoTipo", e.target.value)} style={{ width: 80 }}>
                   <option value="percentuale">%</option>
                   <option value="fisso">€</option>
                 </select>
@@ -396,22 +540,25 @@ function App() {
               <textarea rows="3" value={form.note} onChange={(e) => updateForm("note", e.target.value)} placeholder="Validità offerta, tempistiche, esclusioni..." />
             </div>
 
-            <div style={{ background: NAVY, color: "#fff", borderRadius: 8, padding: "14px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-              <span style={{ fontWeight: 700 }}>Totale preventivo</span>
-              <span style={{ fontWeight: 800, fontSize: 22, color: GOLD_LIGHT }}>{fmt(totaleNetto)}</span>
+            <div className="tot-bar">
+              <span style={{ fontWeight: 700, fontSize: 14, color: C.pure }}>Totale preventivo</span>
+              <span style={{ fontWeight: 900, fontSize: 22, color: C.pure, letterSpacing: "-0.02em" }}>{fmt(totaleNetto)}</span>
             </div>
 
-            <div style={{ display: "flex", gap: 10 }}>
+            <div style={{ display: "flex", gap: 10, marginTop: 4 }}>
               <button onClick={() => setView("form")} className="btn btn-secondary" style={{ flex: 1 }}>← Modifica</button>
-              <button onClick={confermaEGenera} className="btn btn-primary" style={{ flex: 2 }}>{editingId ? "Salva modifiche" : "Confermo, genera documento"}</button>
+              <button onClick={confermaEGenera} className="btn btn-primary" style={{ flex: 2 }}>
+                {editingId ? "Salva modifiche" : "Confermo, genera documento"}
+              </button>
             </div>
           </div>
         )}
 
+        {/* ══ DOCUMENTO ══ */}
         {view === "documento" && current && (
           <React.Fragment>
             <div className="no-print" style={{ marginBottom: 16 }}>
-              <button onClick={stampa} className="btn btn-primary" style={{ width: "100%", marginBottom: 10 }}>🖨️ Stampa / Salva PDF</button>
+              <button onClick={stampa} className="btn btn-primary" style={{ width: "100%", marginBottom: 10, fontSize: 15 }}>🖨️ Stampa / Salva PDF</button>
               <div style={{ display: "flex", gap: 10 }}>
                 <button onClick={() => modificaPreventivo(current)} className="btn btn-secondary" style={{ flex: 1 }}>✎ Modifica</button>
                 <button onClick={nuovoPreventivo} className="btn btn-secondary" style={{ flex: 1 }}>+ Nuovo</button>
@@ -421,68 +568,127 @@ function App() {
           </React.Fragment>
         )}
 
+        {/* ══ STORICO ══ */}
         {view === "storico" && (
           <div className="card no-print">
-            <h2 style={{ margin: "0 0 16px", color: NAVY_DARK, fontSize: 20 }}>Storico preventivi</h2>
-            {store.list.length === 0 && (<div style={{ color: STEEL, fontSize: 14 }}>Nessun preventivo salvato finora.</div>)}
-            {store.list.map((d) => (
-              <div key={d.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid #eee" }}>
-                <div>
-                  <div style={{ fontWeight: 700, color: NAVY_DARK }}>{d.cliente}</div>
-                  <div style={{ fontSize: 13, color: STEEL }}>N° {d.numero} · {d.data} · {fmt(d.totaleNetto)}</div>
+            <div style={{ marginBottom: 20 }}>
+              <div className="sec-label">Archivio</div>
+              <h2 style={{ margin: 0, color: C.pure, fontSize: 20, fontWeight: 800, letterSpacing: "-0.02em" }}>Storico preventivi</h2>
+              {store.list.length > 0 && (
+                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: C.mid, marginTop: 4 }}>
+                  {store.list.length} document{store.list.length === 1 ? "o" : "i"}
                 </div>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  <button onClick={() => apriDaStorico(d)} className="btn btn-secondary" style={{ padding: "7px 12px", fontSize: 13 }}>Apri</button>
-                  <button onClick={() => modificaPreventivo(d)} className="btn btn-secondary" style={{ padding: "7px 12px", fontSize: 13 }}>Modifica</button>
-                  <button onClick={() => eliminaDaStorico(d.id)} className="btn btn-danger" style={{ padding: "7px 12px", fontSize: 13 }}>Elimina</button>
+              )}
+            </div>
+            {store.list.length === 0 && (
+              <div style={{ textAlign: "center", padding: "30px 0", fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.mid, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                Nessun preventivo salvato
+              </div>
+            )}
+            {store.list.map((d) => (
+              <div key={d.id} className="storico-row">
+                <div>
+                  <div style={{ fontWeight: 700, color: C.pure, marginBottom: 3 }}>{d.cliente}</div>
+                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: C.mid }}>
+                    N° {d.numero} · {d.data}
+                  </div>
+                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.blueLight, marginTop: 2, fontWeight: 600 }}>
+                    {fmt(d.totaleNetto)}
+                  </div>
+                </div>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                  <button onClick={() => apriDaStorico(d)} className="btn btn-secondary" style={{ padding: "7px 12px", fontSize: 12 }}>Apri</button>
+                  <button onClick={() => modificaPreventivo(d)} className="btn btn-secondary" style={{ padding: "7px 12px", fontSize: 12 }}>Modifica</button>
+                  <button onClick={() => eliminaDaStorico(d.id)} className="btn btn-danger" style={{ padding: "7px 12px", fontSize: 12 }}>Elimina</button>
                 </div>
               </div>
             ))}
           </div>
         )}
 
+        {/* ══ IMPOSTAZIONI ══ */}
         {view === "impostazioni" && (
           <div className="card no-print">
-            <h2 style={{ margin: "0 0 16px", color: NAVY_DARK, fontSize: 20 }}>Dati azienda</h2>
-            <div style={{ fontSize: 13, color: STEEL, marginBottom: 16 }}>Questi dati compaiono nell'intestazione dei documenti generati.</div>
+            <div style={{ marginBottom: 20 }}>
+              <div className="sec-label">Configurazione</div>
+              <h2 style={{ margin: 0, color: C.pure, fontSize: 20, fontWeight: 800, letterSpacing: "-0.02em" }}>Dati azienda</h2>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: C.mid, marginTop: 6 }}>
+                Questi dati compaiono nell'intestazione dei documenti generati.
+              </div>
+            </div>
             <div className="field"><label>Ragione sociale</label><input value={companyDraft.ragioneSociale} onChange={(e) => setCompanyDraft((c) => ({ ...c, ragioneSociale: e.target.value }))} /></div>
             <div className="field"><label>Sottotitolo / attività</label><input value={companyDraft.sottotitolo} onChange={(e) => setCompanyDraft((c) => ({ ...c, sottotitolo: e.target.value }))} /></div>
             <div className="field"><label>Partita IVA</label><input value={companyDraft.piva} onChange={(e) => setCompanyDraft((c) => ({ ...c, piva: e.target.value }))} placeholder="Lascia vuoto se non ancora attiva" /></div>
             <div className="field"><label>Indirizzo / zona operativa</label><input value={companyDraft.indirizzo} onChange={(e) => setCompanyDraft((c) => ({ ...c, indirizzo: e.target.value }))} /></div>
             <div className="field"><label>Telefono</label><input value={companyDraft.telefono} onChange={(e) => setCompanyDraft((c) => ({ ...c, telefono: e.target.value }))} /></div>
             <div className="field"><label>Email</label><input value={companyDraft.email} onChange={(e) => setCompanyDraft((c) => ({ ...c, email: e.target.value }))} /></div>
-            <button onClick={saveCompany} className="btn btn-primary" style={{ width: "100%" }}>Salva dati azienda</button>
+            <button onClick={saveCompany} className="btn btn-primary" style={{ width: "100%", marginTop: 4 }}>Salva dati azienda</button>
           </div>
         )}
+
       </div>
     </div>
   );
 }
 
-function Riga({ label, value, sub, bold }) {
+/* ── NAV BUTTON ── */
+function NavBtn({ active, onClick, children }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0" }}>
+    <button onClick={onClick} style={{
+      background: active ? C.blueGlow : "transparent",
+      border: `1px solid ${active ? "rgba(27,110,243,0.35)" : "rgba(255,255,255,0.1)"}`,
+      color: active ? C.blueLight : C.light,
+      fontFamily: "'IBM Plex Mono', monospace",
+      fontSize: 11,
+      letterSpacing: "0.1em",
+      textTransform: "uppercase",
+      padding: "6px 12px",
+      borderRadius: 5,
+      cursor: "pointer",
+      fontWeight: active ? 600 : 400,
+      transition: "all 0.18s",
+    }}>
+      {children}
+    </button>
+  );
+}
+
+/* ── RIEPILOGO ROW ── */
+function RiepiRow({ label, value, sub, bold }) {
+  return (
+    <div style={{ display: "flex", justifyContent: "space-between", padding: "5px 0" }}>
       <div>
-        <span style={{ fontWeight: bold ? 700 : 500, color: NAVY_DARK }}>{label}</span>
-        {sub && <div style={{ fontSize: 12, color: STEEL }}>{sub}</div>}
+        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, letterSpacing: "0.06em", color: bold ? C.lighter : C.light, fontWeight: bold ? 700 : 400 }}>{label}</span>
+        {sub && <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: C.mid, marginTop: 2 }}>{sub}</div>}
       </div>
-      <span style={{ fontWeight: bold ? 800 : 600, color: NAVY_DARK }}>{value}</span>
+      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: bold ? 14 : 12, fontWeight: bold ? 800 : 500, color: bold ? C.pure : C.lighter }}>{value}</span>
     </div>
   );
 }
 
+/* ════════════════════════════════════
+   DOCUMENTO STAMPA
+════════════════════════════════════ */
 function DocumentoPreventivo({ doc, company }) {
   return (
-    <div className="print-page" style={{ background: "#fff", padding: 36, borderRadius: 8, boxShadow: "0 1px 3px rgba(0,0,0,0.08)", maxWidth: 640, margin: "0 auto" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: `3px solid ${GOLD}`, paddingBottom: 16, marginBottom: 20 }}>
+    <div className="print-page" style={{
+      background: "#fff", color: "#111",
+      padding: "32px 36px", borderRadius: 12,
+      boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
+      maxWidth: 660, margin: "0 auto",
+    }}>
+      {/* Intestazione */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "2.5px solid #1B6EF3", paddingBottom: 16, marginBottom: 20 }}>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <img src="icons/logo.png" alt="Emme 2000" style={{ width: 48, height: 48, objectFit: "contain" }} />
+          <LogoSVGPrint size={36} />
           <div>
-            <div style={{ fontWeight: 800, fontSize: 19, color: NAVY_DARK }}>{company.ragioneSociale}</div>
-            <div style={{ fontSize: 12, color: STEEL }}>{company.sottotitolo}</div>
+            <div style={{ fontWeight: 800, fontSize: 17, color: "#111", letterSpacing: "-0.3px" }}>
+              Emme<span style={{ color: "#1B6EF3" }}>2000</span> Impianti Elettrici
+            </div>
+            <div style={{ fontSize: 11, color: "#666", marginTop: 2 }}>{company.sottotitolo}</div>
           </div>
         </div>
-        <div style={{ textAlign: "right", fontSize: 12, color: STEEL, lineHeight: 1.5 }}>
+        <div style={{ textAlign: "right", fontSize: 11, color: "#555", lineHeight: 1.65 }}>
           {company.indirizzo && <div>{company.indirizzo}</div>}
           {company.telefono && <div>Tel. {company.telefono}</div>}
           {company.email && <div>{company.email}</div>}
@@ -490,88 +696,109 @@ function DocumentoPreventivo({ doc, company }) {
         </div>
       </div>
 
+      {/* Titolo + cliente */}
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 22 }}>
         <div>
-          <div style={{ fontSize: 22, fontWeight: 800, color: NAVY_DARK }}>PREVENTIVO</div>
-          <div style={{ fontSize: 13, color: STEEL }}>N° {doc.numero} · {doc.data}</div>
+          <div style={{ fontSize: 22, fontWeight: 900, color: "#111", letterSpacing: "-0.5px" }}>PREVENTIVO</div>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: "#888", marginTop: 3 }}>N° {doc.numero} · {doc.data}</div>
         </div>
-        <div style={{ textAlign: "right", fontSize: 13, color: NAVY_DARK }}>
-          <div style={{ fontWeight: 700 }}>{doc.cliente}</div>
-          {doc.telefono && <div>{doc.telefono}</div>}
-          {doc.indirizzo && <div>{doc.indirizzo}</div>}
+        <div style={{ textAlign: "right", fontSize: 12, color: "#111" }}>
+          <div style={{ fontWeight: 700, fontSize: 13 }}>{doc.cliente}</div>
+          {doc.telefono && <div style={{ color: "#555" }}>{doc.telefono}</div>}
+          {doc.indirizzo && <div style={{ color: "#555" }}>{doc.indirizzo}</div>}
         </div>
       </div>
 
-      <SectionTitle>Lavoro svolto</SectionTitle>
-      <div style={{ fontSize: 14, color: NAVY_DARK, whiteSpace: "pre-wrap", marginBottom: 20 }}>{doc.lavoro}</div>
+      {/* Lavoro */}
+      <PrintSection>Lavoro svolto</PrintSection>
+      <div style={{ fontSize: 13, color: "#333", whiteSpace: "pre-wrap", marginBottom: 20, lineHeight: 1.6 }}>{doc.lavoro}</div>
 
-      <SectionTitle>Dettaglio costi</SectionTitle>
-      <table style={{ width: "100%", fontSize: 14, borderCollapse: "collapse", marginBottom: 6 }}>
+      {/* Dettaglio costi */}
+      <PrintSection>Dettaglio costi</PrintSection>
+      <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse", marginBottom: 6 }}>
         <tbody>
           <tr>
-            <td style={{ padding: "7px 0", color: NAVY_DARK }}>Manodopera ({doc.ore} h × {doc.persone || 1} pers. × {fmt(doc.tariffaOraria)})</td>
-            <td style={{ padding: "7px 0", textAlign: "right", color: NAVY_DARK }}>{fmt(doc.subtotaleManodopera)}</td>
+            <td style={{ padding: "7px 0", color: "#333" }}>
+              Manodopera ({doc.ore} h × {doc.persone || 1} pers. × {fmt(doc.tariffaOraria)})
+            </td>
+            <td style={{ padding: "7px 0", textAlign: "right", color: "#111", fontWeight: 600 }}>{fmt(doc.subtotaleManodopera)}</td>
           </tr>
           {doc.materiali.map((m) => (
             <tr key={m.id}>
-              <td style={{ padding: "5px 0", color: STEEL }}>
-                Materiale — {m.desc || "—"}
-                <span style={{ color: STEEL }}> ({m.quantita} {m.unita} × {fmt(m.prezzoUnitario)})</span>
+              <td style={{ padding: "5px 0", color: "#666" }}>
+                {m.desc || "—"} <span style={{ color: "#999" }}>({m.quantita} {m.unita} × {fmt(m.prezzoUnitario)})</span>
               </td>
-              <td style={{ padding: "5px 0", textAlign: "right", color: STEEL }}>{fmt(m.totaleRiga)}</td>
+              <td style={{ padding: "5px 0", textAlign: "right", color: "#555" }}>{fmt(m.totaleRiga)}</td>
             </tr>
           ))}
           <tr>
-            <td style={{ padding: "9px 0", borderTop: "1px solid #e2ded0", fontWeight: 700, color: NAVY_DARK }}>Totale lordo</td>
-            <td style={{ padding: "9px 0", borderTop: "1px solid #e2ded0", textAlign: "right", fontWeight: 700, color: NAVY_DARK }}>{fmt(doc.totaleLordo)}</td>
+            <td style={{ padding: "9px 0", borderTop: "1px solid #e0e0e0", fontWeight: 700, color: "#111" }}>Totale lordo</td>
+            <td style={{ padding: "9px 0", borderTop: "1px solid #e0e0e0", textAlign: "right", fontWeight: 700, color: "#111" }}>{fmt(doc.totaleLordo)}</td>
           </tr>
           {doc.scontoValoreCalc > 0 && (
             <tr>
-              <td style={{ padding: "5px 0", color: "#a33" }}>Sconto {doc.scontoTipo === "percentuale" ? `(${doc.scontoValore}%)` : ""}</td>
-              <td style={{ padding: "5px 0", textAlign: "right", color: "#a33" }}>− {fmt(doc.scontoValoreCalc)}</td>
+              <td style={{ padding: "5px 0", color: "#c00" }}>Sconto {doc.scontoTipo === "percentuale" ? `(${doc.scontoValore}%)` : ""}</td>
+              <td style={{ padding: "5px 0", textAlign: "right", color: "#c00" }}>− {fmt(doc.scontoValoreCalc)}</td>
             </tr>
           )}
         </tbody>
       </table>
 
-      <div style={{ background: NAVY, color: "#fff", borderRadius: 8, padding: "12px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", margin: "14px 0 22px" }}>
-        <span style={{ fontWeight: 700, fontSize: 14 }}>TOTALE PREVENTIVO</span>
-        <span style={{ fontWeight: 800, fontSize: 22, color: GOLD_LIGHT }}>{fmt(doc.totaleNetto)}</span>
+      {/* Totale finale */}
+      <div style={{ background: "#1B6EF3", color: "#fff", borderRadius: 7, padding: "13px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", margin: "14px 0 22px" }}>
+        <span style={{ fontWeight: 700, fontSize: 13 }}>TOTALE PREVENTIVO</span>
+        <span style={{ fontWeight: 900, fontSize: 22, letterSpacing: "-0.5px" }}>{fmt(doc.totaleNetto)}</span>
       </div>
 
+      {/* Note */}
       {doc.note && (
         <React.Fragment>
-          <SectionTitle>Note</SectionTitle>
-          <div style={{ fontSize: 13, color: STEEL, whiteSpace: "pre-wrap", marginBottom: 22 }}>{doc.note}</div>
+          <PrintSection>Note</PrintSection>
+          <div style={{ fontSize: 12, color: "#555", whiteSpace: "pre-wrap", marginBottom: 22, lineHeight: 1.65 }}>{doc.note}</div>
         </React.Fragment>
       )}
 
-      <div style={{ fontSize: 11, color: STEEL, marginBottom: 30 }}>
+      {/* Disclaimer */}
+      <div style={{ fontSize: 10, color: "#999", marginBottom: 28, paddingTop: 10, borderTop: "1px solid #eee", lineHeight: 1.6 }}>
         Il presente preventivo ha validità 30 giorni dalla data di emissione, salvo diverso accordo scritto tra le parti.
+        I prezzi si intendono IVA esclusa, salvo diversa indicazione. Offerta soggetta a sopralluogo.
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", gap: 30, marginTop: 40 }}>
+      {/* Firme */}
+      <div style={{ display: "flex", justifyContent: "space-around", gap: 30, marginTop: 36 }}>
         <div style={{ flex: 1, textAlign: "center" }}>
-          <div style={{ borderTop: `1px solid ${NAVY_DARK}`, marginBottom: 6 }}></div>
-          <div style={{ fontSize: 12, color: STEEL }}>Firma azienda</div>
+          <div style={{ borderTop: "1px solid #aaa", marginBottom: 6 }}></div>
+          <div style={{ fontSize: 11, color: "#888" }}>Firma azienda</div>
         </div>
         <div style={{ flex: 1, textAlign: "center" }}>
-          <div style={{ borderTop: `1px solid ${NAVY_DARK}`, marginBottom: 6 }}></div>
-          <div style={{ fontSize: 12, color: STEEL }}>Firma cliente per accettazione</div>
+          <div style={{ borderTop: "1px solid #aaa", marginBottom: 6 }}></div>
+          <div style={{ fontSize: 11, color: "#888" }}>Firma cliente per accettazione</div>
         </div>
       </div>
     </div>
   );
 }
 
-function SectionTitle({ children }) {
+/* ── PRINT SECTION TITLE ── */
+function PrintSection({ children }) {
   return (
-    <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.08em", color: GOLD, textTransform: "uppercase", marginBottom: 8, borderBottom: "1px solid #eee", paddingBottom: 4 }}>
+    <div style={{
+      fontFamily: "'IBM Plex Mono', monospace",
+      fontSize: 9,
+      fontWeight: 700,
+      letterSpacing: "0.14em",
+      color: "#1B6EF3",
+      textTransform: "uppercase",
+      marginBottom: 8,
+      borderBottom: "1px solid #e8eef8",
+      paddingBottom: 4,
+    }}>
       {children}
     </div>
   );
 }
 
+/* ── MOUNT ── */
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
 
