@@ -68,8 +68,6 @@
     .orari-row .day{color:var(--light);}
     .orari-row .time{color:var(--pure);font-weight:500;}
     /* FORM */
-    .form-card{background:var(--dark2);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:2.5rem;position:relative;overflow:hidden;}
-    .form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
     .form-title{font-size:1.2rem;font-weight:700;color:var(--pure);margin-bottom:0.3rem;}
     .form-sub{font-size:0.82rem;color:var(--mid);margin-bottom:1.5rem;}
     .fg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
@@ -102,9 +100,9 @@
     .footer-links{display:flex;gap:1.5rem;}
     .footer-links a{font-size:0.75rem;color:var(--grey2);}
     .footer-links a:hover{color:var(--light);}
-    .wa{position:fixed;bottom:1.5rem;right:1.5rem;z-index:99;width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.35);transition:transform 0.2s;}
+    .wa{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;width:54px;height:54px;min-width:54px;min-height:54px;max-width:54px;max-height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.35);transition:transform 0.2s;overflow:hidden;}
     .wa:hover{transform:scale(1.08);}
-    .wa svg{width:28px;height:28px;}
+    .wa svg{width:28px;height:28px;min-width:28px;min-height:28px;flex-shrink:0;}
     #cb{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(17,17,17,0.98);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.08);padding:1.4rem 0;display:none;}
     #cb.visible{display:block;}
     .ci{width:min(1140px,92vw);margin-inline:auto;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;}
@@ -164,8 +162,8 @@
 </section>
 
 <section class="section" style="background:var(--dark);">
-  <div class="container contatti-grid">
-    <!-- Colonna sinistra: contatti + orari + mappa -->
+  <div class="container" style="max-width:640px;">
+    <!-- Contatti + orari + mappa -->
     <div>
       <h2 class="section-title" style="font-size:clamp(1.4rem,2.5vw,2rem);margin-bottom:1.5rem;">Parliamone</h2>
       <div class="contact-links">
@@ -199,41 +197,6 @@
           <span>Apri su Google Maps →</span>
         </div>
       </a>
-    </div>
-    <!-- Colonna destra: form -->
-    <div>
-      <div class="form-card">
-        <div class="form-title">Preventivo gratuito</div>
-        <div class="form-sub">Compila il modulo — ti risponderemo entro 24 ore.</div>
-        <div class="fg">
-          <div class="f"><label>Nome *</label><input type="text" id="nome" placeholder="Mario Rossi" /></div>
-          <div class="f"><label>Telefono</label><input type="tel" id="tel" placeholder="339 000 0000" /></div>
-          <div class="f full"><label>Email *</label><input type="email" id="email" placeholder="mario@esempio.it" /></div>
-          <div class="f full"><label>Comune</label><input type="text" id="comune" placeholder="Es. Sarnico, Seriate, Lovere..." /></div>
-          <div class="f full">
-            <label>Servizio di interesse</label>
-            <select id="servizio">
-              <option value="">Seleziona un servizio…</option>
-              <option>Sistema d'allarme</option>
-              <option>Videosorveglianza</option>
-              <option>Cancello automatico</option>
-              <option>Videocitofono</option>
-              <option>Impianto elettrico</option>
-              <option>Illuminazione LED</option>
-              <option>Più servizi / non so ancora</option>
-            </select>
-          </div>
-          <div class="f full"><label>Messaggio *</label><textarea id="msg" placeholder="Descrivi brevemente il lavoro che vorresti fare o il problema che hai…"></textarea></div>
-          <div class="f full privacy-row">
-            <input type="checkbox" id="privacy" class="privacy-check" />
-            <label for="privacy" class="privacy-label">Ho letto e accetto la <a href="privacy-policy.html">Privacy Policy</a>. Acconsento al trattamento dei miei dati.</label>
-          </div>
-          <div class="f full">
-            <button type="button" class="btn-blue" id="submitBtn" onclick="handleSubmit()">Invia richiesta →</button>
-            <p id="fmsg"></p>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -278,22 +241,6 @@
 
 <script>
   function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open');}
-  async function handleSubmit(){
-    var nome=document.getElementById('nome').value.trim();
-    var email=document.getElementById('email').value.trim();
-    var msg=document.getElementById('msg').value.trim();
-    var privacy=document.getElementById('privacy').checked;
-    var fm=document.getElementById('fmsg');
-    if(!nome||!email||!msg){fm.style.display='block';fm.style.color='#4D8FF5';fm.textContent='Compila almeno nome, email e messaggio.';return;}
-    if(!privacy){fm.style.display='block';fm.style.color='#ef4444';fm.textContent='Devi accettare la Privacy Policy per inviare il modulo.';return;}
-    var btn=document.getElementById('submitBtn');btn.textContent='Invio in corso…';btn.style.opacity='0.7';
-    try{
-      var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({access_key:'02c2a9d0-4f62-4210-9b98-6e413d3b762c',name:nome,email:email,phone:document.getElementById('tel').value,comune:document.getElementById('comune').value,service:document.getElementById('servizio').value,message:msg,subject:'Nuova richiesta da '+nome+' — Emme 2000 Contatti'})});
-      var json=await res.json();
-      if(json.success){fm.style.display='block';fm.style.color='#22c55e';fm.textContent='Inviato! Ti risponderemo entro 24 ore.';btn.textContent='Inviato ✓';btn.style.background='#16a34a';}
-      else{throw new Error();}
-    }catch(e){fm.style.display='block';fm.style.color='#ef4444';fm.textContent='Errore. Riprova o contattaci direttamente.';btn.textContent='Invia richiesta →';btn.style.opacity='1';}
-  }
   function setCookie(n,v,d){var e=new Date();e.setTime(e.getTime()+(d*24*60*60*1000));document.cookie=n+'='+v+';expires='+e.toUTCString()+';path=/;SameSite=Lax';}
   function getCookie(n){var ca=document.cookie.split(';');for(var i=0;i<ca.length;i++){var c=ca[i].trim();if(c.indexOf(n+'=')===0)return c.substring(n.length+1);}return '';}
   function loadAnalytics(){var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-61H4CBKLR9';document.head.appendChild(s);function gtag(){dataLayer.push(arguments);}gtag('consent','update',{'analytics_storage':'granted'});gtag('config','G-61H4CBKLR9',{'anonymize_ip':true});}
