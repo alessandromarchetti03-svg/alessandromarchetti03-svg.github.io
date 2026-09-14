@@ -23,10 +23,60 @@
   /* ── PRINT ── */
   @media print {
     @page { margin: 9mm 10mm; size: A4; }
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    html, body { background: #fff !important; }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    /* Reset EVERYTHING to white/dark — no dark UI leaking into PDF */
+    html, body, #root, #root > div {
+      background: #ffffff !important;
+      color: #111111 !important;
+    }
+    /* Hide all UI except the print document */
     .no-print { display: none !important; }
-    .print-page { box-shadow: none !important; margin: 0 !important; padding: 24px !important; }
+    nav { display: none !important; }
+    /* The print wrapper itself */
+    .print-page {
+      box-shadow: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #ffffff !important;
+      color: #111111 !important;
+      max-width: 100% !important;
+      border-radius: 0 !important;
+    }
+    /* Force all text inside print-page to dark on white */
+    .print-page * {
+      color: inherit !important;
+      background: transparent !important;
+      border-color: inherit !important;
+    }
+    /* Re-apply the blue bar explicitly */
+    .print-blue-bar {
+      background: #1B6EF3 !important;
+      color: #ffffff !important;
+    }
+    .print-blue-bar * {
+      color: #ffffff !important;
+    }
+    .print-blue-border {
+      border-bottom: 2.5px solid #1B6EF3 !important;
+    }
+    .print-blue-text {
+      color: #1B6EF3 !important;
+    }
+    .print-blue-light-text {
+      color: #4D8FF5 !important;
+    }
+    .print-red-text {
+      color: #cc0000 !important;
+    }
+    .print-grey-text {
+      color: #555555 !important;
+    }
+    .print-mid-text {
+      color: #888888 !important;
+    }
   }
 </style>
 </head>
@@ -381,7 +431,183 @@ function App() {
     setEditingId(doc.id); setError(""); setView("form");
   }
 
-  function stampa() { window.print(); }
+  function stampa() {
+    const doc = current;
+    const co  = company;
+
+    const html = `<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Preventivo ${doc.numero} — ${doc.cliente}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  @page { margin: 10mm 12mm; size: A4; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { background: #ffffff; color: #111111; font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.5; }
+
+  .page { max-width: 720px; margin: 0 auto; padding: 28px 32px; }
+
+  /* Header */
+  .hdr { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2.5px solid #1B6EF3; padding-bottom: 14px; margin-bottom: 18px; }
+  .hdr-left { display: flex; align-items: center; gap: 10px; }
+  .hdr-name { font-weight: 800; font-size: 16px; color: #111; letter-spacing: -0.3px; }
+  .hdr-name span { color: #1B6EF3; }
+  .hdr-sub { font-size: 10px; color: #666; margin-top: 2px; }
+  .hdr-right { text-align: right; font-size: 10.5px; color: #555; line-height: 1.7; }
+
+  /* Doc meta */
+  .meta { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+  .meta-tipo { font-size: 24px; font-weight: 900; color: #111; letter-spacing: -0.5px; }
+  .meta-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #888; margin-top: 3px; }
+  .meta-cli { text-align: right; font-size: 12px; color: #111; line-height: 1.65; }
+  .meta-cli strong { font-size: 13px; }
+
+  /* Sections */
+  .sec { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #1B6EF3; border-bottom: 1px solid #ddeaff; padding-bottom: 4px; margin: 16px 0 8px; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; }
+  tr { border-bottom: 1px solid #f2f2f2; }
+  td { padding: 6px 0; vertical-align: middle; color: #333; }
+  td.r { text-align: right; }
+  td.dark { color: #111; font-weight: 600; }
+  td.grey { color: #888; }
+  td.red { color: #cc0000; }
+  .subtot-row td { border-top: 1.5px solid #ddd; padding-top: 8px; font-weight: 700; color: #111; }
+
+  /* Note text */
+  .note-text { font-size: 12px; color: #555; white-space: pre-wrap; line-height: 1.65; margin-bottom: 20px; }
+
+  /* Total bar */
+  .tot-bar { background: #1B6EF3; color: #ffffff; border-radius: 7px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin: 14px 0 20px; }
+  .tot-bar-label { font-weight: 700; font-size: 13px; }
+  .tot-bar-value { font-weight: 900; font-size: 22px; letter-spacing: -0.5px; }
+
+  /* Disclaimer */
+  .disclaimer { font-size: 10px; color: #999; border-top: 1px solid #eee; padding-top: 10px; margin-bottom: 24px; line-height: 1.65; }
+
+  /* Firme */
+  .firme { display: flex; justify-content: space-around; gap: 30px; margin-top: 40px; }
+  .firma { flex: 1; text-align: center; }
+  .firma-line { border-top: 1px solid #aaa; margin-bottom: 6px; }
+  .firma-label { font-size: 11px; color: #888; }
+
+  /* Logo SVG inline */
+  .logo-svg { width: 34px; height: 34px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Intestazione -->
+  <div class="hdr">
+    <div class="hdr-left">
+      <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="34" height="34" rx="4" stroke="#111111" stroke-width="1.5"/>
+        <rect x="8" y="10" width="20" height="3" fill="#111111"/>
+        <rect x="8" y="16.5" width="20" height="3" fill="#1B6EF3"/>
+        <rect x="8" y="23" width="20" height="3" fill="#111111"/>
+      </svg>
+      <div>
+        <div class="hdr-name">Emme<span>2000</span> Impianti Elettrici</div>
+        <div class="hdr-sub">${co.sottotitolo || ''}</div>
+      </div>
+    </div>
+    <div class="hdr-right">
+      ${co.indirizzo ? `<div>${co.indirizzo}</div>` : ''}
+      ${co.telefono  ? `<div>Tel. ${co.telefono}</div>` : ''}
+      ${co.email     ? `<div>${co.email}</div>` : ''}
+      ${co.piva      ? `<div>P.IVA ${co.piva}</div>` : ''}
+    </div>
+  </div>
+
+  <!-- Titolo + cliente -->
+  <div class="meta">
+    <div>
+      <div class="meta-tipo">PREVENTIVO</div>
+      <div class="meta-num">N° ${doc.numero} · ${doc.data}</div>
+    </div>
+    <div class="meta-cli">
+      <strong>${doc.cliente}</strong>
+      ${doc.telefono ? `<br/>${doc.telefono}` : ''}
+      ${doc.indirizzo ? `<br/>${doc.indirizzo}` : ''}
+    </div>
+  </div>
+
+  <!-- Lavoro -->
+  <div class="sec">Lavoro svolto</div>
+  <div style="font-size:13px;color:#333;white-space:pre-wrap;margin-bottom:16px;line-height:1.6;">${doc.lavoro || ''}</div>
+
+  <!-- Dettaglio costi -->
+  <div class="sec">Dettaglio costi</div>
+  <table>
+    <tbody>
+      <tr>
+        <td>Manodopera (${doc.ore} h × ${doc.persone || 1} pers. × ${fmtP(doc.tariffaOraria)})</td>
+        <td class="r dark">${fmtP(doc.subtotaleManodopera)}</td>
+      </tr>
+      ${(doc.materiali || []).map(m => `
+      <tr>
+        <td>${m.desc || '—'} <span style="color:#999;">(${m.quantita} ${m.unita} × ${fmtP(m.prezzoUnitario)})</span></td>
+        <td class="r" style="color:#555;">${fmtP(m.totaleRiga)}</td>
+      </tr>`).join('')}
+      <tr class="subtot-row">
+        <td>Totale lordo</td>
+        <td class="r">${fmtP(doc.totaleLordo)}</td>
+      </tr>
+      ${doc.scontoValoreCalc > 0 ? `
+      <tr>
+        <td class="red">Sconto${doc.scontoTipo === 'percentuale' ? ' (' + doc.scontoValore + '%)' : ''}</td>
+        <td class="r red">− ${fmtP(doc.scontoValoreCalc)}</td>
+      </tr>` : ''}
+    </tbody>
+  </table>
+
+  <!-- Totale -->
+  <div class="tot-bar">
+    <span class="tot-bar-label">TOTALE PREVENTIVO</span>
+    <span class="tot-bar-value">${fmtP(doc.totaleNetto)}</span>
+  </div>
+
+  ${doc.note ? `<div class="sec">Note</div><div class="note-text">${doc.note}</div>` : ''}
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    Il presente preventivo ha validità 30 giorni dalla data di emissione, salvo diverso accordo scritto tra le parti.
+    I prezzi si intendono IVA esclusa, salvo diversa indicazione. Offerta soggetta a sopralluogo.
+  </div>
+
+  <!-- Firme -->
+  <div class="firme">
+    <div class="firma"><div class="firma-line"></div><div class="firma-label">Firma azienda</div></div>
+    <div class="firma"><div class="firma-line"></div><div class="firma-label">Firma cliente per accettazione</div></div>
+  </div>
+
+</div>
+<script>
+  window.onload = function() {
+    setTimeout(function() { window.print(); }, 400);
+  };
+<\/script>
+</body>
+</html>`;
+
+    function fmtP(n) {
+      return (Number(n)||0).toLocaleString('it-IT',{style:'currency',currency:'EUR'});
+    }
+
+    const w = window.open('', '_blank', 'width=800,height=900');
+    if (w) {
+      w.document.write(html);
+      w.document.close();
+    } else {
+      alert('Abilita i popup per questo sito per esportare il PDF, oppure usa il tasto Stampa del browser.');
+    }
+  }
 
   return (
     <div style={{ fontFamily: "'Inter', sans-serif", minHeight: "100vh", background: C.black }}>
