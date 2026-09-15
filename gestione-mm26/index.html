@@ -17,66 +17,14 @@
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
   html, body { margin: 0; padding: 0; background: #0A0A0A; font-family: 'Inter', sans-serif; }
-
-  /* ── PRINT ── */
   @media print {
-    @page { margin: 9mm 10mm; size: A4; }
-    * {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-    }
-    /* Reset EVERYTHING to white/dark — no dark UI leaking into PDF */
-    html, body, #root, #root > div {
-      background: #ffffff !important;
-      color: #111111 !important;
-    }
-    /* Hide all UI except the print document */
+    @page { margin: 10mm 12mm; size: A4; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body { background: #fff !important; }
     .no-print { display: none !important; }
-    nav { display: none !important; }
-    /* The print wrapper itself */
-    .print-page {
-      box-shadow: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      background: #ffffff !important;
-      color: #111111 !important;
-      max-width: 100% !important;
-      border-radius: 0 !important;
-    }
-    /* Force all text inside print-page to dark on white */
-    .print-page * {
-      color: inherit !important;
-      background: transparent !important;
-      border-color: inherit !important;
-    }
-    /* Re-apply the blue bar explicitly */
-    .print-blue-bar {
-      background: #1B6EF3 !important;
-      color: #ffffff !important;
-    }
-    .print-blue-bar * {
-      color: #ffffff !important;
-    }
-    .print-blue-border {
-      border-bottom: 2.5px solid #1B6EF3 !important;
-    }
-    .print-blue-text {
-      color: #1B6EF3 !important;
-    }
-    .print-blue-light-text {
-      color: #4D8FF5 !important;
-    }
-    .print-red-text {
-      color: #cc0000 !important;
-    }
-    .print-grey-text {
-      color: #555555 !important;
-    }
-    .print-mid-text {
-      color: #888888 !important;
-    }
   }
 </style>
 </head>
@@ -84,204 +32,159 @@
 <div id="root"></div>
 
 <script type="text/babel" data-type="module">
-const { useState, useEffect } = React;
+const { useState, useEffect, useCallback } = React;
 
-/* ── BRAND TOKENS ── */
+/* ── SUPABASE ── */
+const SUPA_URL = "https://xjaljpvxprcqtovzomxn.supabase.co";
+const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqYWxqcHZ4cHJjcXRvdnpvbXhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NDMzMzksImV4cCI6MjEwNTAxOTMzOX0.QC1Fh9laXRFCy563_fWaMBxvbtb9kDg60wJ9VcilbyY";
+const db = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+/* ── BRAND ── */
 const C = {
-  black:      "#0A0A0A",
-  dark:       "#111111",
-  dark2:      "#1A1A1A",
-  dark3:      "#222222",
-  grey:       "#2E2E2E",
-  grey2:      "#3D3D3D",
-  mid:        "#6B6B6B",
-  light:      "#A0A0A0",
-  lighter:    "#D0D0D0",
-  white:      "#F8F8F8",
-  pure:       "#FFFFFF",
-  blue:       "#1B6EF3",
-  blue2:      "#1459CC",
-  blueLight:  "#4D8FF5",
-  blueGlow:   "rgba(27,110,243,0.15)",
-  red:        "#E05252",
-  redGlow:    "rgba(224,82,82,0.15)",
+  black:"#0A0A0A", dark:"#111111", dark2:"#1A1A1A", dark3:"#222222",
+  mid:"#6B6B6B", light:"#A0A0A0", lighter:"#D0D0D0", white:"#F8F8F8", pure:"#FFFFFF",
+  blue:"#1B6EF3", blue2:"#1459CC", blueLight:"#4D8FF5", blueGlow:"rgba(27,110,243,0.15)",
+  red:"#E05252", redGlow:"rgba(224,82,82,0.15)", green:"#22C55E",
 };
 
-/* ── GLOBAL STYLE (injected once) ── */
 const GLOBAL_CSS = `
   * { box-sizing: border-box; }
   body { background: ${C.black}; color: ${C.white}; font-family: 'Inter', sans-serif; }
-
   input, textarea, select {
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    padding: 10px 12px;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 7px;
-    width: 100%;
-    background: ${C.dark3};
-    color: ${C.white};
-    outline: none;
-    transition: border-color 0.2s;
+    font-family: 'Inter', sans-serif; font-size: 15px; padding: 10px 12px;
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 7px; width: 100%;
+    background: ${C.dark3}; color: ${C.white}; outline: none; transition: border-color 0.2s;
   }
-  input:focus, textarea:focus, select:focus {
-    border-color: ${C.blue};
-    box-shadow: 0 0 0 3px ${C.blueGlow};
-  }
+  input:focus, textarea:focus, select:focus { border-color: ${C.blue}; box-shadow: 0 0 0 3px ${C.blueGlow}; }
   input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.22); }
   select option { background: ${C.dark2}; color: ${C.white}; }
-
-  label {
-    display: block;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: ${C.mid};
-    margin-bottom: 6px;
-  }
+  label { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: ${C.mid}; margin-bottom: 6px; }
   .field { margin-bottom: 16px; }
-
-  /* Buttons */
   .btn { border: none; border-radius: 7px; padding: 11px 18px; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.18s; font-family: 'Inter', sans-serif; }
-  .btn:hover { opacity: 0.88; }
   .btn-primary { background: ${C.blue}; color: ${C.pure}; }
-  .btn-primary:hover { background: ${C.blue2}; opacity: 1; }
+  .btn-primary:hover { background: ${C.blue2}; }
   .btn-secondary { background: transparent; color: ${C.lighter}; border: 1px solid rgba(255,255,255,0.15); }
-  .btn-secondary:hover { border-color: rgba(255,255,255,0.35); color: ${C.pure}; opacity: 1; }
+  .btn-secondary:hover { border-color: rgba(255,255,255,0.35); color: ${C.pure}; }
   .btn-danger { background: transparent; color: ${C.red}; border: 1px solid rgba(224,82,82,0.3); }
-  .btn-danger:hover { background: ${C.redGlow}; opacity: 1; }
-
-  /* Card */
-  .card {
-    background: ${C.dark2};
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 12px;
-    padding: 22px;
-  }
-
-  /* Section label */
-  .sec-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: ${C.blueLight};
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+  .btn-danger:hover { background: ${C.redGlow}; }
+  .card { background: ${C.dark2}; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 22px; }
+  .sec-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: ${C.blueLight}; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
   .sec-label::before { content: ''; display: block; width: 16px; height: 1px; background: ${C.blue}; }
-
-  /* Materiale row */
-  .mat-row {
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 10px;
-    background: ${C.dark3};
-  }
-
-  /* Totale bar */
-  .tot-bar {
-    background: ${C.blue};
-    border-radius: 8px;
-    padding: 14px 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 14px 0;
-  }
-
-  /* Storico row */
-  .storico-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
+  .mat-row { border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 12px; margin-bottom: 10px; background: ${C.dark3}; }
+  .tot-bar { background: ${C.blue}; border-radius: 8px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; margin: 14px 0; }
+  .storico-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
   .storico-row:last-child { border-bottom: none; }
-
-  /* Error box */
-  .err-box {
-    background: rgba(224,82,82,0.12);
-    color: #ff8080;
-    border: 1px solid rgba(224,82,82,0.25);
-    padding: 10px 14px;
-    border-radius: 7px;
-    margin-bottom: 14px;
-    font-size: 13px;
-  }
-
-  /* Riepilogo calcoli */
-  .riepi-box {
-    background: ${C.dark3};
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 16px;
-  }
-
-  /* ── PRINT DOCUMENT ── */
-  @media print {
-    .print-page {
-      background: #fff !important;
-      color: #111 !important;
-      padding: 0 !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-    }
-  }
+  .err-box { background: rgba(224,82,82,0.12); color: #ff8080; border: 1px solid rgba(224,82,82,0.25); padding: 10px 14px; border-radius: 7px; margin-bottom: 14px; font-size: 13px; }
+  .ok-box { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); padding: 10px 14px; border-radius: 7px; margin-bottom: 14px; font-size: 13px; }
+  .riepi-box { background: ${C.dark3}; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; }
+  .sync-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+  .sync-ok { background: ${C.green}; }
+  .sync-err { background: ${C.red}; }
+  .sync-loading { background: #CCAA44; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 `;
 
 /* ── HELPERS ── */
-function uid() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+function fmt(n) { return (Number(n)||0).toLocaleString("it-IT",{style:"currency",currency:"EUR"}); }
+function todayStr() { return new Date().toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit",year:"numeric"}); }
 
-function fmt(n) {
-  const v = Number(n) || 0;
-  return v.toLocaleString("it-IT", { style: "currency", currency: "EUR" });
-}
+/* ── LOCAL STORAGE (cache offline) ── */
+const LS = {
+  get(k)    { try { const v=localStorage.getItem(k); return v?JSON.parse(v):null; } catch(e){return null;} },
+  set(k,v)  { try { localStorage.setItem(k,JSON.stringify(v)); } catch(e){} },
+};
 
-function todayStr() {
-  return new Date().toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" });
-}
-
-/* ── STORAGE ── */
-const storage = {
-  get(key) {
-    try { const v = localStorage.getItem(key); return v === null ? null : JSON.parse(v); }
-    catch (e) { return null; }
+/* ── SUPABASE API ── */
+const API = {
+  async getCounter() {
+    const { data, error } = await db.from("contatore").select("valore").eq("id",1).single();
+    if (error) throw error;
+    return data.valore;
   },
-  set(key, value) {
-    try { localStorage.setItem(key, JSON.stringify(value)); return true; }
-    catch (e) { return false; }
+  async incrementCounter() {
+    const cur = await API.getCounter();
+    const next = cur + 1;
+    const { error } = await db.from("contatore").update({valore: next}).eq("id",1);
+    if (error) throw error;
+    return next;
+  },
+  async savePreventivo(doc) {
+    // upsert preventivo
+    const { error: e1 } = await db.from("preventivi").upsert({
+      id: doc.id, numero: doc.numero, data: doc.data,
+      cliente: doc.cliente, telefono: doc.telefono, indirizzo: doc.indirizzo,
+      lavoro: doc.lavoro, ore: doc.ore, tariffa_oraria: doc.tariffaOraria,
+      persone: doc.persone, sconto_tipo: doc.scontoTipo, sconto_valore: doc.scontoValore,
+      note: doc.note, subtotale_manodopera: doc.subtotaleManodopera,
+      subtotale_materiali: doc.subtotaleMateriali, totale_lordo: doc.totaleLordo,
+      sconto_valore_calc: doc.scontoValoreCalc, totale_netto: doc.totaleNetto,
+    });
+    if (e1) throw e1;
+    // delete old materiali and reinsert
+    await db.from("preventivi_materiali").delete().eq("preventivo_id", doc.id);
+    if (doc.materiali && doc.materiali.length > 0) {
+      const rows = doc.materiali.map(m => ({
+        id: m.id || uid(),
+        preventivo_id: doc.id,
+        descrizione: m.desc || m.descrizione || "",
+        quantita: m.quantita,
+        unita: m.unita,
+        prezzo_unitario: m.prezzoUnitario || m.prezzo_unitario,
+        totale_riga: m.totaleRiga || m.totale_riga,
+      }));
+      const { error: e2 } = await db.from("preventivi_materiali").insert(rows);
+      if (e2) throw e2;
+    }
+  },
+  async getAll() {
+    const { data: preventivi, error: e1 } = await db
+      .from("preventivi")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (e1) throw e1;
+    const { data: materiali, error: e2 } = await db
+      .from("preventivi_materiali")
+      .select("*");
+    if (e2) throw e2;
+    return preventivi.map(p => ({
+      id: p.id, numero: p.numero, data: p.data,
+      cliente: p.cliente, telefono: p.telefono, indirizzo: p.indirizzo,
+      lavoro: p.lavoro, ore: p.ore, tariffaOraria: p.tariffa_oraria,
+      persone: p.persone, scontoTipo: p.sconto_tipo, scontoValore: p.sconto_valore,
+      note: p.note, subtotaleManodopera: p.subtotale_manodopera,
+      subtotaleMateriali: p.subtotale_materiali, totaleLordo: p.totale_lordo,
+      scontoValoreCalc: p.sconto_valore_calc, totaleNetto: p.totale_netto,
+      materiali: materiali
+        .filter(m => m.preventivo_id === p.id)
+        .map(m => ({
+          id: m.id, desc: m.descrizione, quantita: m.quantita,
+          unita: m.unita, prezzoUnitario: m.prezzo_unitario, totaleRiga: m.totale_riga,
+        })),
+    }));
+  },
+  async deletePreventivo(id) {
+    const { error } = await db.from("preventivi").delete().eq("id", id);
+    if (error) throw error;
   },
 };
 
 /* ── DEFAULTS ── */
 const emptyForm = () => ({
-  cliente: "", telefono: "", indirizzo: "", lavoro: "",
-  ore: "", tariffaOraria: "35", persone: "1",
-  materiali: [{ id: uid(), desc: "", quantita: "1", unita: "pz", prezzoUnitario: "" }],
-  scontoTipo: "percentuale", scontoValore: "", note: "",
+  cliente:"", telefono:"", indirizzo:"", lavoro:"",
+  ore:"", tariffaOraria:"35", persone:"1",
+  materiali:[{id:uid(), desc:"", quantita:"1", unita:"pz", prezzoUnitario:""}],
+  scontoTipo:"percentuale", scontoValore:"", note:"",
 });
 
 const defaultCompany = {
-  ragioneSociale: "Emme 2000",
-  sottotitolo: "Impianti elettrici · Antifurto · Automazioni · Videosorveglianza",
-  piva: "",
-  indirizzo: "Viale Italia 3, 24060 Villongo (BG)",
-  telefono: "352 033 4436",
-  email: "info@emme2000impiantielettrici.it",
+  ragioneSociale:"Emme 2000", sottotitolo:"Impianti elettrici · Antifurto · Automazioni · Videosorveglianza",
+  piva:"", indirizzo:"Viale Italia 3, 24060 Villongo (BG)", telefono:"352 033 4436",
+  email:"info@emme2000impiantielettrici.it",
 };
 
 /* ── SVG LOGO ── */
-function LogoSVG({ size = 32 }) {
+function LogoSVG({size=32}) {
   return (
     <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="1" y="1" width="34" height="34" rx="4" stroke="#F8F8F8" strokeWidth="1.5"/>
@@ -292,240 +195,207 @@ function LogoSVG({ size = 32 }) {
   );
 }
 
-function LogoSVGPrint({ size = 28 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="1" y="1" width="34" height="34" rx="4" stroke="#111111" strokeWidth="1.5"/>
-      <rect x="8" y="10" width="20" height="3" fill="#111111"/>
-      <rect x="8" y="16.5" width="20" height="3" fill="#1B6EF3"/>
-      <rect x="8" y="23" width="20" height="3" fill="#111111"/>
-    </svg>
-  );
-}
-
-/* ════════════════════════════════════
-   MAIN APP
-════════════════════════════════════ */
+/* ════════════════════════════
+   APP
+════════════════════════════ */
 function App() {
-  const [view, setView] = useState("form");
-  const [form, setForm] = useState(emptyForm());
-  const [company, setCompany] = useState(defaultCompany);
-  const [companyDraft, setCompanyDraft] = useState(defaultCompany);
-  const [store, setStoreState] = useState({ counter: 0, list: [] });
-  const [current, setCurrent] = useState(null);
-  const [editingId, setEditingId] = useState(null);
-  const [error, setError] = useState("");
+  const [view, setView]             = useState("form");
+  const [form, setForm]             = useState(emptyForm());
+  const [company, setCompany]       = useState(() => LS.get("company-info") || defaultCompany);
+  const [companyDraft, setCompanyDraft] = useState(() => LS.get("company-info") || defaultCompany);
+  const [list, setList]             = useState([]);
+  const [current, setCurrent]       = useState(null);
+  const [editingId, setEditingId]   = useState(null);
+  const [error, setError]           = useState("");
+  const [syncStatus, setSyncStatus] = useState("loading"); // "ok" | "err" | "loading"
+  const [syncMsg, setSyncMsg]       = useState("Connessione...");
+  const [saving, setSaving]         = useState(false);
 
+  /* ── CARICA DATI ALL'AVVIO ── */
   useEffect(() => {
-    const c = storage.get("company-info");
-    if (c) setCompany({ ...defaultCompany, ...c });
-    const d = storage.get("preventivi-data");
-    if (d) setStoreState(d);
+    loadAll();
   }, []);
 
-  useEffect(() => { setCompanyDraft(company); }, [company]);
-
-  function saveCompany() {
-    setCompany(companyDraft);
-    storage.set("company-info", companyDraft);
+  async function loadAll() {
+    setSyncStatus("loading"); setSyncMsg("Sincronizzazione...");
+    try {
+      const docs = await API.getAll();
+      setList(docs);
+      LS.set("preventivi-cache", docs);
+      setSyncStatus("ok"); setSyncMsg("Sincronizzato");
+    } catch(e) {
+      // fallback su cache locale
+      const cache = LS.get("preventivi-cache");
+      if (cache) setList(cache);
+      setSyncStatus("err"); setSyncMsg("Offline — dati locali");
+    }
   }
 
-  function persistStore(next) {
-    setStoreState(next);
-    storage.set("preventivi-data", next);
-  }
+  /* ── FORM HELPERS ── */
+  function updateForm(f,v) { setForm(p=>({...p,[f]:v})); }
+  function updateMateriale(id,f,v) { setForm(p=>({...p,materiali:p.materiali.map(m=>m.id===id?{...m,[f]:v}:m)})); }
+  function addMateriale() { setForm(p=>({...p,materiali:[...p.materiali,{id:uid(),desc:"",quantita:"1",unita:"pz",prezzoUnitario:""}]})); }
+  function removeMateriale(id) { setForm(p=>({...p,materiali:p.materiali.filter(m=>m.id!==id)})); }
 
-  function updateForm(field, value) { setForm((f) => ({ ...f, [field]: value })); }
+  /* ── CALCOLI ── */
+  const subMano = (Number(form.ore)||0)*(Number(form.tariffaOraria)||0)*(Number(form.persone)||1);
+  const subMat  = form.materiali.reduce((s,m)=>s+(Number(m.quantita)||0)*(Number(m.prezzoUnitario)||0),0);
+  const totLordo = subMano + subMat;
+  const scontoCalc = form.scontoTipo==="percentuale"
+    ? totLordo*(Number(form.scontoValore)||0)/100
+    : Number(form.scontoValore)||0;
+  const totNetto = Math.max(totLordo - scontoCalc, 0);
 
-  function updateMateriale(id, field, value) {
-    setForm((f) => ({ ...f, materiali: f.materiali.map((m) => m.id === id ? { ...m, [field]: value } : m) }));
-  }
-  function addMateriale() {
-    setForm((f) => ({ ...f, materiali: [...f.materiali, { id: uid(), desc: "", quantita: "1", unita: "pz", prezzoUnitario: "" }] }));
-  }
-  function removeMateriale(id) {
-    setForm((f) => ({ ...f, materiali: f.materiali.filter((m) => m.id !== id) }));
-  }
-
-  const subtotaleManodopera = (Number(form.ore) || 0) * (Number(form.tariffaOraria) || 0) * (Number(form.persone) || 1);
-  const subtotaleMateriali = form.materiali.reduce((sum, m) => sum + (Number(m.quantita) || 0) * (Number(m.prezzoUnitario) || 0), 0);
-  const totaleLordo = subtotaleManodopera + subtotaleMateriali;
-  const scontoValoreCalc = form.scontoTipo === "percentuale"
-    ? (totaleLordo * (Number(form.scontoValore) || 0)) / 100
-    : Number(form.scontoValore) || 0;
-  const totaleNetto = Math.max(totaleLordo - scontoValoreCalc, 0);
-
-  function validaForm() {
+  /* ── VALIDA ── */
+  function valida() {
     if (!form.cliente.trim()) return "Inserisci il nome del cliente.";
-    if (!form.lavoro.trim()) return "Descrivi il lavoro svolto o da svolgere.";
+    if (!form.lavoro.trim())  return "Descrivi il lavoro.";
     return "";
   }
 
-  function vaiAdAnteprima() {
-    const err = validaForm();
+  function vaiAnteprima() {
+    const err = valida();
     if (err) { setError(err); return; }
-    setError("");
-    setView("anteprima");
+    setError(""); setView("anteprima");
   }
 
-  function confermaEGenera() {
-    const materialiCalcolati = form.materiali
-      .filter((m) => m.desc.trim() || m.prezzoUnitario)
-      .map((m) => ({ ...m, totaleRiga: (Number(m.quantita) || 0) * (Number(m.prezzoUnitario) || 0) }));
+  /* ── SALVA ── */
+  async function confermaEGenera() {
+    setSaving(true); setError("");
+    try {
+      const materiali = form.materiali
+        .filter(m=>m.desc.trim()||m.prezzoUnitario)
+        .map(m=>({...m, totaleRiga:(Number(m.quantita)||0)*(Number(m.prezzoUnitario)||0)}));
 
-    if (editingId) {
-      const esistente = store.list.find((d) => d.id === editingId);
-      const aggiornato = {
-        ...esistente,
-        cliente: form.cliente, telefono: form.telefono, indirizzo: form.indirizzo,
-        lavoro: form.lavoro, ore: Number(form.ore) || 0,
-        tariffaOraria: Number(form.tariffaOraria) || 0, persone: Number(form.persone) || 1,
-        materiali: materialiCalcolati, scontoTipo: form.scontoTipo,
-        scontoValore: Number(form.scontoValore) || 0, note: form.note,
-        subtotaleManodopera, subtotaleMateriali, totaleLordo, scontoValoreCalc, totaleNetto,
-      };
-      const nextList = store.list.map((d) => (d.id === editingId ? aggiornato : d));
-      persistStore({ ...store, list: nextList });
-      setCurrent(aggiornato);
-      setEditingId(null);
-      setView("documento");
-      return;
-    }
-
-    const numero = store.counter + 1;
-    const anno = new Date().getFullYear();
-    const doc = {
-      id: uid(),
-      numero: `${anno}-${String(numero).padStart(3, "0")}`,
-      data: todayStr(),
-      cliente: form.cliente, telefono: form.telefono, indirizzo: form.indirizzo,
-      lavoro: form.lavoro, ore: Number(form.ore) || 0,
-      tariffaOraria: Number(form.tariffaOraria) || 0, persone: Number(form.persone) || 1,
-      materiali: materialiCalcolati, scontoTipo: form.scontoTipo,
-      scontoValore: Number(form.scontoValore) || 0, note: form.note,
-      subtotaleManodopera, subtotaleMateriali, totaleLordo, scontoValoreCalc, totaleNetto,
-    };
-    persistStore({ counter: numero, list: [doc, ...store.list] });
-    setCurrent(doc);
-    setView("documento");
+      let doc;
+      if (editingId) {
+        const existing = list.find(d=>d.id===editingId);
+        doc = { ...existing, cliente:form.cliente, telefono:form.telefono, indirizzo:form.indirizzo,
+          lavoro:form.lavoro, ore:Number(form.ore)||0, tariffaOraria:Number(form.tariffaOraria)||0,
+          persone:Number(form.persone)||1, materiali, scontoTipo:form.scontoTipo,
+          scontoValore:Number(form.scontoValore)||0, note:form.note,
+          subtotaleManodopera:subMano, subtotaleMateriali:subMat,
+          totaleLordo:totLordo, scontoValoreCalc:scontoCalc, totaleNetto:totNetto,
+        };
+        await API.savePreventivo(doc);
+        setList(l=>l.map(d=>d.id===editingId?doc:d));
+        LS.set("preventivi-cache", list.map(d=>d.id===editingId?doc:d));
+      } else {
+        const numero = await API.incrementCounter();
+        const anno = new Date().getFullYear();
+        doc = {
+          id: uid(),
+          numero: `${anno}-${String(numero).padStart(3,"0")}`,
+          data: todayStr(),
+          cliente:form.cliente, telefono:form.telefono, indirizzo:form.indirizzo,
+          lavoro:form.lavoro, ore:Number(form.ore)||0, tariffaOraria:Number(form.tariffaOraria)||0,
+          persone:Number(form.persone)||1, materiali, scontoTipo:form.scontoTipo,
+          scontoValore:Number(form.scontoValore)||0, note:form.note,
+          subtotaleManodopera:subMano, subtotaleMateriali:subMat,
+          totaleLordo:totLordo, scontoValoreCalc:scontoCalc, totaleNetto:totNetto,
+        };
+        await API.savePreventivo(doc);
+        const newList = [doc, ...list];
+        setList(newList);
+        LS.set("preventivi-cache", newList);
+      }
+      setSyncStatus("ok"); setSyncMsg("Sincronizzato");
+      setCurrent(doc); setEditingId(null); setView("documento");
+    } catch(e) {
+      setError("Errore salvataggio: " + (e.message || e)); setSyncStatus("err");
+    } finally { setSaving(false); }
   }
 
-  function nuovoPreventivo() {
-    setForm(emptyForm()); setCurrent(null); setEditingId(null); setError(""); setView("form");
-  }
-  function apriDaStorico(doc) { setCurrent(doc); setEditingId(null); setView("documento"); }
-  function eliminaDaStorico(id) { persistStore({ ...store, list: store.list.filter((d) => d.id !== id) }); }
+  function nuovoPreventivo() { setForm(emptyForm()); setCurrent(null); setEditingId(null); setError(""); setView("form"); }
 
   function modificaPreventivo(doc) {
     setForm({
-      cliente: doc.cliente || "", telefono: doc.telefono || "",
-      indirizzo: doc.indirizzo || "", lavoro: doc.lavoro || "",
-      ore: String(doc.ore ?? ""), tariffaOraria: String(doc.tariffaOraria ?? "35"),
-      persone: String(doc.persone ?? "1"),
-      materiali: doc.materiali && doc.materiali.length
-        ? doc.materiali.map((m) => ({ id: m.id || uid(), desc: m.desc || "", quantita: String(m.quantita ?? "1"), unita: m.unita || "pz", prezzoUnitario: String(m.prezzoUnitario ?? "") }))
-        : [{ id: uid(), desc: "", quantita: "1", unita: "pz", prezzoUnitario: "" }],
-      scontoTipo: doc.scontoTipo || "percentuale",
-      scontoValore: String(doc.scontoValore ?? ""), note: doc.note || "",
+      cliente:doc.cliente||"", telefono:doc.telefono||"", indirizzo:doc.indirizzo||"",
+      lavoro:doc.lavoro||"", ore:String(doc.ore??""), tariffaOraria:String(doc.tariffaOraria??35),
+      persone:String(doc.persone??1),
+      materiali:doc.materiali&&doc.materiali.length
+        ? doc.materiali.map(m=>({id:m.id||uid(),desc:m.desc||"",quantita:String(m.quantita??"1"),unita:m.unita||"pz",prezzoUnitario:String(m.prezzoUnitario??"")}))
+        : [{id:uid(),desc:"",quantita:"1",unita:"pz",prezzoUnitario:""}],
+      scontoTipo:doc.scontoTipo||"percentuale", scontoValore:String(doc.scontoValore??""), note:doc.note||"",
     });
     setEditingId(doc.id); setError(""); setView("form");
   }
 
+  async function eliminaPreventivo(id) {
+    if (!confirm("Eliminare questo preventivo?")) return;
+    try {
+      await API.deletePreventivo(id);
+      const newList = list.filter(d=>d.id!==id);
+      setList(newList);
+      LS.set("preventivi-cache", newList);
+      if (current?.id===id) setView("storico");
+    } catch(e) { alert("Errore eliminazione: "+(e.message||e)); }
+  }
+
+  function saveCompany() {
+    setCompany(companyDraft);
+    LS.set("company-info", companyDraft);
+  }
+
+  /* ── STAMPA ── */
   function stampa() {
     const doc = current;
     const co  = company;
+    function fmtP(n) { return (Number(n)||0).toLocaleString("it-IT",{style:"currency",currency:"EUR"}); }
 
     const html = `<!DOCTYPE html>
-<html lang="it">
-<head>
+<html lang="it"><head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Preventivo ${doc.numero} — ${doc.cliente}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-  @page { margin: 10mm 12mm; size: A4; }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  html, body { background: #ffffff; color: #111111; font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.5; }
-
-  .page { max-width: 720px; margin: 0 auto; padding: 28px 32px; }
-
-  /* Header */
-  .hdr { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2.5px solid #1B6EF3; padding-bottom: 14px; margin-bottom: 18px; }
-  .hdr-left { display: flex; align-items: center; gap: 10px; }
-  .hdr-name { font-weight: 800; font-size: 16px; color: #111; letter-spacing: -0.3px; }
-  .hdr-name span { color: #1B6EF3; }
-  .hdr-sub { font-size: 10px; color: #666; margin-top: 2px; }
-  .hdr-right { text-align: right; font-size: 10.5px; color: #555; line-height: 1.7; }
-
-  /* Doc meta */
-  .meta { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-  .meta-tipo { font-size: 24px; font-weight: 900; color: #111; letter-spacing: -0.5px; }
-  .meta-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #888; margin-top: 3px; }
-  .meta-cli { text-align: right; font-size: 12px; color: #111; line-height: 1.65; }
-  .meta-cli strong { font-size: 13px; }
-
-  /* Sections */
-  .sec { font-family: 'IBM Plex Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #1B6EF3; border-bottom: 1px solid #ddeaff; padding-bottom: 4px; margin: 16px 0 8px; }
-
-  /* Table */
-  table { width: 100%; border-collapse: collapse; }
-  tr { border-bottom: 1px solid #f2f2f2; }
-  td { padding: 6px 0; vertical-align: middle; color: #333; }
-  td.r { text-align: right; }
-  td.dark { color: #111; font-weight: 600; }
-  td.grey { color: #888; }
-  td.red { color: #cc0000; }
-  .subtot-row td { border-top: 1.5px solid #ddd; padding-top: 8px; font-weight: 700; color: #111; }
-
-  /* Note text */
-  .note-text { font-size: 12px; color: #555; white-space: pre-wrap; line-height: 1.65; margin-bottom: 20px; }
-
-  /* Total bar */
-  .tot-bar { background: #1B6EF3; color: #ffffff; border-radius: 7px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin: 14px 0 20px; }
-  .tot-bar-label { font-weight: 700; font-size: 13px; }
-  .tot-bar-value { font-weight: 900; font-size: 22px; letter-spacing: -0.5px; }
-
-  /* Disclaimer */
-  .disclaimer { font-size: 10px; color: #999; border-top: 1px solid #eee; padding-top: 10px; margin-bottom: 24px; line-height: 1.65; }
-
-  /* Firme */
-  .firme { display: flex; justify-content: space-around; gap: 30px; margin-top: 40px; }
-  .firma { flex: 1; text-align: center; }
-  .firma-line { border-top: 1px solid #aaa; margin-bottom: 6px; }
-  .firma-label { font-size: 11px; color: #888; }
-
-  /* Logo SVG inline */
-  .logo-svg { width: 34px; height: 34px; flex-shrink: 0; }
-</style>
-</head>
-<body>
-<div class="page">
-
-  <!-- Intestazione -->
+  @page{margin:10mm 12mm;size:A4;}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  html,body{background:#fff;color:#111;font-family:'Inter',sans-serif;font-size:13px;line-height:1.5;}
+  .page{max-width:720px;margin:0 auto;padding:28px 32px;}
+  .hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2.5px solid #1B6EF3;padding-bottom:14px;margin-bottom:18px;}
+  .hdr-left{display:flex;align-items:center;gap:10px;}
+  .hdr-name{font-weight:800;font-size:16px;color:#111;}
+  .hdr-name span{color:#1B6EF3;}
+  .hdr-sub{font-size:10px;color:#666;margin-top:2px;}
+  .hdr-right{text-align:right;font-size:10.5px;color:#555;line-height:1.7;}
+  .meta{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+  .meta-tipo{font-size:24px;font-weight:900;color:#111;letter-spacing:-0.5px;}
+  .meta-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#888;margin-top:3px;}
+  .meta-cli{text-align:right;font-size:12px;color:#111;line-height:1.65;}
+  .sec{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#1B6EF3;border-bottom:1px solid #ddeaff;padding-bottom:4px;margin:16px 0 8px;}
+  table{width:100%;border-collapse:collapse;}
+  tr{border-bottom:1px solid #f2f2f2;}
+  td{padding:6px 0;vertical-align:middle;color:#333;}
+  td.r{text-align:right;}
+  .subtot-row td{border-top:1.5px solid #ddd;padding-top:8px;font-weight:700;color:#111;}
+  .tot-bar{background:#1B6EF3;color:#fff;border-radius:7px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin:14px 0 20px;}
+  .disclaimer{font-size:10px;color:#999;border-top:1px solid #eee;padding-top:10px;margin-bottom:24px;line-height:1.65;}
+  .firme{display:flex;justify-content:space-around;gap:30px;margin-top:40px;}
+  .firma{flex:1;text-align:center;}
+  .firma-line{border-top:1px solid #aaa;margin-bottom:6px;}
+  .firma-label{font-size:11px;color:#888;}
+</style></head><body><div class="page">
   <div class="hdr">
     <div class="hdr-left">
-      <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="1" y="1" width="34" height="34" rx="4" stroke="#111111" stroke-width="1.5"/>
-        <rect x="8" y="10" width="20" height="3" fill="#111111"/>
+      <svg width="34" height="34" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="34" height="34" rx="4" stroke="#111" stroke-width="1.5"/>
+        <rect x="8" y="10" width="20" height="3" fill="#111"/>
         <rect x="8" y="16.5" width="20" height="3" fill="#1B6EF3"/>
-        <rect x="8" y="23" width="20" height="3" fill="#111111"/>
+        <rect x="8" y="23" width="20" height="3" fill="#111"/>
       </svg>
       <div>
         <div class="hdr-name">Emme<span>2000</span> Impianti Elettrici</div>
-        <div class="hdr-sub">${co.sottotitolo || ''}</div>
+        <div class="hdr-sub">${co.sottotitolo||""}</div>
       </div>
     </div>
     <div class="hdr-right">
-      ${co.indirizzo ? `<div>${co.indirizzo}</div>` : ''}
-      ${co.telefono  ? `<div>Tel. ${co.telefono}</div>` : ''}
-      ${co.email     ? `<div>${co.email}</div>` : ''}
-      ${co.piva      ? `<div>P.IVA ${co.piva}</div>` : ''}
+      ${co.indirizzo?`<div>${co.indirizzo}</div>`:""}
+      ${co.telefono?`<div>Tel. ${co.telefono}</div>`:""}
+      ${co.email?`<div>${co.email}</div>`:""}
+      ${co.piva?`<div>P.IVA ${co.piva}</div>`:""}
     </div>
   </div>
-
-  <!-- Titolo + cliente -->
   <div class="meta">
     <div>
       <div class="meta-tipo">PREVENTIVO</div>
@@ -533,299 +403,255 @@ function App() {
     </div>
     <div class="meta-cli">
       <strong>${doc.cliente}</strong>
-      ${doc.telefono ? `<br/>${doc.telefono}` : ''}
-      ${doc.indirizzo ? `<br/>${doc.indirizzo}` : ''}
+      ${doc.telefono?`<br/>${doc.telefono}`:""}
+      ${doc.indirizzo?`<br/>${doc.indirizzo}`:""}
     </div>
   </div>
-
-  <!-- Lavoro -->
   <div class="sec">Lavoro svolto</div>
-  <div style="font-size:13px;color:#333;white-space:pre-wrap;margin-bottom:16px;line-height:1.6;">${doc.lavoro || ''}</div>
-
-  <!-- Dettaglio costi -->
+  <div style="font-size:13px;color:#333;white-space:pre-wrap;margin-bottom:16px;line-height:1.6;">${doc.lavoro||""}</div>
   <div class="sec">Dettaglio costi</div>
-  <table>
-    <tbody>
-      <tr>
-        <td>Manodopera (${doc.ore} h × ${doc.persone || 1} pers. × ${fmtP(doc.tariffaOraria)})</td>
-        <td class="r dark">${fmtP(doc.subtotaleManodopera)}</td>
-      </tr>
-      ${(doc.materiali || []).map(m => `
-      <tr>
-        <td>${m.desc || '—'} <span style="color:#999;">(${m.quantita} ${m.unita} × ${fmtP(m.prezzoUnitario)})</span></td>
-        <td class="r" style="color:#555;">${fmtP(m.totaleRiga)}</td>
-      </tr>`).join('')}
-      <tr class="subtot-row">
-        <td>Totale lordo</td>
-        <td class="r">${fmtP(doc.totaleLordo)}</td>
-      </tr>
-      ${doc.scontoValoreCalc > 0 ? `
-      <tr>
-        <td class="red">Sconto${doc.scontoTipo === 'percentuale' ? ' (' + doc.scontoValore + '%)' : ''}</td>
-        <td class="r red">− ${fmtP(doc.scontoValoreCalc)}</td>
-      </tr>` : ''}
-    </tbody>
-  </table>
-
-  <!-- Totale -->
+  <table><tbody>
+    <tr>
+      <td>Manodopera (${doc.ore} h × ${doc.persone||1} pers. × ${fmtP(doc.tariffaOraria)})</td>
+      <td class="r" style="font-weight:600;">${fmtP(doc.subtotaleManodopera)}</td>
+    </tr>
+    ${(doc.materiali||[]).map(m=>`
+    <tr>
+      <td>${m.desc||"—"} <span style="color:#999;">(${m.quantita} ${m.unita} × ${fmtP(m.prezzoUnitario)})</span></td>
+      <td class="r" style="color:#555;">${fmtP(m.totaleRiga)}</td>
+    </tr>`).join("")}
+    <tr class="subtot-row">
+      <td>Totale lordo</td><td class="r">${fmtP(doc.totaleLordo)}</td>
+    </tr>
+    ${doc.scontoValoreCalc>0?`
+    <tr>
+      <td style="color:#c00;">Sconto${doc.scontoTipo==="percentuale"?" ("+doc.scontoValore+"%)":" fisso"}</td>
+      <td class="r" style="color:#c00;">− ${fmtP(doc.scontoValoreCalc)}</td>
+    </tr>`:""}
+  </tbody></table>
   <div class="tot-bar">
-    <span class="tot-bar-label">TOTALE PREVENTIVO</span>
-    <span class="tot-bar-value">${fmtP(doc.totaleNetto)}</span>
+    <span style="font-weight:700;font-size:13px;">TOTALE PREVENTIVO</span>
+    <span style="font-weight:900;font-size:22px;letter-spacing:-0.5px;">${fmtP(doc.totaleNetto)}</span>
   </div>
-
-  ${doc.note ? `<div class="sec">Note</div><div class="note-text">${doc.note}</div>` : ''}
-
-  <!-- Disclaimer -->
+  ${doc.note?`<div class="sec">Note</div><div style="font-size:12px;color:#555;white-space:pre-wrap;margin-bottom:20px;line-height:1.65;">${doc.note}</div>`:""}
   <div class="disclaimer">
     Il presente preventivo ha validità 30 giorni dalla data di emissione, salvo diverso accordo scritto tra le parti.
     I prezzi si intendono IVA esclusa, salvo diversa indicazione. Offerta soggetta a sopralluogo.
   </div>
-
-  <!-- Firme -->
   <div class="firme">
     <div class="firma"><div class="firma-line"></div><div class="firma-label">Firma azienda</div></div>
     <div class="firma"><div class="firma-line"></div><div class="firma-label">Firma cliente per accettazione</div></div>
   </div>
-
 </div>
-<script>
-  window.onload = function() {
-    setTimeout(function() { window.print(); }, 400);
-  };
-<\/script>
-</body>
-</html>`;
+<script>window.onload=function(){setTimeout(function(){window.print();},400);};<\/script>
+</body></html>`;
 
-    function fmtP(n) {
-      return (Number(n)||0).toLocaleString('it-IT',{style:'currency',currency:'EUR'});
-    }
-
-    const w = window.open('', '_blank', 'width=800,height=900');
-    if (w) {
-      w.document.write(html);
-      w.document.close();
-    } else {
-      alert('Abilita i popup per questo sito per esportare il PDF, oppure usa il tasto Stampa del browser.');
-    }
+    const w = window.open("","_blank","width=800,height=900");
+    if (w) { w.document.write(html); w.document.close(); }
+    else alert("Abilita i popup per esportare il PDF.");
   }
 
+  /* ════════════════════════════
+     RENDER
+  ════════════════════════════ */
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", minHeight: "100vh", background: C.black }}>
+    <div style={{fontFamily:"'Inter',sans-serif",minHeight:"100vh",background:C.black}}>
       <style>{GLOBAL_CSS}</style>
 
-      {/* ── NAVBAR ── */}
+      {/* NAV */}
       <nav className="no-print" style={{
-        position: "sticky", top: 0, zIndex: 100,
-        background: "rgba(10,10,10,0.95)", backdropFilter: "blur(16px)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        position:"sticky",top:0,zIndex:100,
+        background:"rgba(10,10,10,0.95)",backdropFilter:"blur(16px)",
+        borderBottom:"1px solid rgba(255,255,255,0.06)",
       }}>
-        <div style={{ maxWidth: 660, margin: "0 auto", padding: "0 16px", display: "flex", justifyContent: "space-between", alignItems: "center", height: 58 }}>
-          {/* Logo */}
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <LogoSVG size={32} />
+        <div style={{maxWidth:660,margin:"0 auto",padding:"0 16px",display:"flex",justifyContent:"space-between",alignItems:"center",height:58}}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <LogoSVG size={32}/>
             <div>
-              <div style={{ fontWeight: 800, fontSize: 15, letterSpacing: "-0.02em", color: C.pure, lineHeight: 1 }}>
-                Emme<span style={{ color: C.blue }}>2000</span>
+              <div style={{fontWeight:800,fontSize:15,letterSpacing:"-0.02em",color:C.pure,lineHeight:1}}>
+                Emme<span style={{color:C.blue}}>2000</span>
               </div>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, letterSpacing: "0.14em", textTransform: "uppercase", color: C.mid }}>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,letterSpacing:"0.14em",textTransform:"uppercase",color:C.mid}}>
                 Preventivi
               </div>
             </div>
           </div>
-          {/* Nav links */}
-          <div style={{ display: "flex", gap: 6 }}>
-            <NavBtn active={view === "form" || view === "anteprima" || view === "documento"} onClick={() => view !== "form" ? nuovoPreventivo() : null}>
-              + Nuovo
-            </NavBtn>
-            <NavBtn active={view === "storico"} onClick={() => setView("storico")}>
-              Storico
-            </NavBtn>
-            <NavBtn active={view === "impostazioni"} onClick={() => setView("impostazioni")}>
-              Azienda
-            </NavBtn>
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            {/* Sync indicator */}
+            <div style={{display:"flex",alignItems:"center",fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:C.mid,cursor:"pointer"}} onClick={loadAll}>
+              <span className={`sync-dot ${syncStatus==="ok"?"sync-ok":syncStatus==="err"?"sync-err":"sync-loading"}`}></span>
+              <span style={{display:window.innerWidth>400?"inline":"none"}}>{syncMsg}</span>
+            </div>
+            <NavBtn active={view==="form"||view==="anteprima"||view==="documento"} onClick={nuovoPreventivo}>+ Nuovo</NavBtn>
+            <NavBtn active={view==="storico"} onClick={()=>{ loadAll(); setView("storico"); }}>Storico</NavBtn>
+            <NavBtn active={view==="impostazioni"} onClick={()=>setView("impostazioni")}>Azienda</NavBtn>
           </div>
         </div>
       </nav>
 
-      {/* ── CONTENT ── */}
-      <div style={{ maxWidth: 660, margin: "0 auto", padding: "24px 16px 80px" }}>
+      <div style={{maxWidth:660,margin:"0 auto",padding:"24px 16px 80px"}}>
 
         {/* ══ FORM ══ */}
-        {view === "form" && (
+        {view==="form" && (
           <div className="card no-print">
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
               <div>
-                <div className="sec-label">{editingId ? "Modifica preventivo" : "Nuovo preventivo"}</div>
-                <h2 style={{ margin: 0, color: C.pure, fontSize: 20, fontWeight: 800, letterSpacing: "-0.02em" }}>
-                  {editingId ? "Aggiorna dati" : "Crea documento"}
+                <div className="sec-label">{editingId?"Modifica preventivo":"Nuovo preventivo"}</div>
+                <h2 style={{margin:0,color:C.pure,fontSize:20,fontWeight:800,letterSpacing:"-0.02em"}}>
+                  {editingId?"Aggiorna dati":"Crea documento"}
                 </h2>
               </div>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.mid }}>{todayStr()}</div>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:C.mid}}>{todayStr()}</div>
             </div>
 
             {error && <div className="err-box">{error}</div>}
 
-            <div className="sec-label" style={{ marginBottom: 12 }}>Dati cliente</div>
-            <div className="field"><label>Cliente</label><input value={form.cliente} onChange={(e) => updateForm("cliente", e.target.value)} placeholder="Nome e cognome / ragione sociale" /></div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="field">
-              <div><label>Telefono</label><input value={form.telefono} onChange={(e) => updateForm("telefono", e.target.value)} placeholder="333 1234567" /></div>
-              <div><label>Indirizzo</label><input value={form.indirizzo} onChange={(e) => updateForm("indirizzo", e.target.value)} placeholder="Via, numero, comune" /></div>
+            <div className="sec-label" style={{marginBottom:12}}>Dati cliente</div>
+            <div className="field"><label>Cliente</label><input value={form.cliente} onChange={e=>updateForm("cliente",e.target.value)} placeholder="Nome e cognome / ragione sociale"/></div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}} className="field">
+              <div><label>Telefono</label><input value={form.telefono} onChange={e=>updateForm("telefono",e.target.value)} placeholder="333 1234567"/></div>
+              <div><label>Indirizzo</label><input value={form.indirizzo} onChange={e=>updateForm("indirizzo",e.target.value)} placeholder="Via, numero, comune"/></div>
             </div>
 
-            <div className="sec-label" style={{ marginBottom: 12, marginTop: 4 }}>Lavoro</div>
+            <div className="sec-label" style={{marginBottom:12,marginTop:4}}>Lavoro</div>
             <div className="field">
               <label>Lavoro svolto / da svolgere</label>
-              <textarea rows="4" value={form.lavoro} onChange={(e) => updateForm("lavoro", e.target.value)} placeholder="Descrizione dell'intervento..." />
+              <textarea rows="4" value={form.lavoro} onChange={e=>updateForm("lavoro",e.target.value)} placeholder="Descrizione dell'intervento..."/>
             </div>
 
-            <div className="sec-label" style={{ marginBottom: 12 }}>⚡ Manodopera</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }} className="field">
-              <div><label>Ore previste</label><input type="number" min="0" step="0.5" value={form.ore} onChange={(e) => updateForm("ore", e.target.value)} placeholder="0" /></div>
-              <div><label>Persone</label><input type="number" min="1" step="1" value={form.persone} onChange={(e) => updateForm("persone", e.target.value)} placeholder="1" /></div>
-              <div><label>Tariffa oraria (€)</label><input type="number" min="0" step="1" value={form.tariffaOraria} onChange={(e) => updateForm("tariffaOraria", e.target.value)} placeholder="35" /></div>
+            <div className="sec-label" style={{marginBottom:12}}>⚡ Manodopera</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}} className="field">
+              <div><label>Ore</label><input type="number" min="0" step="0.5" value={form.ore} onChange={e=>updateForm("ore",e.target.value)} placeholder="0"/></div>
+              <div><label>Persone</label><input type="number" min="1" step="1" value={form.persone} onChange={e=>updateForm("persone",e.target.value)} placeholder="1"/></div>
+              <div><label>€/ora</label><input type="number" min="0" step="1" value={form.tariffaOraria} onChange={e=>updateForm("tariffaOraria",e.target.value)} placeholder="35"/></div>
             </div>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.mid, marginTop: -6, marginBottom: 18 }}>
-              {form.ore || 0} h × {form.persone || 1} pers. × {fmt(form.tariffaOraria)} =&nbsp;
-              <span style={{ color: C.blueLight, fontWeight: 600 }}>{fmt(subtotaleManodopera)}</span>
+            <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:C.mid,marginTop:-6,marginBottom:18}}>
+              {form.ore||0} h × {form.persone||1} pers. × {fmt(form.tariffaOraria)} = <span style={{color:C.blueLight,fontWeight:600}}>{fmt(subMano)}</span>
             </div>
 
-            <div className="sec-label" style={{ marginBottom: 12 }}>◆ Materiali</div>
-            {form.materiali.map((m) => {
-              const totaleRiga = (Number(m.quantita) || 0) * (Number(m.prezzoUnitario) || 0);
+            <div className="sec-label" style={{marginBottom:12}}>◆ Materiali</div>
+            {form.materiali.map(m=>{
+              const tr=(Number(m.quantita)||0)*(Number(m.prezzoUnitario)||0);
               return (
                 <div key={m.id} className="mat-row">
-                  <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-                    <input placeholder="Descrizione materiale" value={m.desc} onChange={(e) => updateMateriale(m.id, "desc", e.target.value)} style={{ flex: 1 }} />
-                    <button className="btn btn-danger" onClick={() => removeMateriale(m.id)} style={{ padding: "9px 12px", flexShrink: 0 }}>✕</button>
+                  <div style={{display:"flex",gap:8,marginBottom:10}}>
+                    <input placeholder="Descrizione materiale" value={m.desc} onChange={e=>updateMateriale(m.id,"desc",e.target.value)} style={{flex:1}}/>
+                    <button className="btn btn-danger" onClick={()=>removeMateriale(m.id)} style={{padding:"9px 12px",flexShrink:0}}>✕</button>
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1.3fr", gap: 8 }}>
-                    <div><label style={{ fontSize: 10 }}>Quantità</label><input type="number" min="0" step="0.5" placeholder="1" value={m.quantita} onChange={(e) => updateMateriale(m.id, "quantita", e.target.value)} /></div>
-                    <div>
-                      <label style={{ fontSize: 10 }}>Unità</label>
-                      <select value={m.unita} onChange={(e) => updateMateriale(m.id, "unita", e.target.value)}>
-                        <option value="pz">pz</option><option value="mt">mt</option>
-                        <option value="kg">kg</option><option value="l">l</option>
-                        <option value="mq">mq</option><option value="conf">conf</option>
+                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1.3fr",gap:8}}>
+                    <div><label style={{fontSize:10}}>Qtà</label><input type="number" min="0" step="0.5" placeholder="1" value={m.quantita} onChange={e=>updateMateriale(m.id,"quantita",e.target.value)}/></div>
+                    <div><label style={{fontSize:10}}>Unità</label>
+                      <select value={m.unita} onChange={e=>updateMateriale(m.id,"unita",e.target.value)}>
+                        <option>pz</option><option>mt</option><option>kg</option><option>l</option><option>mq</option><option>conf</option>
                       </select>
                     </div>
-                    <div><label style={{ fontSize: 10 }}>Prezzo unitario (€)</label><input type="number" min="0" step="0.01" placeholder="0.00" value={m.prezzoUnitario} onChange={(e) => updateMateriale(m.id, "prezzoUnitario", e.target.value)} /></div>
+                    <div><label style={{fontSize:10}}>Prezzo (€)</label><input type="number" min="0" step="0.01" placeholder="0.00" value={m.prezzoUnitario} onChange={e=>updateMateriale(m.id,"prezzoUnitario",e.target.value)}/></div>
                   </div>
-                  {totaleRiga > 0 && (
-                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.mid, textAlign: "right", marginTop: 6 }}>
-                      Totale riga: <span style={{ color: C.lighter }}>{fmt(totaleRiga)}</span>
-                    </div>
-                  )}
+                  {tr>0 && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:C.mid,textAlign:"right",marginTop:6}}>Totale: <span style={{color:C.lighter}}>{fmt(tr)}</span></div>}
                 </div>
               );
             })}
-            <button onClick={addMateriale} className="btn btn-secondary" style={{ fontSize: 13, padding: "8px 14px", marginBottom: 14 }}>+ Aggiungi materiale</button>
-            {subtotaleMateriali > 0 && (
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.mid, marginBottom: 18 }}>
-                Totale materiali: <span style={{ color: "#CCAA44" }}>{fmt(subtotaleMateriali)}</span>
-              </div>
-            )}
+            <button onClick={addMateriale} className="btn btn-secondary" style={{fontSize:13,padding:"8px 14px",marginBottom:14}}>+ Aggiungi materiale</button>
+            {subMat>0 && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:C.mid,marginBottom:18}}>Totale materiali: <span style={{color:"#CCAA44"}}>{fmt(subMat)}</span></div>}
 
-            <button onClick={vaiAdAnteprima} className="btn btn-primary" style={{ width: "100%", fontSize: 15, padding: "13px 20px" }}>
-              Genera anteprima preventivo →
+            <button onClick={vaiAnteprima} className="btn btn-primary" style={{width:"100%",fontSize:15,padding:"13px 20px"}}>
+              Genera anteprima →
             </button>
           </div>
         )}
 
         {/* ══ ANTEPRIMA ══ */}
-        {view === "anteprima" && (
+        {view==="anteprima" && (
           <div className="card no-print">
-            <div style={{ marginBottom: 20 }}>
+            <div style={{marginBottom:20}}>
               <div className="sec-label">Riepilogo</div>
-              <h2 style={{ margin: 0, color: C.pure, fontSize: 20, fontWeight: 800, letterSpacing: "-0.02em" }}>Anteprima preventivo</h2>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.mid, marginTop: 4 }}>{form.cliente} · {todayStr()}</div>
+              <h2 style={{margin:0,color:C.pure,fontSize:20,fontWeight:800,letterSpacing:"-0.02em"}}>Anteprima preventivo</h2>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:C.mid,marginTop:4}}>{form.cliente} · {todayStr()}</div>
             </div>
 
             <div className="riepi-box">
-              <RiepiRow label="⚡ Manodopera" value={fmt(subtotaleManodopera)} sub={`${form.ore || 0} h × ${form.persone || 1} pers. × ${fmt(form.tariffaOraria)}`} />
-              <RiepiRow label="◆ Materiali" value={fmt(subtotaleMateriali)} />
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", margin: "10px 0" }}></div>
-              <RiepiRow label="Totale lordo" value={fmt(totaleLordo)} bold />
+              <RRow label="⚡ Manodopera" value={fmt(subMano)} sub={`${form.ore||0} h × ${form.persone||1} pers. × ${fmt(form.tariffaOraria)}`}/>
+              <RRow label="◆ Materiali" value={fmt(subMat)}/>
+              <div style={{borderTop:"1px solid rgba(255,255,255,0.08)",margin:"10px 0"}}></div>
+              <RRow label="Totale lordo" value={fmt(totLordo)} bold/>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 12, alignItems: "end" }} className="field">
+            <div style={{display:"grid",gridTemplateColumns:"auto 1fr",gap:12,alignItems:"end"}} className="field">
               <div>
                 <label>Tipo sconto</label>
-                <select value={form.scontoTipo} onChange={(e) => updateForm("scontoTipo", e.target.value)} style={{ width: 80 }}>
+                <select value={form.scontoTipo} onChange={e=>updateForm("scontoTipo",e.target.value)} style={{width:80}}>
                   <option value="percentuale">%</option>
                   <option value="fisso">€</option>
                 </select>
               </div>
               <div>
                 <label>Valore sconto</label>
-                <input type="number" min="0" step="1" value={form.scontoValore} onChange={(e) => updateForm("scontoValore", e.target.value)} placeholder="0" />
+                <input type="number" min="0" step="1" value={form.scontoValore} onChange={e=>updateForm("scontoValore",e.target.value)} placeholder="0"/>
               </div>
             </div>
-
             <div className="field">
               <label>Note</label>
-              <textarea rows="3" value={form.note} onChange={(e) => updateForm("note", e.target.value)} placeholder="Validità offerta, tempistiche, esclusioni..." />
+              <textarea rows="3" value={form.note} onChange={e=>updateForm("note",e.target.value)} placeholder="Validità offerta, tempistiche, esclusioni..."/>
             </div>
 
             <div className="tot-bar">
-              <span style={{ fontWeight: 700, fontSize: 14, color: C.pure }}>Totale preventivo</span>
-              <span style={{ fontWeight: 900, fontSize: 22, color: C.pure, letterSpacing: "-0.02em" }}>{fmt(totaleNetto)}</span>
+              <span style={{fontWeight:700,fontSize:14,color:C.pure}}>Totale preventivo</span>
+              <span style={{fontWeight:900,fontSize:22,color:C.pure,letterSpacing:"-0.02em"}}>{fmt(totNetto)}</span>
             </div>
 
-            <div style={{ display: "flex", gap: 10, marginTop: 4 }}>
-              <button onClick={() => setView("form")} className="btn btn-secondary" style={{ flex: 1 }}>← Modifica</button>
-              <button onClick={confermaEGenera} className="btn btn-primary" style={{ flex: 2 }}>
-                {editingId ? "Salva modifiche" : "Confermo, genera documento"}
+            {error && <div className="err-box">{error}</div>}
+
+            <div style={{display:"flex",gap:10,marginTop:4}}>
+              <button onClick={()=>setView("form")} className="btn btn-secondary" style={{flex:1}}>← Modifica</button>
+              <button onClick={confermaEGenera} className="btn btn-primary" style={{flex:2}} disabled={saving}>
+                {saving?"Salvataggio...": editingId?"Salva modifiche":"Genera documento"}
               </button>
             </div>
           </div>
         )}
 
         {/* ══ DOCUMENTO ══ */}
-        {view === "documento" && current && (
+        {view==="documento" && current && (
           <React.Fragment>
-            <div className="no-print" style={{ marginBottom: 16 }}>
-              <button onClick={stampa} className="btn btn-primary" style={{ width: "100%", marginBottom: 10, fontSize: 15 }}>🖨️ Stampa / Salva PDF</button>
-              <div style={{ display: "flex", gap: 10 }}>
-                <button onClick={() => modificaPreventivo(current)} className="btn btn-secondary" style={{ flex: 1 }}>✎ Modifica</button>
-                <button onClick={nuovoPreventivo} className="btn btn-secondary" style={{ flex: 1 }}>+ Nuovo</button>
+            <div className="no-print" style={{marginBottom:16}}>
+              <button onClick={stampa} className="btn btn-primary" style={{width:"100%",marginBottom:10,fontSize:15}}>🖨️ Stampa / Salva PDF</button>
+              <div style={{display:"flex",gap:10}}>
+                <button onClick={()=>modificaPreventivo(current)} className="btn btn-secondary" style={{flex:1}}>✎ Modifica</button>
+                <button onClick={nuovoPreventivo} className="btn btn-secondary" style={{flex:1}}>+ Nuovo</button>
+                <button onClick={()=>eliminaPreventivo(current.id)} className="btn btn-danger" style={{flex:1}}>Elimina</button>
               </div>
             </div>
-            <DocumentoPreventivo doc={current} company={company} />
+            <DocPreview doc={current} company={company}/>
           </React.Fragment>
         )}
 
         {/* ══ STORICO ══ */}
-        {view === "storico" && (
+        {view==="storico" && (
           <div className="card no-print">
-            <div style={{ marginBottom: 20 }}>
-              <div className="sec-label">Archivio</div>
-              <h2 style={{ margin: 0, color: C.pure, fontSize: 20, fontWeight: 800, letterSpacing: "-0.02em" }}>Storico preventivi</h2>
-              {store.list.length > 0 && (
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: C.mid, marginTop: 4 }}>
-                  {store.list.length} document{store.list.length === 1 ? "o" : "i"}
-                </div>
-              )}
+            <div style={{marginBottom:20}}>
+              <div className="sec-label">Archivio cloud</div>
+              <h2 style={{margin:0,color:C.pure,fontSize:20,fontWeight:800,letterSpacing:"-0.02em"}}>Storico preventivi</h2>
+              <div style={{display:"flex",alignItems:"center",marginTop:6,fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:C.mid}}>
+                <span className={`sync-dot ${syncStatus==="ok"?"sync-ok":syncStatus==="err"?"sync-err":"sync-loading"}`}></span>
+                {list.length} documenti · {syncMsg}
+              </div>
             </div>
-            {store.list.length === 0 && (
-              <div style={{ textAlign: "center", padding: "30px 0", fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.mid, letterSpacing: "0.1em", textTransform: "uppercase" }}>
+            {list.length===0 && (
+              <div style={{textAlign:"center",padding:"30px 0",fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:C.mid,letterSpacing:"0.1em",textTransform:"uppercase"}}>
                 Nessun preventivo salvato
               </div>
             )}
-            {store.list.map((d) => (
+            {list.map(d=>(
               <div key={d.id} className="storico-row">
                 <div>
-                  <div style={{ fontWeight: 700, color: C.pure, marginBottom: 3 }}>{d.cliente}</div>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: C.mid }}>
-                    N° {d.numero} · {d.data}
-                  </div>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, color: C.blueLight, marginTop: 2, fontWeight: 600 }}>
-                    {fmt(d.totaleNetto)}
-                  </div>
+                  <div style={{fontWeight:700,color:C.pure,marginBottom:3}}>{d.cliente}</div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:C.mid}}>N° {d.numero} · {d.data}</div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:C.blueLight,marginTop:2,fontWeight:600}}>{fmt(d.totaleNetto)}</div>
                 </div>
-                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                  <button onClick={() => apriDaStorico(d)} className="btn btn-secondary" style={{ padding: "7px 12px", fontSize: 12 }}>Apri</button>
-                  <button onClick={() => modificaPreventivo(d)} className="btn btn-secondary" style={{ padding: "7px 12px", fontSize: 12 }}>Modifica</button>
-                  <button onClick={() => eliminaDaStorico(d.id)} className="btn btn-danger" style={{ padding: "7px 12px", fontSize: 12 }}>Elimina</button>
+                <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                  <button onClick={()=>{setCurrent(d);setView("documento");}} className="btn btn-secondary" style={{padding:"7px 12px",fontSize:12}}>Apri</button>
+                  <button onClick={()=>modificaPreventivo(d)} className="btn btn-secondary" style={{padding:"7px 12px",fontSize:12}}>✎</button>
+                  <button onClick={()=>eliminaPreventivo(d.id)} className="btn btn-danger" style={{padding:"7px 12px",fontSize:12}}>✕</button>
                 </div>
               </div>
             ))}
@@ -833,22 +659,19 @@ function App() {
         )}
 
         {/* ══ IMPOSTAZIONI ══ */}
-        {view === "impostazioni" && (
+        {view==="impostazioni" && (
           <div className="card no-print">
-            <div style={{ marginBottom: 20 }}>
+            <div style={{marginBottom:20}}>
               <div className="sec-label">Configurazione</div>
-              <h2 style={{ margin: 0, color: C.pure, fontSize: 20, fontWeight: 800, letterSpacing: "-0.02em" }}>Dati azienda</h2>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: C.mid, marginTop: 6 }}>
-                Questi dati compaiono nell'intestazione dei documenti generati.
-              </div>
+              <h2 style={{margin:0,color:C.pure,fontSize:20,fontWeight:800,letterSpacing:"-0.02em"}}>Dati azienda</h2>
             </div>
-            <div className="field"><label>Ragione sociale</label><input value={companyDraft.ragioneSociale} onChange={(e) => setCompanyDraft((c) => ({ ...c, ragioneSociale: e.target.value }))} /></div>
-            <div className="field"><label>Sottotitolo / attività</label><input value={companyDraft.sottotitolo} onChange={(e) => setCompanyDraft((c) => ({ ...c, sottotitolo: e.target.value }))} /></div>
-            <div className="field"><label>Partita IVA</label><input value={companyDraft.piva} onChange={(e) => setCompanyDraft((c) => ({ ...c, piva: e.target.value }))} placeholder="Lascia vuoto se non ancora attiva" /></div>
-            <div className="field"><label>Indirizzo / zona operativa</label><input value={companyDraft.indirizzo} onChange={(e) => setCompanyDraft((c) => ({ ...c, indirizzo: e.target.value }))} /></div>
-            <div className="field"><label>Telefono</label><input value={companyDraft.telefono} onChange={(e) => setCompanyDraft((c) => ({ ...c, telefono: e.target.value }))} /></div>
-            <div className="field"><label>Email</label><input value={companyDraft.email} onChange={(e) => setCompanyDraft((c) => ({ ...c, email: e.target.value }))} /></div>
-            <button onClick={saveCompany} className="btn btn-primary" style={{ width: "100%", marginTop: 4 }}>Salva dati azienda</button>
+            <div className="field"><label>Ragione sociale</label><input value={companyDraft.ragioneSociale} onChange={e=>setCompanyDraft(c=>({...c,ragioneSociale:e.target.value}))}/></div>
+            <div className="field"><label>Sottotitolo</label><input value={companyDraft.sottotitolo} onChange={e=>setCompanyDraft(c=>({...c,sottotitolo:e.target.value}))}/></div>
+            <div className="field"><label>Partita IVA</label><input value={companyDraft.piva} onChange={e=>setCompanyDraft(c=>({...c,piva:e.target.value}))} placeholder="Lascia vuoto se non ancora attiva"/></div>
+            <div className="field"><label>Indirizzo</label><input value={companyDraft.indirizzo} onChange={e=>setCompanyDraft(c=>({...c,indirizzo:e.target.value}))}/></div>
+            <div className="field"><label>Telefono</label><input value={companyDraft.telefono} onChange={e=>setCompanyDraft(c=>({...c,telefono:e.target.value}))}/></div>
+            <div className="field"><label>Email</label><input value={companyDraft.email} onChange={e=>setCompanyDraft(c=>({...c,email:e.target.value}))}/></div>
+            <button onClick={saveCompany} className="btn btn-primary" style={{width:"100%",marginTop:4}}>Salva dati azienda</button>
           </div>
         )}
 
@@ -857,181 +680,113 @@ function App() {
   );
 }
 
-/* ── NAV BUTTON ── */
-function NavBtn({ active, onClick, children }) {
+/* ── NAV BTN ── */
+function NavBtn({active,onClick,children}) {
   return (
     <button onClick={onClick} style={{
-      background: active ? C.blueGlow : "transparent",
-      border: `1px solid ${active ? "rgba(27,110,243,0.35)" : "rgba(255,255,255,0.1)"}`,
-      color: active ? C.blueLight : C.light,
-      fontFamily: "'IBM Plex Mono', monospace",
-      fontSize: 11,
-      letterSpacing: "0.1em",
-      textTransform: "uppercase",
-      padding: "6px 12px",
-      borderRadius: 5,
-      cursor: "pointer",
-      fontWeight: active ? 600 : 400,
-      transition: "all 0.18s",
-    }}>
-      {children}
-    </button>
+      background:active?"rgba(27,110,243,0.15)":"transparent",
+      border:`1px solid ${active?"rgba(27,110,243,0.35)":"rgba(255,255,255,0.1)"}`,
+      color:active?"#4D8FF5":"#A0A0A0",
+      fontFamily:"'IBM Plex Mono',monospace",fontSize:11,letterSpacing:"0.1em",
+      textTransform:"uppercase",padding:"6px 12px",borderRadius:5,cursor:"pointer",
+      fontWeight:active?600:400,transition:"all 0.18s",
+    }}>{children}</button>
   );
 }
 
 /* ── RIEPILOGO ROW ── */
-function RiepiRow({ label, value, sub, bold }) {
+function RRow({label,value,sub,bold}) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", padding: "5px 0" }}>
+    <div style={{display:"flex",justifyContent:"space-between",padding:"5px 0"}}>
       <div>
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 12, letterSpacing: "0.06em", color: bold ? C.lighter : C.light, fontWeight: bold ? 700 : 400 }}>{label}</span>
-        {sub && <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: C.mid, marginTop: 2 }}>{sub}</div>}
+        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:bold?"#D0D0D0":"#A0A0A0",fontWeight:bold?700:400}}>{label}</span>
+        {sub&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:"#6B6B6B",marginTop:2}}>{sub}</div>}
       </div>
-      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: bold ? 14 : 12, fontWeight: bold ? 800 : 500, color: bold ? C.pure : C.lighter }}>{value}</span>
+      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:bold?14:12,fontWeight:bold?800:500,color:bold?"#FFFFFF":"#D0D0D0"}}>{value}</span>
     </div>
   );
 }
 
-/* ════════════════════════════════════
-   DOCUMENTO STAMPA
-════════════════════════════════════ */
-function DocumentoPreventivo({ doc, company }) {
+/* ── DOC PREVIEW (schermo) ── */
+function DocPreview({doc,company}) {
+  function f(n){return(Number(n)||0).toLocaleString("it-IT",{style:"currency",currency:"EUR"});}
   return (
-    <div className="print-page" style={{
-      background: "#fff", color: "#111",
-      padding: "32px 36px", borderRadius: 12,
-      boxShadow: "0 1px 3px rgba(0,0,0,0.08)",
-      maxWidth: 660, margin: "0 auto",
-    }}>
-      {/* Intestazione */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "2.5px solid #1B6EF3", paddingBottom: 16, marginBottom: 20 }}>
-        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <LogoSVGPrint size={36} />
+    <div style={{background:"#fff",color:"#111",padding:"28px 24px",borderRadius:12,boxShadow:"0 1px 4px rgba(0,0,0,0.1)"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",borderBottom:"2.5px solid #1B6EF3",paddingBottom:14,marginBottom:18}}>
+        <div style={{display:"flex",gap:10,alignItems:"center"}}>
+          <svg width="32" height="32" viewBox="0 0 36 36" fill="none"><rect x="1" y="1" width="34" height="34" rx="4" stroke="#111" strokeWidth="1.5"/><rect x="8" y="10" width="20" height="3" fill="#111"/><rect x="8" y="16.5" width="20" height="3" fill="#1B6EF3"/><rect x="8" y="23" width="20" height="3" fill="#111"/></svg>
           <div>
-            <div style={{ fontWeight: 800, fontSize: 17, color: "#111", letterSpacing: "-0.3px" }}>
-              Emme<span style={{ color: "#1B6EF3" }}>2000</span> Impianti Elettrici
-            </div>
-            <div style={{ fontSize: 11, color: "#666", marginTop: 2 }}>{company.sottotitolo}</div>
+            <div style={{fontWeight:800,fontSize:15,color:"#111"}}>Emme<span style={{color:"#1B6EF3"}}>2000</span> Impianti Elettrici</div>
+            <div style={{fontSize:10,color:"#666",marginTop:2}}>{company.sottotitolo}</div>
           </div>
         </div>
-        <div style={{ textAlign: "right", fontSize: 11, color: "#555", lineHeight: 1.65 }}>
-          {company.indirizzo && <div>{company.indirizzo}</div>}
-          {company.telefono && <div>Tel. {company.telefono}</div>}
-          {company.email && <div>{company.email}</div>}
-          {company.piva && <div>P.IVA {company.piva}</div>}
+        <div style={{textAlign:"right",fontSize:10,color:"#555",lineHeight:1.7}}>
+          {company.indirizzo&&<div>{company.indirizzo}</div>}
+          {company.telefono&&<div>Tel. {company.telefono}</div>}
+          {company.email&&<div>{company.email}</div>}
         </div>
       </div>
-
-      {/* Titolo + cliente */}
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 22 }}>
+      <div style={{display:"flex",justifyContent:"space-between",marginBottom:18}}>
         <div>
-          <div style={{ fontSize: 22, fontWeight: 900, color: "#111", letterSpacing: "-0.5px" }}>PREVENTIVO</div>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: "#888", marginTop: 3 }}>N° {doc.numero} · {doc.data}</div>
+          <div style={{fontSize:22,fontWeight:900,color:"#111",letterSpacing:"-0.5px"}}>PREVENTIVO</div>
+          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#888",marginTop:3}}>N° {doc.numero} · {doc.data}</div>
         </div>
-        <div style={{ textAlign: "right", fontSize: 12, color: "#111" }}>
-          <div style={{ fontWeight: 700, fontSize: 13 }}>{doc.cliente}</div>
-          {doc.telefono && <div style={{ color: "#555" }}>{doc.telefono}</div>}
-          {doc.indirizzo && <div style={{ color: "#555" }}>{doc.indirizzo}</div>}
+        <div style={{textAlign:"right",fontSize:12,color:"#111"}}>
+          <div style={{fontWeight:700,fontSize:13}}>{doc.cliente}</div>
+          {doc.telefono&&<div style={{color:"#555"}}>{doc.telefono}</div>}
+          {doc.indirizzo&&<div style={{color:"#555"}}>{doc.indirizzo}</div>}
         </div>
       </div>
-
-      {/* Lavoro */}
-      <PrintSection>Lavoro svolto</PrintSection>
-      <div style={{ fontSize: 13, color: "#333", whiteSpace: "pre-wrap", marginBottom: 20, lineHeight: 1.6 }}>{doc.lavoro}</div>
-
-      {/* Dettaglio costi */}
-      <PrintSection>Dettaglio costi</PrintSection>
-      <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse", marginBottom: 6 }}>
+      <PSec>Lavoro svolto</PSec>
+      <div style={{fontSize:13,color:"#333",whiteSpace:"pre-wrap",marginBottom:16,lineHeight:1.6}}>{doc.lavoro}</div>
+      <PSec>Dettaglio costi</PSec>
+      <table style={{width:"100%",fontSize:13,borderCollapse:"collapse",marginBottom:6}}>
         <tbody>
-          <tr>
-            <td style={{ padding: "7px 0", color: "#333" }}>
-              Manodopera ({doc.ore} h × {doc.persone || 1} pers. × {fmt(doc.tariffaOraria)})
-            </td>
-            <td style={{ padding: "7px 0", textAlign: "right", color: "#111", fontWeight: 600 }}>{fmt(doc.subtotaleManodopera)}</td>
+          <tr style={{borderBottom:"1px solid #f0f0f0"}}>
+            <td style={{padding:"6px 0",color:"#333"}}>Manodopera ({doc.ore} h × {doc.persone||1} pers. × {f(doc.tariffaOraria)})</td>
+            <td style={{padding:"6px 0",textAlign:"right",fontWeight:600,color:"#111"}}>{f(doc.subtotaleManodopera)}</td>
           </tr>
-          {doc.materiali.map((m) => (
-            <tr key={m.id}>
-              <td style={{ padding: "5px 0", color: "#666" }}>
-                {m.desc || "—"} <span style={{ color: "#999" }}>({m.quantita} {m.unita} × {fmt(m.prezzoUnitario)})</span>
-              </td>
-              <td style={{ padding: "5px 0", textAlign: "right", color: "#555" }}>{fmt(m.totaleRiga)}</td>
+          {(doc.materiali||[]).map(m=>(
+            <tr key={m.id} style={{borderBottom:"1px solid #f5f5f5"}}>
+              <td style={{padding:"5px 0",color:"#666"}}>{m.desc||"—"} <span style={{color:"#999"}}>({m.quantita} {m.unita} × {f(m.prezzoUnitario)})</span></td>
+              <td style={{padding:"5px 0",textAlign:"right",color:"#555"}}>{f(m.totaleRiga)}</td>
             </tr>
           ))}
-          <tr>
-            <td style={{ padding: "9px 0", borderTop: "1px solid #e0e0e0", fontWeight: 700, color: "#111" }}>Totale lordo</td>
-            <td style={{ padding: "9px 0", borderTop: "1px solid #e0e0e0", textAlign: "right", fontWeight: 700, color: "#111" }}>{fmt(doc.totaleLordo)}</td>
+          <tr style={{borderTop:"1.5px solid #ddd"}}>
+            <td style={{padding:"8px 0",fontWeight:700,color:"#111"}}>Totale lordo</td>
+            <td style={{padding:"8px 0",textAlign:"right",fontWeight:700,color:"#111"}}>{f(doc.totaleLordo)}</td>
           </tr>
-          {doc.scontoValoreCalc > 0 && (
-            <tr>
-              <td style={{ padding: "5px 0", color: "#c00" }}>Sconto {doc.scontoTipo === "percentuale" ? `(${doc.scontoValore}%)` : ""}</td>
-              <td style={{ padding: "5px 0", textAlign: "right", color: "#c00" }}>− {fmt(doc.scontoValoreCalc)}</td>
-            </tr>
+          {doc.scontoValoreCalc>0&&(
+            <tr><td style={{padding:"5px 0",color:"#c00"}}>Sconto {doc.scontoTipo==="percentuale"?`(${doc.scontoValore}%)`:"fisso"}</td><td style={{padding:"5px 0",textAlign:"right",color:"#c00"}}>− {f(doc.scontoValoreCalc)}</td></tr>
           )}
         </tbody>
       </table>
-
-      {/* Totale finale */}
-      <div style={{ background: "#1B6EF3", color: "#fff", borderRadius: 7, padding: "13px 16px", display: "flex", justifyContent: "space-between", alignItems: "center", margin: "14px 0 22px" }}>
-        <span style={{ fontWeight: 700, fontSize: 13 }}>TOTALE PREVENTIVO</span>
-        <span style={{ fontWeight: 900, fontSize: 22, letterSpacing: "-0.5px" }}>{fmt(doc.totaleNetto)}</span>
+      <div style={{background:"#1B6EF3",color:"#fff",borderRadius:7,padding:"12px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",margin:"14px 0 20px"}}>
+        <span style={{fontWeight:700,fontSize:13}}>TOTALE PREVENTIVO</span>
+        <span style={{fontWeight:900,fontSize:22,letterSpacing:"-0.5px"}}>{f(doc.totaleNetto)}</span>
       </div>
-
-      {/* Note */}
-      {doc.note && (
-        <React.Fragment>
-          <PrintSection>Note</PrintSection>
-          <div style={{ fontSize: 12, color: "#555", whiteSpace: "pre-wrap", marginBottom: 22, lineHeight: 1.65 }}>{doc.note}</div>
-        </React.Fragment>
-      )}
-
-      {/* Disclaimer */}
-      <div style={{ fontSize: 10, color: "#999", marginBottom: 28, paddingTop: 10, borderTop: "1px solid #eee", lineHeight: 1.6 }}>
-        Il presente preventivo ha validità 30 giorni dalla data di emissione, salvo diverso accordo scritto tra le parti.
-        I prezzi si intendono IVA esclusa, salvo diversa indicazione. Offerta soggetta a sopralluogo.
+      {doc.note&&<React.Fragment><PSec>Note</PSec><div style={{fontSize:12,color:"#555",whiteSpace:"pre-wrap",marginBottom:18,lineHeight:1.65}}>{doc.note}</div></React.Fragment>}
+      <div style={{fontSize:10,color:"#999",borderTop:"1px solid #eee",paddingTop:10,lineHeight:1.65}}>
+        Il presente preventivo ha validità 30 giorni dalla data di emissione, salvo diverso accordo scritto tra le parti. I prezzi si intendono IVA esclusa, salvo diversa indicazione. Offerta soggetta a sopralluogo.
       </div>
-
-      {/* Firme */}
-      <div style={{ display: "flex", justifyContent: "space-around", gap: 30, marginTop: 36 }}>
-        <div style={{ flex: 1, textAlign: "center" }}>
-          <div style={{ borderTop: "1px solid #aaa", marginBottom: 6 }}></div>
-          <div style={{ fontSize: 11, color: "#888" }}>Firma azienda</div>
-        </div>
-        <div style={{ flex: 1, textAlign: "center" }}>
-          <div style={{ borderTop: "1px solid #aaa", marginBottom: 6 }}></div>
-          <div style={{ fontSize: 11, color: "#888" }}>Firma cliente per accettazione</div>
-        </div>
+      <div style={{display:"flex",justifyContent:"space-around",gap:30,marginTop:36}}>
+        <div style={{flex:1,textAlign:"center"}}><div style={{borderTop:"1px solid #aaa",marginBottom:6}}></div><div style={{fontSize:11,color:"#888"}}>Firma azienda</div></div>
+        <div style={{flex:1,textAlign:"center"}}><div style={{borderTop:"1px solid #aaa",marginBottom:6}}></div><div style={{fontSize:11,color:"#888"}}>Firma cliente per accettazione</div></div>
       </div>
     </div>
   );
 }
 
-/* ── PRINT SECTION TITLE ── */
-function PrintSection({ children }) {
-  return (
-    <div style={{
-      fontFamily: "'IBM Plex Mono', monospace",
-      fontSize: 9,
-      fontWeight: 700,
-      letterSpacing: "0.14em",
-      color: "#1B6EF3",
-      textTransform: "uppercase",
-      marginBottom: 8,
-      borderBottom: "1px solid #e8eef8",
-      paddingBottom: 4,
-    }}>
-      {children}
-    </div>
-  );
+function PSec({children}) {
+  return <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,letterSpacing:"0.14em",color:"#1B6EF3",textTransform:"uppercase",marginBottom:8,borderBottom:"1px solid #e8eef8",paddingBottom:4,marginTop:14}}>{children}</div>;
 }
 
 /* ── MOUNT ── */
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App />);
+root.render(<App/>);
 
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("service-worker.js").catch(() => {});
-  });
+  window.addEventListener("load", ()=>{ navigator.serviceWorker.register("service-worker.js").catch(()=>{}); });
 }
 </script>
 </body>
