@@ -181,17 +181,26 @@ const defaultCompany={
 };
 
 /* ── LOGO ── */
+function LogoMark({size=38}){
+  return(
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0}}>
+      <rect x="6" y="6" width="88" height="88" rx="26" fill="#0E1420" stroke="#1B4FE8" strokeWidth="5"/>
+      <path d="M30 71 L30 35 L50 57 L70 35 L70 71"
+            stroke="#3B7BF6" strokeWidth="11"
+            strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+    </svg>
+  );
+}
+
 function LogoSVG({dark=false}){
   const textCol = dark ? "#111111" : "#FFFFFF";
-  const mCol    = dark ? "#111111" : "#FFFFFF";
   return(
-    <svg width="120" height="32" viewBox="0 0 200 48" role="img" aria-label="Emme 2000 logo" style={{flexShrink:0}}>
-      <rect x="1" y="1" width="44" height="44" rx="9" fill="#1B6EF3"/>
-      <rect x="1" y="1" width="44" height="44" rx="9" fill="none" stroke="#1B6EF3" strokeWidth="2"/>
-      <text x="6" y="38" fontSize="34" fontWeight="900" fill="#FFFFFF" fontFamily="Inter,Arial,sans-serif" letterSpacing="-1">M</text>
-      <text x="56" y="36" fontSize="28" fontWeight="900" fill={textCol} fontFamily="Inter,Arial,sans-serif" letterSpacing="-0.5">Emme</text>
-      <text x="130" y="36" fontSize="28" fontWeight="900" fill="#1B6EF3" fontFamily="Inter,Arial,sans-serif" letterSpacing="-0.5"> 2000</text>
-    </svg>
+    <div style={{display:"flex",alignItems:"center",gap:9}}>
+      <LogoMark size={34}/>
+      <div style={{fontSize:20,fontWeight:900,letterSpacing:"-0.02em",color:textCol,lineHeight:1,whiteSpace:"nowrap"}}>
+        Emme<span style={{color:"#1B6EF3"}}> 2000</span>
+      </div>
+    </div>
   );
 }
 
@@ -386,13 +395,13 @@ function App(){
 
 <div class="hdr">
   <div class="hdr-left">
-    <svg width="160" height="38" viewBox="0 0 200 48" role="img" aria-label="Emme 2000 logo">
-  <rect x="1" y="1" width="44" height="44" rx="9" fill="#1B6EF3"/>
-  <rect x="1" y="1" width="44" height="44" rx="9" fill="none" stroke="#1B6EF3" stroke-width="2"/>
-  <text x="6" y="38" font-size="34" font-weight="900" fill="#FFFFFF" font-family="Inter,Arial,sans-serif" letter-spacing="-1">M</text>
-  <text x="56" y="36" font-size="28" font-weight="900" fill="#111111" font-family="Inter,Arial,sans-serif" letter-spacing="-0.5">Emme</text>
-  <text x="130" y="36" font-size="28" font-weight="900" fill="#1B6EF3" font-family="Inter,Arial,sans-serif" letter-spacing="-0.5"> 2000</text>
-</svg>
+    <div style="display:flex;align-items:center;gap:9px;">
+      <svg width="34" height="34" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="6" width="88" height="88" rx="26" fill="#0E1420" stroke="#1B4FE8" stroke-width="5"/>
+        <path d="M30 71 L30 35 L50 57 L70 35 L70 71" stroke="#3B7BF6" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <div style="font-size:19px;font-weight:900;letter-spacing:-0.02em;color:#111;line-height:1;white-space:nowrap;">Emme<span style="color:#1B6EF3;"> 2000</span></div>
+    </div>
     <div class="hdr-sub" style="margin-top:4px;">${co.sottotitolo||""}</div>
   </div>
   <div class="hdr-right">
@@ -502,22 +511,26 @@ ${d.noteLavoro?`
       <style>{GLOBAL_CSS}</style>
 
       {/* NAV */}
-      <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(10,10,10,0.95)",backdropFilter:"blur(16px)",borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
-        <div style={{maxWidth:680,margin:"0 auto",padding:"0 16px",display:"flex",justifyContent:"space-between",alignItems:"center",height:58}}>
-          <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <LogoSVG size={32}/>
-            <div>
-              <div style={{fontWeight:800,fontSize:15,letterSpacing:"-0.02em",color:C.pure,lineHeight:1}}>
-                Emme<span style={{color:C.blue}}>2000</span>
+      <nav style={{position:"sticky",top:0,zIndex:100,background:"rgba(10,10,10,0.97)",backdropFilter:"blur(16px)",borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
+        <div style={{maxWidth:680,margin:"0 auto",padding:"10px 16px 10px"}}>
+          {/* Riga 1: logo + stato sync */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
+            <div style={{display:"flex",alignItems:"center",gap:9}}>
+              <LogoMark size={36}/>
+              <div>
+                <div style={{fontSize:18,fontWeight:900,letterSpacing:"-0.02em",color:C.pure,lineHeight:1.05}}>
+                  Emme<span style={{color:C.blue}}> 2000</span>
+                </div>
+                <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,letterSpacing:"0.16em",textTransform:"uppercase",color:C.mid,marginTop:2}}>Conto Lavoro</div>
               </div>
-              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,letterSpacing:"0.14em",textTransform:"uppercase",color:C.mid}}>Conto Lavoro</div>
+            </div>
+            <div style={{display:"flex",alignItems:"center",fontFamily:"'IBM Plex Mono',monospace",fontSize:9.5,color:C.mid,cursor:"pointer"}} onClick={loadAll}>
+              <span className={`sync-dot ${syncStatus==="ok"?"sync-ok":syncStatus==="err"?"sync-err":"sync-loading"}`}></span>
+              <span>{syncMsg}</span>
             </div>
           </div>
-          <div style={{display:"flex",alignItems:"center",gap:8}}>
-            <div style={{display:"flex",alignItems:"center",fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:C.mid,cursor:"pointer"}} onClick={loadAll}>
-              <span className={`sync-dot ${syncStatus==="ok"?"sync-ok":syncStatus==="err"?"sync-err":"sync-loading"}`}></span>
-              <span style={{display:window.innerWidth>420?"inline":"none"}}>{syncMsg}</span>
-            </div>
+          {/* Riga 2: sezioni */}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6}}>
             <NBtn active={view==="form"} onClick={nuovoDoc}>+ Nuovo</NBtn>
             <NBtn active={view==="storico"} onClick={()=>{loadAll();setView("storico");}}>Archivio</NBtn>
             <NBtn active={view==="impostazioni"} onClick={()=>setView("impostazioni")}>Azienda</NBtn>
@@ -731,11 +744,11 @@ function NBtn({active,onClick,children}){
   return(
     <button onClick={onClick} style={{
       background:active?"rgba(27,110,243,0.15)":"transparent",
-      border:`1px solid ${active?"rgba(27,110,243,0.35)":"rgba(255,255,255,0.1)"}`,
+      border:`1px solid ${active?"rgba(27,110,243,0.4)":"rgba(255,255,255,0.1)"}`,
       color:active?"#4D8FF5":"#A0A0A0",
-      fontFamily:"'IBM Plex Mono',monospace",fontSize:11,letterSpacing:"0.1em",
-      textTransform:"uppercase",padding:"6px 12px",borderRadius:5,cursor:"pointer",
-      fontWeight:active?600:400,transition:"all 0.18s",
+      fontFamily:"'IBM Plex Mono',monospace",fontSize:10.5,letterSpacing:"0.08em",
+      textTransform:"uppercase",padding:"8px 6px",borderRadius:6,cursor:"pointer",
+      fontWeight:active?700:400,transition:"all 0.18s",width:"100%",whiteSpace:"nowrap",
     }}>{children}</button>
   );
 }
