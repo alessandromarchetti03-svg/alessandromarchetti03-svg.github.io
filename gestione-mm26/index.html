@@ -187,11 +187,13 @@ const defaultCompany = {
 function LogoSVG({dark=false}){
   const textCol = dark ? "#111111" : "#FFFFFF";
   return(
-    <svg width="140" height="36" viewBox="0 0 240 58" role="img" aria-label="Emme 2000 logo">
-      <rect x="0" y="3" width="50" height="50" rx="10" fill="none" stroke="#1B6EF3" strokeWidth="2"/>
-      <rect x="0" y="3" width="50" height="50" rx="10" fill="#1B6EF3" opacity="0.10"/>
-      <text x="7" y="44" fontSize="38" fontWeight="900" fill={textCol} fontFamily="Inter,Arial,sans-serif" letterSpacing="-1">M</text>
-      <text x="62" y="43" fontSize="32" fontWeight="900" fill={textCol} fontFamily="Inter,Arial,sans-serif" letterSpacing="-1">Emme <tspan fill="#1B6EF3">2000</tspan></text>
+    <svg width="110" height="28" viewBox="0 0 190 46" role="img" aria-label="Emme 2000 logo">
+      {/* Quadrato M */}
+      <rect x="0" y="1" width="42" height="42" rx="8" fill="none" stroke="#1B6EF3" strokeWidth="2"/>
+      <rect x="0" y="1" width="42" height="42" rx="8" fill="#1B6EF3" opacity="0.12"/>
+      <text x="5" y="36" fontSize="32" fontWeight="900" fill={textCol} fontFamily="Inter,Arial,sans-serif" letterSpacing="-1">M</text>
+      {/* Testo */}
+      <text x="52" y="34" fontSize="26" fontWeight="900" fill={textCol} fontFamily="Inter,Arial,sans-serif" letterSpacing="-0.5">Emme<tspan fill="#1B6EF3"> 2000</tspan></text>
     </svg>
   );
 }
@@ -380,11 +382,11 @@ function App() {
   <div class="hdr">
     <div class="hdr-left">
       <div>
-        <svg width="180" height="42" viewBox="0 0 240 58" role="img" aria-label="Emme 2000 logo">
-  <rect x="0" y="3" width="50" height="50" rx="10" fill="none" stroke="#1B6EF3" stroke-width="2"/>
-  <rect x="0" y="3" width="50" height="50" rx="10" fill="#1B6EF3" opacity="0.08"/>
-  <text x="7" y="44" font-size="38" font-weight="900" fill="#111111" font-family="Inter,Arial,sans-serif" letter-spacing="-1">M</text>
-  <text x="62" y="43" font-size="32" font-weight="900" fill="#111111" font-family="Inter,Arial,sans-serif" letter-spacing="-1">Emme <tspan fill="#1B6EF3">2000</tspan></text>
+        <svg width="160" height="36" viewBox="0 0 190 46" role="img" aria-label="Emme 2000 logo">
+  <rect x="0" y="1" width="42" height="42" rx="8" fill="none" stroke="#1B6EF3" stroke-width="2"/>
+  <rect x="0" y="1" width="42" height="42" rx="8" fill="#1B6EF3" opacity="0.08"/>
+  <text x="5" y="36" font-size="32" font-weight="900" fill="#111111" font-family="Inter,Arial,sans-serif" letter-spacing="-1">M</text>
+  <text x="52" y="34" font-size="26" font-weight="900" fill="#111111" font-family="Inter,Arial,sans-serif" letter-spacing="-0.5">Emme<tspan fill="#1B6EF3"> 2000</tspan></text>
 </svg>
         <div class="hdr-sub" style="margin-top:4px;">${co.sottotitolo||""}</div>
       </div>
