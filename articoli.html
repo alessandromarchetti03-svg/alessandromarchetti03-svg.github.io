@@ -47,7 +47,7 @@
     .articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
     .article-card{background:var(--dark2);border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.2s,background 0.2s;}
     .article-card:hover{border-color:rgba(27,110,243,0.3);background:var(--dark3);}
-    .article-img{height:200px;overflow:hidden;position:relative;}
+    .article-img{height:200px;overflow:hidden;position:relative;background:linear-gradient(135deg,#1A1A1A 0%,#0d1f3c 100%);}
     .article-img img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.7);transition:transform 0.4s;}
     .article-card:hover .article-img img{transform:scale(1.04);}
     .article-cat{position:absolute;top:1rem;left:1rem;background:var(--blue);color:var(--pure);font-family:'IBM Plex Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.25rem 0.6rem;border-radius:4px;}
@@ -69,9 +69,9 @@
     .footer-links{display:flex;gap:1.5rem;}
     .footer-links a{font-size:0.75rem;color:var(--grey2);}
     .footer-links a:hover{color:var(--light);}
-    .wa{position:fixed;bottom:1.5rem;right:1.5rem;z-index:99;width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.35);transition:transform 0.2s;}
+    .wa{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;width:54px;height:54px;min-width:54px;min-height:54px;max-width:54px;max-height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.35);transition:transform 0.2s;overflow:hidden;}
     .wa:hover{transform:scale(1.08);}
-    .wa svg{width:28px;height:28px;}
+    .wa svg{width:28px;height:28px;min-width:28px;min-height:28px;flex-shrink:0;}
     #cb{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(17,17,17,0.98);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.08);padding:1.4rem 0;display:none;}
     #cb.visible{display:block;}
     .ci{width:min(1140px,92vw);margin-inline:auto;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;}
@@ -89,13 +89,16 @@
   <div class="nav-inner">
     <a href="index.html" style="display:flex;align-items:center;">
       <svg width="180" height="40" viewBox="0 0 320 66" role="img" aria-label="Emme 2000 logo">
-        <rect x="0" y="3" width="52" height="52" rx="9" fill="none" stroke="#1B6EF3" stroke-width="1.5"/>
-        <rect x="0" y="3" width="52" height="52" rx="9" fill="#1B6EF3" opacity="0.07"/>
-        <rect x="10" y="16" width="30" height="7" rx="2.5" fill="#FFFFFF"/>
-        <rect x="10" y="29" width="21" height="6" rx="2.5" fill="#1B6EF3"/>
-        <rect x="10" y="41" width="30" height="7" rx="2.5" fill="#FFFFFF"/>
-        <circle cx="46" cy="50" r="4" fill="#1B6EF3"/>
-        <text x="64" y="44" font-size="34" font-weight="900" fill="#FFFFFF" font-family="Inter,sans-serif" letter-spacing="-1.5">Emme<tspan fill="#1B6EF3">2000</tspan></text>
+        <defs>
+          <linearGradient id="navLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#2F6BFF"/>
+            <stop offset="100%" stop-color="#0044FF"/>
+          </linearGradient>
+        </defs>
+        <rect x="3" y="7" width="52" height="52" rx="14" fill="none" stroke="#0044FF" stroke-width="1.5"/>
+        <rect x="3" y="7" width="52" height="52" rx="14" fill="#0044FF" opacity="0.08"/>
+        <path d="M15 46 L15 22 L29 37 L43 22 L43 46" fill="none" stroke="url(#navLogoGrad)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="64" y="44" font-size="34" font-weight="900" fill="#FFFFFF" font-family="Inter,sans-serif" letter-spacing="-1.5">Emme <tspan fill="#0044FF">2000</tspan></text>
       </svg>
     </a>
     <div class="nav-links">
@@ -132,7 +135,7 @@
     <div class="articles-grid">
       <a href="articolo-allarme.html" class="article-card">
         <div class="article-img">
-          <img src="servizio-allarme.jpg" alt="Come scegliere un impianto d'allarme per proteggere la tua casa" />
+          <img src="servizio-allarme.jpg" alt="Come scegliere un impianto d'allarme per proteggere la tua casa" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Sistemi d'allarme</span>
         </div>
         <div class="article-body">
@@ -143,7 +146,7 @@
       </a>
       <a href="articolo-videosorveglianza.html" class="article-card">
         <div class="article-img">
-          <img src="servizio-videosorveglianza.jpg" alt="Videosorveglianza: perché installare telecamere oggi è una scelta intelligente" />
+          <img src="servizio-videosorveglianza.jpg" alt="Videosorveglianza: perché installare telecamere oggi è una scelta intelligente" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Videosorveglianza</span>
         </div>
         <div class="article-body">
@@ -154,7 +157,7 @@
       </a>
       <a href="articolo-cancelli.html" class="article-card">
         <div class="article-img">
-          <img src="servizio-cancelli.jpg" alt="Cancelli automatici: comfort, sicurezza e valore per la tua abitazione" />
+          <img src="servizio-cancelli.jpg" alt="Cancelli automatici: comfort, sicurezza e valore per la tua abitazione" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Cancelli automatici</span>
         </div>
         <div class="article-body">
@@ -165,7 +168,7 @@
       </a>
       <a href="articolo-elettrico.html" class="article-card">
         <div class="article-img">
-          <img src="servizio-elettrico.jpg" alt="Quando rifare un impianto elettrico? I segnali da non sottovalutare" />
+          <img src="servizio-elettrico.jpg" alt="Quando rifare un impianto elettrico? I segnali da non sottovalutare" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Impianti elettrici</span>
         </div>
         <div class="article-body">
@@ -176,7 +179,7 @@
       </a>
       <a href="articolo5.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo5.jpg" alt="Quanto costa rifare un impianto elettrico nel 2026?" />
+          <img src="fotoarticolo5.jpg" alt="Quanto costa rifare un impianto elettrico nel 2026?" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Impianti elettrici</span>
         </div>
         <div class="article-body">
@@ -187,7 +190,7 @@
       </a>
       <a href="articolo6.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo6.jpg" alt="Come capire se il tuo impianto elettrico è a norma" />
+          <img src="fotoarticolo6.jpg" alt="Come capire se il tuo impianto elettrico è a norma" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Impianti elettrici</span>
         </div>
         <div class="article-body">
@@ -198,7 +201,7 @@
       </a>
       <a href="articolo7.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo7.jpg" alt="Salvavita che scatta continuamente: cause e soluzioni" />
+          <img src="fotoarticolo7.jpg" alt="Salvavita che scatta continuamente: cause e soluzioni" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Impianti elettrici</span>
         </div>
         <div class="article-body">
@@ -209,7 +212,7 @@
       </a>
       <a href="articolo8.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo8.jpg" alt="Impianto elettrico domotico: cos'è e perché conviene" />
+          <img src="fotoarticolo8.jpg" alt="Impianto elettrico domotico: cos'è e perché conviene" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Domotica</span>
         </div>
         <div class="article-body">
@@ -220,7 +223,7 @@
       </a>
       <a href="articolo9.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo9.jpg" alt="Dove installare le telecamere per proteggere al meglio la casa" />
+          <img src="fotoarticolo9.jpg" alt="Dove installare le telecamere per proteggere al meglio la casa" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Videosorveglianza</span>
         </div>
         <div class="article-body">
@@ -231,7 +234,7 @@
       </a>
       <a href="articolo10.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo10.jpg" alt="Telecamere Wi-Fi o cablate? Quale scegliere nel 2026" />
+          <img src="fotoarticolo10.jpg" alt="Telecamere Wi-Fi o cablate? Quale scegliere nel 2026" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Videosorveglianza</span>
         </div>
         <div class="article-body">
@@ -242,7 +245,7 @@
       </a>
       <a href="articolo11.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo11.jpg" alt="Videosorveglianza e privacy: cosa dice la normativa italiana" />
+          <img src="fotoarticolo11.jpg" alt="Videosorveglianza e privacy: cosa dice la normativa italiana" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Normative</span>
         </div>
         <div class="article-body">
@@ -253,7 +256,7 @@
       </a>
       <a href="articolo12.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo12.jpg" alt="Le migliori telecamere per vedere di notte: come funziona la visione notturna" />
+          <img src="fotoarticolo12.jpg" alt="Le migliori telecamere per vedere di notte: come funziona la visione notturna" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Videosorveglianza</span>
         </div>
         <div class="article-body">
@@ -264,7 +267,7 @@
       </a>
       <a href="articolo13.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo13.jpg" alt="Come evitare i falsi allarmi: 8 consigli per un impianto davvero affidabile" />
+          <img src="fotoarticolo13.jpg" alt="Come evitare i falsi allarmi: 8 consigli per un impianto davvero affidabile" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Sistemi d'allarme</span>
         </div>
         <div class="article-body">
@@ -275,7 +278,7 @@
       </a>
       <a href="articolo14.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo14.jpg" alt="Sensori volumetrici o perimetrali? Quale scegliere per proteggere casa" />
+          <img src="fotoarticolo14.jpg" alt="Sensori volumetrici o perimetrali? Quale scegliere per proteggere casa" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Sistemi d'allarme</span>
         </div>
         <div class="article-body">
@@ -286,7 +289,7 @@
       </a>
       <a href="articolo15.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo15.jpg" alt="Cancello automatico lento o bloccato? Cause, problemi e soluzioni" />
+          <img src="fotoarticolo15.jpg" alt="Cancello automatico lento o bloccato? Cause, problemi e soluzioni" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Cancelli automatici</span>
         </div>
         <div class="article-body">
@@ -297,7 +300,7 @@
       </a>
       <a href="articolo16.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo16.jpg" alt="Come scegliere un elettricista affidabile: 10 aspetti da valutare" />
+          <img src="fotoarticolo16.jpg" alt="Come scegliere un elettricista affidabile: 10 aspetti da valutare" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Consigli</span>
         </div>
         <div class="article-body">
@@ -308,7 +311,7 @@
       </a>
       <a href="articolo17.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo17.jpg" alt="Allarme con nebbiogeno: come funziona e quando conviene installarlo" />
+          <img src="fotoarticolo17.jpg" alt="Allarme con nebbiogeno: come funziona e quando conviene installarlo" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Sistemi d'allarme</span>
         </div>
         <div class="article-body">
@@ -319,7 +322,7 @@
       </a>
       <a href="articolo18.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo18.jpg" alt="Impianto d'allarme controllabile dallo smartphone: tutti i vantaggi" />
+          <img src="fotoarticolo18.jpg" alt="Impianto d'allarme controllabile dallo smartphone: tutti i vantaggi" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Sistemi d'allarme</span>
         </div>
         <div class="article-body">
@@ -330,7 +333,7 @@
       </a>
       <a href="articolo19.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo19.jpg" alt="Manutenzione del cancello automatico: ogni quanto farla e perché" />
+          <img src="fotoarticolo19.jpg" alt="Manutenzione del cancello automatico: ogni quanto farla e perché" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Cancelli automatici</span>
         </div>
         <div class="article-body">
@@ -341,7 +344,7 @@
       </a>
       <a href="articolo20.html" class="article-card">
         <div class="article-img">
-          <img src="fotoarticolo20.jpg" alt="Cancello scorrevole o a battente? Guida alla scelta" />
+          <img src="fotoarticolo20.jpg" alt="Cancello scorrevole o a battente? Guida alla scelta" onerror="this.style.opacity=\'0\';" />
           <span class="article-cat">Cancelli automatici</span>
         </div>
         <div class="article-body">
@@ -358,14 +361,17 @@
   <div class="container">
     <div class="footer-inner">
       <div>
-        <svg width="200" height="50" viewBox="0 0 320 80" role="img" style="margin-bottom:1rem;">
-          <rect x="0" y="4" width="58" height="58" rx="10" fill="none" stroke="#1B6EF3" stroke-width="1.5"/>
-          <rect x="0" y="4" width="58" height="58" rx="10" fill="#1B6EF3" opacity="0.07"/>
-          <rect x="11" y="18" width="33" height="7" rx="2.5" fill="#FFFFFF"/>
-          <rect x="11" y="31" width="23" height="6" rx="2.5" fill="#1B6EF3"/>
-          <rect x="11" y="43" width="33" height="7" rx="2.5" fill="#FFFFFF"/>
-          <circle cx="52" cy="55" r="4" fill="#1B6EF3"/>
-          <text x="70" y="34" font-size="26" font-weight="900" fill="#FFFFFF" font-family="Inter,sans-serif" letter-spacing="-1">Emme<tspan fill="#1B6EF3">2000</tspan></text>
+        <svg width="200" height="50" viewBox="0 0 320 66" role="img" style="margin-bottom:1rem;">
+          <defs>
+            <linearGradient id="logoGrad20050" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#2F6BFF"/>
+              <stop offset="100%" stop-color="#0044FF"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="4" width="58" height="58" rx="14" fill="none" stroke="#0044FF" stroke-width="1.5"/>
+          <rect x="0" y="4" width="58" height="58" rx="14" fill="#0044FF" opacity="0.08"/>
+          <path d="M15 48 L15 21 L29 37 L43 21 L43 48" fill="none" stroke="url(#logoGrad20050)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="64" y="34" font-size="26" font-weight="900" fill="#FFFFFF" font-family="Inter,sans-serif" letter-spacing="-1.5">Emme <tspan fill="#0044FF">2000</tspan></text>
           <rect x="70" y="40" width="240" height="1" fill="#2E2E2E"/>
           <text x="71" y="53" font-size="8" fill="#6B6B6B" font-family="IBM Plex Mono,monospace" letter-spacing="0.14em">SPECIALISTI IN SISTEMI DI SICUREZZA</text>
         </svg>
