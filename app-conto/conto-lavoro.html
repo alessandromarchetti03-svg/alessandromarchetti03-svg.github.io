@@ -174,10 +174,13 @@ const emptyDoc=()=>({
 });
 
 const defaultCompany={
-  ragioneSociale:"Emme 2000",
+  ragioneSociale:"Emme 2000 Impianti Elettrici",
   sottotitolo:"Impianti elettrici · Antifurto · Automazioni · Videosorveglianza",
-  piva:"", indirizzo:"Viale Italia 3, 24060 Villongo (BG)",
-  telefono:"352 033 4436", email:"info@emme2000impiantielettrici.it",
+  telefono:"352 033 4436",
+  piva:"",
+  indirizzo:"Viale Italia 3, 24060 Villongo (BG)",
+  email:"info@emme2000impiantielettrici.it",
+  sito:"www.emme2000impiantielettrici.it",
 };
 
 /* ── LOGO ── */
@@ -387,10 +390,12 @@ function App(){
     <div class="hdr-sub">${co.sottotitolo||""}</div>
   </div>
   <div class="hdr-right">
-    ${co.indirizzo?`<div>${co.indirizzo}</div>`:""}
+    ${co.ragioneSociale?`<div style="font-weight:700;color:#111;margin-bottom:5px;">${co.ragioneSociale}</div>`:""}
     ${co.telefono?`<div>Tel. ${co.telefono}</div>`:""}
-    ${co.email?`<div>${co.email}</div>`:""}
     ${co.piva?`<div>P.IVA ${co.piva}</div>`:""}
+    ${co.indirizzo?`<div>${co.indirizzo}</div>`:""}
+    ${co.email?`<div>${co.email}</div>`:""}
+    ${co.sito?`<div>${co.sito}</div>`:""}
   </div>
 </div>
 
@@ -708,10 +713,11 @@ ${d.noteLavoro?`
             </div>
             <div className="field"><label>Ragione sociale</label><input value={compDraft.ragioneSociale} onChange={e=>setCompDraft(c=>({...c,ragioneSociale:e.target.value}))}/></div>
             <div className="field"><label>Sottotitolo</label><input value={compDraft.sottotitolo} onChange={e=>setCompDraft(c=>({...c,sottotitolo:e.target.value}))}/></div>
+            <div className="field"><label>Telefono</label><input value={compDraft.telefono} onChange={e=>setCompDraft(c=>({...c,telefono:e.target.value}))}/></div>
             <div className="field"><label>Partita IVA</label><input value={compDraft.piva} onChange={e=>setCompDraft(c=>({...c,piva:e.target.value}))} placeholder="Lascia vuoto se non ancora attiva"/></div>
             <div className="field"><label>Indirizzo</label><input value={compDraft.indirizzo} onChange={e=>setCompDraft(c=>({...c,indirizzo:e.target.value}))}/></div>
-            <div className="field"><label>Telefono</label><input value={compDraft.telefono} onChange={e=>setCompDraft(c=>({...c,telefono:e.target.value}))}/></div>
             <div className="field"><label>Email</label><input value={compDraft.email} onChange={e=>setCompDraft(c=>({...c,email:e.target.value}))}/></div>
+            <div className="field"><label>Sito web</label><input value={compDraft.sito||""} onChange={e=>setCompDraft(c=>({...c,sito:e.target.value}))} placeholder="www.esempio.it"/></div>
             <button onClick={saveCompany} className="btn btn-primary" style={{width:"100%",marginTop:4}}>Salva dati azienda</button>
           </div>
         )}
@@ -750,9 +756,12 @@ function DocPreview({doc,company}){
           <div style={{fontSize:10,color:"#666",marginTop:1}}>{company.sottotitolo}</div>
         </div>
         <div style={{textAlign:"right",fontSize:10,color:"#555",lineHeight:1.7,alignSelf:"flex-end"}}>
-          {company.indirizzo&&<div>{company.indirizzo}</div>}
+          {company.ragioneSociale&&<div style={{fontWeight:700,color:"#111",marginBottom:4}}>{company.ragioneSociale}</div>}
           {company.telefono&&<div>Tel. {company.telefono}</div>}
+          {company.piva&&<div>P.IVA {company.piva}</div>}
+          {company.indirizzo&&<div>{company.indirizzo}</div>}
           {company.email&&<div>{company.email}</div>}
+          {company.sito&&<div>{company.sito}</div>}
         </div>
       </div>
       {/* Meta */}
