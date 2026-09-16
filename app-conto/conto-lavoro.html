@@ -382,6 +382,18 @@ function App(){
   .firma{flex:1;text-align:center;}
   .firma-line{border-top:1px solid #aaa;margin-bottom:6px;}
   .firma-label{font-size:11px;color:#888;}
+
+  /* ── Ottimizzazione interruzioni di pagina ── */
+  table, tbody { page-break-inside: auto; break-inside: auto; }
+  thead { display: table-header-group; }
+  tr, td { page-break-inside: avoid; break-inside: avoid; page-break-after: auto; }
+  .sec { page-break-after: avoid; break-after: avoid; page-break-inside: avoid; }
+  .hdr, .meta { page-break-inside: avoid; break-inside: avoid; }
+  .riepi, .tot-bar, .approv, .subtot { page-break-inside: avoid; break-inside: avoid; }
+  .firme, .firma, .disclaimer { page-break-inside: avoid; break-inside: avoid; }
+  .firme { page-break-before: auto; }
+  .tot-bar { page-break-before: avoid; break-before: avoid; }
+  p, div { orphans: 3; widows: 3; }
 </style></head><body><div class="page">
 
 <div class="hdr">
