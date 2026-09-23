@@ -376,7 +376,9 @@ function App(){
   .rl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#888;}
   .rv{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#111;}
   .tot-bar{background:#1B6EF3;color:#fff;border-radius:7px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin:14px 0 16px;}
-  .approv{margin:10px 0;padding:8px 12px;border:1px solid #1B6EF3;border-radius:4px;background:rgba(27,110,243,0.04);font-size:12px;color:#111;font-weight:600;font-style:italic;}
+  .approv{margin:10px 0;padding:8px 12px;border:1px solid #1B6EF3;border-radius:4px;background:rgba(27,110,243,0.04);font-size:12px;color:#111;font-weight:600;font-style:italic;display:flex;align-items:flex-start;gap:8px;}
+  .approv-box{flex-shrink:0;width:13px;height:13px;border:1.5px solid #1B6EF3;border-radius:3px;margin-top:1px;position:relative;}
+  .approv-box::after{content:"";position:absolute;left:3px;top:0px;width:4px;height:8px;border:solid #1B6EF3;border-width:0 2px 2px 0;transform:rotate(45deg);}
   .disclaimer{font-size:10px;color:#999;border-top:1px solid #eee;padding-top:10px;margin-bottom:24px;line-height:1.65;}
   .firme{display:flex;justify-content:space-around;gap:30px;margin-top:40px;}
   .firma{flex:1;text-align:center;}
@@ -484,7 +486,7 @@ ${d.noteLavoro?`
 <div class="sec sec-blue">Note</div>
 <div style="font-size:12px;color:#555;white-space:pre-wrap;margin-bottom:16px;line-height:1.65;">${d.noteLavoro}</div>`:""}
 
-<div class="approv">Il lavoro è stato eseguito secondo le specifiche ed approvato dal cliente.</div>
+<div class="approv"><span class="approv-box"></span><span>L'intervento è stato realizzato in conformità alle indicazioni ed alle specifiche concordate con il cliente.</span></div>
 
 <div class="disclaimer">
   Il presente documento riporta il dettaglio dei lavori eseguiti e dei materiali utilizzati.
@@ -824,8 +826,11 @@ function DocPreview({doc,company}){
         <span style={{fontWeight:900,fontSize:20,letterSpacing:"-0.5px"}}>{f(c.tot)}</span>
       </div>
       {/* Approvazione */}
-      <div style={{padding:"7px 10px",border:"1px solid #1B6EF3",borderRadius:4,background:"rgba(27,110,243,0.04)",fontSize:12,color:"#111",fontWeight:600,fontStyle:"italic",marginBottom:12}}>
-        Il lavoro è stato eseguito secondo le specifiche ed approvato dal cliente.
+      <div style={{padding:"7px 10px",border:"1px solid #1B6EF3",borderRadius:4,background:"rgba(27,110,243,0.04)",fontSize:12,color:"#111",fontWeight:600,fontStyle:"italic",marginBottom:12,display:"flex",alignItems:"flex-start",gap:8}}>
+        <span style={{flexShrink:0,width:13,height:13,marginTop:1,border:"1.5px solid #1B6EF3",borderRadius:3,display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <span style={{width:4,height:8,borderRight:"2px solid #1B6EF3",borderBottom:"2px solid #1B6EF3",transform:"rotate(45deg) translate(-1px,-1px)"}}></span>
+        </span>
+        <span>L'intervento è stato realizzato in conformità alle indicazioni ed alle specifiche concordate con il cliente.</span>
       </div>
     </div>
   );
