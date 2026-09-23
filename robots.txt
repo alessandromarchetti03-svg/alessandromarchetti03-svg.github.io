@@ -1,4 +1,5 @@
 User-agent: *
 Disallow: /gestione-mm26/
+Disallow: /conto-lavoro.html
 
 Sitemap: https://www.emme2000impiantielettrici.it/sitemap.xml
