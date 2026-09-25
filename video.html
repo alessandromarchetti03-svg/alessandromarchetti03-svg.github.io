@@ -227,14 +227,20 @@
   /* ============================================================
      GALLERIA VIDEO YOUTUBE — caricamento automatico via feed RSS
      ============================================================
-     Come attivarla:
-     1. Apri il tuo canale YouTube, vai su "Info canale" e copia
-        l'ID canale (inizia con "UC..."), oppure usa l'handle
-        (es. @emme2000impianti) se il canale è già pubblico.
-     2. Sostituisci il valore di YT_CHANNEL_ID qui sotto.
-     3. Aggiorna anche YT_CHANNEL_URL con il link pubblico del canale.
-     Non serve nessuna API key: il feed RSS di YouTube è pubblico
-     e gratuito, senza limiti di quota.
+     Canale collegato: @Emme_2000 (ID sotto). Nessuna API key
+     richiesta: il feed RSS di YouTube è pubblico e gratuito.
+
+     Se i video non compaiono nonostante il canale sia corretto:
+     - Il feed RSS di YouTube non è raggiungibile direttamente dal
+       browser (blocco CORS), quindi passiamo da un servizio proxy
+       gratuito di terze parti (vedi fetchFeedXml più sotto).
+     - Questi proxy pubblici a volte sono lenti o temporaneamente
+       giù: il codice ne prova due in sequenza con un timeout di
+       8 secondi ciascuno, prima di mostrare il messaggio di
+       fallback. Se il problema persiste per giorni, il modo più
+       affidabile per risolverlo definitivamente è attivare la
+       YouTube Data API v3 (gratuita, con una API key da Google
+       Cloud Console) al posto del feed RSS via proxy.
   ============================================================ */
   const YT_CHANNEL_ID = "UCgml7hBeF3963uBONueKzlA";
   const YT_CHANNEL_URL = "https://www.youtube.com/@Emme_2000"; // link pubblico del canale
@@ -305,6 +311,33 @@
     grid.innerHTML = html;
   }
 
+  async function fetchFeedXml(feedUrl){
+    // YouTube non espone header CORS sul proprio feed RSS: serve un proxy
+    // di lettura per poterlo interrogare via fetch dal browser, senza
+    // bisogno di un backend proprio o di una API key.
+    // Proviamo due servizi gratuiti in cascata: se il primo è lento o
+    // temporaneamente non disponibile, si passa automaticamente al secondo.
+    var attempts = [
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent(feedUrl),
+      'https://r.jina.ai/' + feedUrl
+    ];
+
+    for(var i = 0; i < attempts.length; i++){
+      try{
+        var controller = new AbortController();
+        var timeout = setTimeout(function(){ controller.abort(); }, 8000);
+        var res = await fetch(attempts[i], { signal: controller.signal });
+        clearTimeout(timeout);
+        if(!res.ok) continue;
+        var text = await res.text();
+        if(text && text.indexOf('<entry') !== -1) return text;
+      }catch(err){
+        // prova il tentativo successivo
+      }
+    }
+    return null;
+  }
+
   async function loadYouTubeVideos(){
     var grid = document.getElementById('videoGrid');
 
@@ -316,15 +349,11 @@
     renderSkeletons(grid, MAX_VIDEOS);
 
     var feedUrl = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + encodeURIComponent(YT_CHANNEL_ID);
-    // Il feed RSS di YouTube non espone header CORS: lo passiamo attraverso
-    // un proxy di lettura pubblico e gratuito (r.jina.ai) per poterlo leggere
-    // via fetch dal browser, senza bisogno di un backend o di una API key.
-    var proxyUrl = 'https://r.jina.ai/' + feedUrl;
 
     try{
-      var res = await fetch(proxyUrl);
-      if(!res.ok) throw new Error('network');
-      var text = await res.text();
+      var text = await fetchFeedXml(feedUrl);
+      if(!text) throw new Error('network');
+
       var parser = new DOMParser();
       var xml = parser.parseFromString(text, 'text/xml');
       var entries = Array.from(xml.getElementsByTagName('entry')).slice(0, MAX_VIDEOS);
