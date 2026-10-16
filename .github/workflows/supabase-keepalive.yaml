@@ -1,0 +1,22 @@
+name: Supabase keep-alive
+
+# Ogni lunedì e giovedì fa una lettura minima su entrambi i database,
+# così Supabase non li mette in pausa per inattività.
+on:
+  schedule:
+    - cron: "0 7 * * 1,4"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Database Preventivi
+        run: |
+          curl -fsS "https://xjaljpvxprcqtovzomxn.supabase.co/rest/v1/contatore?select=id&limit=1" \
+            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhqYWxqcHZ4cHJjcXRvdnpvbXhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NDMzMzksImV4cCI6MjEwNTAxOTMzOX0.QC1Fh9laXRFCy563_fWaMBxvbtb9kDg60wJ9VcilbyY"
+
+      - name: Ping Database Conti Lavoro
+        run: |
+          curl -fsS "https://biqbsdyauqeacvbmtpcm.supabase.co/rest/v1/conti_lavoro?select=id&limit=1" \
+            -H "apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpcWJzZHlhdXFlYWN2Ym10cGNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NDMwNjgsImV4cCI6MjEwNTAxOTA2OH0.cZsRgr3uet_4Vj7sp07XFDe2zKJHJ6iCRswrYGRQhFw"
